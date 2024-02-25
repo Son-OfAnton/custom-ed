@@ -44,21 +44,29 @@ const NavBar = () => {
           <div className="flex items-center">
             <ul className="flex">
               <li className="mr-20">
-
-                <Link href="/about" className="bg-hover-blue hover:text-blue-500">About us</Link>
+                <Link
+                  href="/about"
+                  className="bg-hover-blue hover:text-blue-500"
+                >
+                  About us
+                </Link>
               </li>
               <li className="mr-20">
-                <Link href="/"  className="bg-hover-blue hover:text-blue-500">Login</Link>
+                <Link href="/" className="bg-hover-blue hover:text-blue-500">
+                  Login
+                </Link>
               </li>
               <li className="mr-20">
-                <Link href="/" className="bg-hover-blue hover:text-blue-500">Register</Link>
+                <Link href="/" className="bg-hover-blue hover:text-blue-500">
+                  Register
+                </Link>
               </li>
             </ul>
           </div>
 
           <div className="mr-14">
             <Button asChild>
-              <Link  href="/">Contact us</Link>
+              <Link href="/">Contact us</Link>
             </Button>
           </div>
         </div>
@@ -74,17 +82,26 @@ const NavBar = () => {
             <div className="flex flex-col items-end mr-7 py-8">
               <ul className="flex flex-col items-end">
                 <li className="my-3 relative">
-                  <Link href="/about" className="bg-hover-blue hover:text-blue-500">About us</Link>
+                  <Link
+                    href="/about"
+                    className="bg-hover-blue hover:text-blue-500"
+                  >
+                    About us
+                  </Link>
                 </li>
                 <li className="my-3 relative">
-                  <Link href="/" className="bg-hover-blue hover:text-blue-500">Login</Link>
+                  <Link href="/" className="bg-hover-blue hover:text-blue-500">
+                    Login
+                  </Link>
                 </li>
                 <li className="my-3 relative">
-                  <Link href="/" className="bg-hover-blue hover:text-blue-500">Register</Link>
+                  <Link href="/" className="bg-hover-blue hover:text-blue-500">
+                    Register
+                  </Link>
                 </li>
                 <li className="my-3">
                   <Button asChild>
-                    <Link  href="/">Contact us</Link>
+                    <Link href="/">Contact us</Link>
                   </Button>
                 </li>
               </ul>
