@@ -21,7 +21,7 @@ const page = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription className="md:text-lg text-xs md:mx-9 mx-2 text-black">
+                <CardDescription className="md:text-lg text-small md:mx-9 mx-2 text-black">
                     Welcome to Custom-ed, a pioneering force reshaping the educational landscape for the contemporary world. Our inception was inspired by a fundamental observation: the conventional educational paradigm frequently proves inadequate in catering to the multifaceted needs and varied learning modalities of today's students. This realization served as the catalyst for our mission to revolutionize education.
 
 In delving deeper into the challenges plaguing traditional education, we uncovered a pressing issue: the standardized approach to teaching and learning overlooks the rich tapestry of individual learning styles and preferences. This oversight often culminates in disengagement among learners and acts as a barrier to their academic progression.
@@ -49,7 +49,7 @@ Join us on our mission to redefine education for the modern era. Together, we ca
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription className="md:text-lg text-xs md:mx-9 mx-2 text-black">
+                <CardDescription className="md:text-lg text-small md:mx-9 mx-2 text-black">
                  At Custom-ed, we envision an educational landscape where every learner can thrive. We believe in harnessing the power of technology to create a personalized and inclusive learning experience that empowers students to reach their full potential.
                 </CardDescription>
               </CardContent>
@@ -66,7 +66,7 @@ Join us on our mission to redefine education for the modern era. Together, we ca
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription className="md:text-lg text-xs md:mx-9 mx-2 text-black">
+                <CardDescription className="md:text-lg text-small md:mx-9 mx-2 text-black">
                   Driven by a passion for innovation and a commitment to excellence, our mission is to revolutionize education through the integration of personalized learning principles and cutting-edge artificial intelligence technology. We aim to break down barriers to learning, foster engagement, and pave the way for a brighter future.
                 </CardDescription>
               </CardContent>
@@ -83,7 +83,7 @@ Join us on our mission to redefine education for the modern era. Together, we ca
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription className="md:text-lg text-xs md:mx-9 mx-2 text-black">
+                <CardDescription className="md:text-lg text-small md:mx-9 mx-2 text-black">
                  Our approach is centered around adaptability, customization, and empowerment. By leveraging AI, we provide students with a dynamic learning path tailored to their individual needs and preferences. Through milestone assessments and comprehensive analytics, we offer educators valuable insights to support student success. 
                 </CardDescription>
               </CardContent>
@@ -100,7 +100,7 @@ Join us on our mission to redefine education for the modern era. Together, we ca
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription className="md:text-lg text-xs md:mx-9 mx-2 text-black">
+                <CardDescription className="md:text-lg text-small md:mx-9 mx-2 text-black">
                  For students, our system provides a tailored learning experience that caters to their individual needs and preferences. By offering customized learning paths, we promote engagement and empower students to take ownership of their education.
 
 For teachers, our platform offers valuable insights into student engagement and comprehension. By identifying hot topics and areas of difficulty, teachers can refine their instructional strategies to better meet the needs of their students.
