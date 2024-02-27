@@ -1,6 +1,16 @@
 "use client"
 
 import { Input } from "@/components/ui/input"
+<<<<<<< HEAD
+=======
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+>>>>>>> f487309 (feat: Complete signup page)
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -11,6 +21,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form"
+<<<<<<< HEAD
 import {
   Dialog,
   DialogContent,
@@ -39,6 +50,26 @@ const formSchema = z.object({
 type FormType = z.infer<typeof formSchema>
 
 const signinPage = () => {
+=======
+import { Button } from "@/components/ui/button"
+import Image from "next/image"
+import { cn } from "@/lib/utils"
+import Link from "next/link"
+
+const formSchema = z
+  .object({
+    email: z
+      .string({ required_error: "Email is required" })
+      .email({ message: "Please enter a valid email format" }),
+    password: z
+      .string({ required_error: "Password is required" })
+      .min(8, { message: "Password must contain at least 8 characters" }),
+  })
+
+type FormType = z.infer<typeof formSchema>
+
+const signupPage = () => {
+>>>>>>> f487309 (feat: Complete signup page)
   const form = useForm<FormType>({
     resolver: zodResolver(formSchema),
   })
@@ -46,13 +77,17 @@ const signinPage = () => {
   const onSubmit = (values: FormType) => {
     console.log(values)
   }
+<<<<<<< HEAD
   
   const router = useRouter()
   const [otpSent, setOtpSent] = useState(false)
+=======
+>>>>>>> f487309 (feat: Complete signup page)
 
   return (
     <main className="flex h-screen w-screen justify-center items-center bg-[url(/signup-bg.jpg)]">
       <div className="flex h-[80vh] w-[80vw] shadow-lg">
+<<<<<<< HEAD
         <section className="hidden lg:flex lg:flex-col lg:justify-center lg:items-center gap-8 rounded-l-2xl w-1/2 bg-zinc-800">
           <h1 className="text-white text-3xl font-extrabold">
             Welcome to CustomEd
@@ -69,6 +104,21 @@ const signinPage = () => {
               Signup
             </Link>
           </span>
+=======
+        <section className="hidden lg:flex lg:flex-col lg:justify-center lg:items-center gap-8 rounded-l-2xl w-1/2 bg-[#292929]">
+          <h1 className="text-white text-3xl font-extrabold">
+            Begin Your Journey
+          </h1>
+          <Image
+            src="/signup-illustration.svg"
+            width={300}
+            height={300}
+            alt="Signup Illustration"
+          />
+          <Link className="text-primary-foreground hover:underline" href="/">
+            Don't have an account ?{" "}
+          </Link>
+>>>>>>> f487309 (feat: Complete signup page)
         </section>
 
         <section className="flex flex-col items-center justify-center rounded-r-2xl lg:w-1/2 w-full bg-slate-50">
@@ -80,9 +130,14 @@ const signinPage = () => {
           </div>
           <Form {...form}>
             <form
+<<<<<<< HEAD
               method="POST"
               onSubmit={form.handleSubmit(onSubmit)}
               className="flex flex-col w-3/4 space-y-6"
+=======
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="w-3/4 space-y-6"
+>>>>>>> f487309 (feat: Complete signup page)
             >
               <FormField
                 control={form.control}
@@ -117,6 +172,7 @@ const signinPage = () => {
                   </FormItem>
                 )}
               />
+<<<<<<< HEAD
               {otpSent ? (
                 <Dialog>
                   <DialogTrigger asChild>
@@ -197,6 +253,11 @@ const signinPage = () => {
                   </Link>
                 </span>
               </div>
+=======
+              <Button className="w-full" type="submit">
+                Submit
+              </Button>
+>>>>>>> f487309 (feat: Complete signup page)
             </form>
           </Form>
         </section>
@@ -204,4 +265,8 @@ const signinPage = () => {
     </main>
   )
 }
+<<<<<<< HEAD
 export default signinPage
+=======
+export default signupPage
+>>>>>>> f487309 (feat: Complete signup page)
