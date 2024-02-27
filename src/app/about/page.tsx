@@ -16,12 +16,12 @@ const page = () => {
       <div className="col-span-12 md:col-span-11 md:mx-20  mb-7 flex justify-center">
         <Card className="md:mt-60 mt-24">
           <CardHeader>
-            <CardTitle className="md:text-5xl  text-2xl font-bold text-center md:my-10">
+            <CardTitle className="md:text-5xl text-primary text-2xl font-bold text-center md:my-10">
               About us
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <CardDescription className="md:text-lg text-small md:mx-9 mx-2 text-black">
+            <CardDescription className="md:text-lg text-small text-primary md:mx-9 mx-2 text-black">
               Welcome to Custom-ed, a pioneering force reshaping the educational
               landscape for the contemporary world. Our inception was inspired
               by a fundamental observation: the conventional educational
@@ -57,7 +57,7 @@ const page = () => {
           <CardFooter></CardFooter>
         </Card>
       </div>
-      <div className="col-span-12 md:col-span-11 md:mx-20  mb-7 flex justify-center">
+      <div className="col-span-12 md:col-span-11 md:mx-20 text-primary  mb-7 flex justify-center">
         <Card>
           <CardHeader>
             <CardTitle className="md:text-3xl text-xl font-bold text-center my-10">
@@ -65,7 +65,7 @@ const page = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <CardDescription className="md:text-lg text-small md:mx-9 mx-2 text-black">
+            <CardDescription className="md:text-lg text-smalltext-primary md:mx-9 mx-2 text-black">
               At Custom-ed, we envision an educational landscape where every
               learner can thrive. We believe in harnessing the power of
               technology to create a personalized and inclusive learning
@@ -75,7 +75,7 @@ const page = () => {
           <CardFooter></CardFooter>
         </Card>
       </div>
-      <div className="col-span-12 md:col-span-12 md:mx-20  mb-7 flex justify-center">
+      <div className="col-span-12 md:col-span-12 md:mx-20 text-primary mb-7 flex justify-center">
         <Card>
           <CardHeader>
             <CardTitle className="md:text-3xl text-xl font-bold text-center my-10">
@@ -95,7 +95,7 @@ const page = () => {
           <CardFooter></CardFooter>
         </Card>
       </div>
-      <div className="col-span-12 md:col-span-12 md:mx-20  mb-7 flex justify-center">
+      <div className="col-span-12 md:col-span-12 md:mx-20 text-primary mb-7 flex justify-center">
         <Card>
           <CardHeader>
             <CardTitle className="md:text-3xl text-xl font-bold text-center my-10">
@@ -103,7 +103,7 @@ const page = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <CardDescription className="md:text-lg text-small md:mx-9 mx-2 text-black">
+            <CardDescription className="md:text-lg text-small text-primary md:mx-9 mx-2 text-black">
               Our approach is centered around adaptability, customization, and
               empowerment. By leveraging AI, we provide students with a dynamic
               learning path tailored to their individual needs and preferences.
@@ -114,7 +114,7 @@ const page = () => {
           <CardFooter></CardFooter>
         </Card>
       </div>
-      <div className="col-span-12 md:col-span-12 md:mx-20  mb-7 flex justify-center">
+      <div className="col-span-12 md:col-span-12 md:mx-20 text-primary mb-7 flex justify-center">
         <Card>
           <CardHeader>
             <CardTitle className="md:text-3xl text-xl font-bold text-center my-10">
@@ -122,7 +122,7 @@ const page = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <CardDescription className="md:text-lg text-small md:mx-9 mx-2 text-black">
+            <CardDescription className="md:text-lg text-small text-primary md:mx-9 mx-2 text-black">
               For students, our system provides a tailored learning experience
               that caters to their individual needs and preferences. By offering
               customized learning paths, we promote engagement and empower

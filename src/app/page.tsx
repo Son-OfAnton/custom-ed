@@ -25,7 +25,7 @@ import React from "react";
 export default function Home() {
   return (
     <>
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden text-primary">
         <div className="md:flex block h-screen w-screen md:justify-center justify-between items-center  md:bg-cover md:bg-center md:bg-no-repeat md:bg-[url(../../public/assets/background-home.svg)]">
           <div className="z-30 h-fill justify-between">
             <NavBar />
@@ -67,7 +67,7 @@ export default function Home() {
       </div>
       <div className="md:flex block md:justify-center items-center justify-between mb-40">
         <div className="md:grid md:grid-cols-12 md:gap-4 md:mt-20 mt-10 items-center justify-center">
-          <div className="col-span-12 md:col-span-6 mx-2 md:mb-0 mb-7 flex justify-center">
+          <div className="col-span-12 md:col-span-4 mx-2 md:mb-0 mb-2 flex justify-center ">
             <Card className="hover:scale-105 hover:z-10">
               <CardHeader>
                 <CardTitle className="text-2xl">
@@ -79,18 +79,74 @@ export default function Home() {
                   <Image
                     src={path}
                     alt="discovery"
-                    width={500}
-                    height={500}
+                    width={300}
+                    height={200}
                     className="md:object-cover object-cover"
                   />
                 </CardDescription>
               </CardContent>
-              <CardFooter>
-                Providing a personalized learning experience for every student.
-              </CardFooter>
+              
             </Card>
           </div>
-          <div className="col-span-12 md:col-span-6 mx-2 md:mb-0 mb-7 flex justify-center">
+          <div className="col-span-12 md:col-span-4 mx-2 md:mb-0 mb-7 flex justify-center">
+            <Card className="hover:scale-105 hover:z-10">
+              <CardHeader>
+                <CardTitle className="text-2xl">Classrooms</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>
+                  <Image
+                    src={filemanager}
+                    alt="File Manager"
+                    width={300}
+                    height={300}
+                    className="md:object-cover object-cover"
+                  />
+                </CardDescription>
+              </CardContent>
+              
+            </Card>
+          </div>
+          <div className="col-span-12 md:col-span-4 mx-2 md:mb-0 mb-7 flex justify-center">
+            <Card className="hover:scale-105 hover:z-10">
+              <CardHeader>
+                <CardTitle className="text-2xl">Forums</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>
+                  <Image
+                    src={forum}
+                    alt="Forum"
+                    width={300}
+                    height={300}
+                    className="md:object-cover object-cover"
+                  />
+                </CardDescription>
+              </CardContent>
+             
+            </Card>
+          </div>
+
+          <div className="col-span-12 md:col-span-4 mx-2 md:mb-0 mb-7 flex justify-center">
+            <Card className="hover:scale-105 hover:z-10">
+              <CardHeader>
+                <CardTitle className="text-2xl">Announcements</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>
+                  <Image
+                    src={announcement}
+                    alt="Announcements"
+                    width={300}
+                    height={300}
+                    className="md:object-cover object-cover"
+                  />
+                </CardDescription>
+              </CardContent>
+              
+            </Card>
+          </div>
+          <div className="col-span-12 md:col-span-4 mx-2 md:mb-0 mb-7 flex justify-center">
             <Card className="hover:scale-105 hover:z-10">
               <CardHeader>
                 <CardTitle className="text-2xl">
@@ -102,82 +158,16 @@ export default function Home() {
                   <Image
                     src={analytics}
                     alt="discovery"
-                    width={500}
-                    height={500}
+                    width={300}
+                    height={300}
                     className="md:object-cover object-cover"
                   />
                 </CardDescription>
               </CardContent>
-              <CardFooter>
-                Analytics pinpoint student weaknesses and strengths.
-              </CardFooter>
+              
             </Card>
           </div>
-          <div className="col-span-12 md:col-span-6 mx-2 md:mb-0 mb-7 flex justify-center">
-            <Card className="hover:scale-105 hover:z-10">
-              <CardHeader>
-                <CardTitle className="text-2xl">Forums</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription>
-                  <Image
-                    src={forum}
-                    alt="Forum"
-                    width={500}
-                    height={500}
-                    className="md:object-cover object-cover"
-                  />
-                </CardDescription>
-              </CardContent>
-              <CardFooter>
-                Engage in online discussions and collaborate with other
-                students.
-              </CardFooter>
-            </Card>
-          </div>
-          <div className="col-span-12 md:col-span-6 mx-2 md:mb-0 mb-7 flex justify-center">
-            <Card className="hover:scale-105 hover:z-10">
-              <CardHeader>
-                <CardTitle className="text-2xl">Classrooms</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription>
-                  <Image
-                    src={filemanager}
-                    alt="File Manager"
-                    width={500}
-                    height={500}
-                    className="md:object-cover object-cover"
-                  />
-                </CardDescription>
-              </CardContent>
-              <CardFooter>
-                Efficiently organize learning materials in dedicated classrooms.
-              </CardFooter>
-            </Card>
-          </div>
-          <div className="col-span-12 md:col-span-6 mx-2 md:mb-0 mb-7 flex justify-center">
-            <Card className="hover:scale-105 hover:z-10">
-              <CardHeader>
-                <CardTitle className="text-2xl">Announcements</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription>
-                  <Image
-                    src={announcement}
-                    alt="Announcements"
-                    width={500}
-                    height={500}
-                    className="md:object-cover object-cover"
-                  />
-                </CardDescription>
-              </CardContent>
-              <CardFooter>
-                Stay updated with important news and announcements.
-              </CardFooter>
-            </Card>
-          </div>
-          <div className="col-span-12 md:col-span-6 mx-2 md:mb-0 mb-7 flex justify-center">
+          <div className="col-span-12 md:col-span-4 mx-2 md:mb-0 mb-7 flex justify-center">
             <Card className="hover:scale-105 hover:z-10">
               <CardHeader>
                 <CardTitle className="text-2xl">Assessments</CardTitle>
@@ -187,15 +177,13 @@ export default function Home() {
                   <Image
                     src={assesments}
                     alt="Assessments"
-                    width={500}
-                    height={500}
+                    width={300}
+                    height={300}
                     className="md:object-cover object-cover"
                   />
                 </CardDescription>
               </CardContent>
-              <CardFooter>
-                Measure student progress with interactive assessments.
-              </CardFooter>
+              
             </Card>
           </div>
         </div>
