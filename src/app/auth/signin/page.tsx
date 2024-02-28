@@ -1,13 +1,6 @@
 "use client"
 
 import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -20,18 +13,16 @@ import {
 } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
-import { cn } from "@/lib/utils"
 import Link from "next/link"
 
-const formSchema = z
-  .object({
-    email: z
-      .string({ required_error: "Email is required" })
-      .email({ message: "Please enter a valid email format" }),
-    password: z
-      .string({ required_error: "Password is required" })
-      .min(8, { message: "Password must contain at least 8 characters" }),
-  })
+const formSchema = z.object({
+  email: z
+    .string({ required_error: "Email is required" })
+    .email({ message: "Please enter a valid email format" }),
+  password: z
+    .string({ required_error: "Password is required" })
+    .min(8, { message: "Password must contain at least 8 characters" }),
+})
 
 type FormType = z.infer<typeof formSchema>
 
@@ -49,17 +40,20 @@ const signupPage = () => {
       <div className="flex h-[80vh] w-[80vw] shadow-lg">
         <section className="hidden lg:flex lg:flex-col lg:justify-center lg:items-center gap-8 rounded-l-2xl w-1/2 bg-[#292929]">
           <h1 className="text-white text-3xl font-extrabold">
-            Begin Your Journey
+            Welcome to CustomEd
           </h1>
           <Image
-            src="/signup-illustration.svg"
-            width={300}
-            height={300}
+            src="/signin-illustration.svg"
+            width={400}
+            height={400}
             alt="Signup Illustration"
           />
-          <Link className="text-primary-foreground hover:underline" href="/">
+          <span className="text-primary-foreground">
             Don't have an account ?{" "}
-          </Link>
+            <Link className="hover:underline" href="/auth/signup">
+              Signup
+            </Link>
+          </span>
         </section>
 
         <section className="flex flex-col items-center justify-center rounded-r-2xl lg:w-1/2 w-full bg-slate-50">

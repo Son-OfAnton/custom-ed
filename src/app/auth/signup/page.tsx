@@ -173,7 +173,12 @@ const signupPage = () => {
             height={300}
             alt="Signup Illustration"
           />
-          <Link className="text-primary-foreground hover:underline" href="/">Already have an account ? </Link>
+          <span className="text-primary-foreground">
+            Already have an account ?{" "}
+            <Link className="hover:underline" href="/auth/signin">
+              Signin
+            </Link>
+          </span>
         </section>
       </div>
     </main>
