@@ -156,14 +156,26 @@ const signupPage = () => {
                   </FormItem>
                 )}
               />
-              <Button className="w-full" type="submit">
-                Submit
-              </Button>
+              <div className="flex flex-col gap-y-4 w-full">
+                <Button className="w-full" type="submit">
+                  Submit
+                </Button>
+
+                <span className="md:hidden text-primary text-center text-sm">
+                  Already have an account ?
+                  <Link
+                    href="/auth/signin"
+                    className="text-primary ml-2 underline"
+                  >
+                    Signin
+                  </Link>
+                </span>
+              </div>
             </form>
           </Form>
         </section>
 
-        <section className="hidden lg:flex lg:flex-col lg:justify-center lg:items-center gap-8 rounded-r-2xl w-1/2 bg-[#292929]">
+        <section className="hidden lg:flex lg:flex-col lg:justify-center lg:items-center gap-8 rounded-r-2xl w-1/2 bg-zinc-800">
           <h1 className="text-white text-3xl font-extrabold">
             Begin Your Journey
           </h1>
