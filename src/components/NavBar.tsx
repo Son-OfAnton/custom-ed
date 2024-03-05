@@ -1,7 +1,5 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-// import { Menu, X } from "lucide-react";
 import { HamburgerMenuIcon, Cross1Icon } from "@radix-ui/react-icons"
 import Link from "next/link"
 import React, { useState, useEffect } from "react"

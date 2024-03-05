@@ -25,18 +25,21 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"
+import { PasswordInput } from "@/components/passwordInput"
 
-const formSchema = z.object({
-  newPassword: z
-    .string({ required_error: "Password is required" })
-    .min(8, { message: "Password must contain at least 8 characters" }),
-  confirmPassword: z
-    .string({ required_error: "Password is required" })
-    .min(8, { message: "Password must contain at least 8 characters" }),
-}).refine((data) => data.newPassword === data.confirmPassword, {
-  path: ["confirmPassword"],
-  message: "Passwords do not match",
-})
+const formSchema = z
+  .object({
+    newPassword: z
+      .string({ required_error: "Password is required" })
+      .min(8, { message: "Password must contain at least 8 characters" }),
+    confirmPassword: z
+      .string({ required_error: "Password is required" })
+      .min(8, { message: "Password must contain at least 8 characters" }),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    path: ["confirmPassword"],
+    message: "Passwords do not match",
+  })
 
 type FormType = z.infer<typeof formSchema>
 
@@ -80,10 +83,9 @@ const forgotPassworgPage = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input
+                      <PasswordInput
                         className="font-semibold text-primary"
-                        type="password"
-                        placeholder="New password"
+                        placeholder="New Password"
                         {...field}
                       />
                     </FormControl>
@@ -97,10 +99,9 @@ const forgotPassworgPage = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input
+                      <PasswordInput
                         className="font-semibold text-primary"
-                        type="password"
-                        placeholder="Confirm password"
+                        placeholder="Confirm Password"
                         {...field}
                       />
                     </FormControl>

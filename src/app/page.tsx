@@ -1,15 +1,14 @@
-"use client";
+"use client"
 
-import analytics from "../../public/assets/analytics.svg";
-import backgroundImage from "../../public/assets/background-home.svg";
-import filemanager from "../../public/assets/file_manager.svg";
-import landingPage from "../../public/assets/landing-page.svg";
-import announcement from "../../public/assets/news.svg";
-import forum from "../../public/assets/online_discussion.svg";
-import path from "../../public/assets/personalized path.svg";
-import assesments from "../../public/assets/questions.svg";
-import NavBar from "@/components/NavBar";
-import { Button } from "@/components/ui/button";
+import analytics from "../../public/assets/analytics.svg"
+import filemanager from "../../public/assets/file_manager.svg"
+import landingPage from "../../public/assets/landing-page.svg"
+import announcement from "../../public/assets/news.svg"
+import forum from "../../public/assets/online_discussion.svg"
+import path from "../../public/assets/personalized path.svg"
+import assesments from "../../public/assets/questions.svg"
+import NavBar from "@/components/NavBar"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -17,10 +16,10 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import Image from "next/image";
-import Link from "next/link";
-import React from "react";
+} from "@/components/ui/card"
+import Image from "next/image"
+import Link from "next/link"
+import React from "react"
 
 export default function Home() {
   return (
@@ -65,124 +64,118 @@ export default function Home() {
       <div className="block md:mb-10 md:mt-40 mt-1 w-full">
         <h1 className="text-4xl font-bold text-center">Our Services</h1>
       </div>
-    <div className="md:flex block md:justify-center items-center justify-between mb-40">
-  <div className="md:grid md:grid-cols-12 md:gap-4 md:mt-20 mt-10 items-center justify-center">
-  <div className="col-span-12 md:col-span-4 mx-2 md:mb-4 mb-10 flex justify-center w-full">
-    <Card className="hover:scale-105 hover:z-10 ">
-      <CardHeader>
-        <CardTitle className="text-xl">
-          Adaptive Learning
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <CardDescription>
-          <Image
-            src={path}
-            alt="discovery"
-            width={0}
-            height={0}
-            className="md:object-cover object-cover w-full h-full"
-          />
-        </CardDescription>
-      </CardContent>
-    </Card>
-  </div>
-  <div className="col-span-12 md:col-span-4 mx-2 md:mb-4 mb-10 flex justify-center w-full">
-    <Card className="hover:scale-105 hover:z-10">
-      <CardHeader>
-        <CardTitle className="text-xl">Classrooms</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <CardDescription>
-          <Image
-            src={filemanager}
-            alt="File Manager"
-            width={0}
-            height={0}
-            className="md:object-cover object-cover w-full h-full"
-          />
-        </CardDescription>
-      </CardContent>
-    </Card>
-  </div>
-  <div className="col-span-12 md:col-span-4 mx-2 md:mb-4 mb-10 flex justify-center w-full">
-    <Card className="hover:scale-105 hover:z-10">
-      <CardHeader>
-        <CardTitle className="text-xl">Forums</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <CardDescription>
-          <Image
-            src={forum}
-            alt="Forum"
-            width={0}
-            height={0}
-            className="md:object-cover object-cover w-full h-full"
-          />
-        </CardDescription>
-      </CardContent>
-    </Card>
-  </div>
-  <div className="col-span-12 md:col-span-4 mx-2 md:mb-4 mb-10 flex justify-center w-full">
-    <Card className="hover:scale-105 hover:z-10">
-      <CardHeader>
-        <CardTitle className="text-xl">Announcements</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <CardDescription>
-          <Image
-            src={announcement}
-            alt="Announcements"
-            width={0}
-            height={0}
-            className="md:object-cover object-cover w-full h-full"
-          />
-        </CardDescription>
-      </CardContent>
-    </Card>
-  </div>
-  <div className="col-span-12 md:col-span-4 mx-2 md:mb-4 mb-10 flex justify-center w-full">
-    <Card className="hover:scale-105 hover:z-10">
-      <CardHeader>
-        <CardTitle className="text-xl">Detailed Insight</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <CardDescription>
-          <Image
-            src={analytics}
-            alt="discovery"
-            width={0}
-            height={0}
-            className="md:object-cover object-cover w-full h-full"
-          />
-        </CardDescription>
-      </CardContent>
-    </Card>
-  </div>
-  <div className="col-span-12 md:col-span-4 mx-2 md:mb-4 mb-10 flex justify-center w-full">
-    <Card className="hover:scale-105 hover:z-10">
-      <CardHeader>
-        <CardTitle className="text-xl">Assessments</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <CardDescription>
-          <Image
-            src={assesments}
-            alt="Assessments"
-            width={0}
-            height={0}
-            className="md:object-cover object-cover w-full h-full"
-          />
-        </CardDescription>
-      </CardContent>
-    </Card>
-  </div>
-</div>
-
-</div>
-
-
-      
+      <div className="md:flex block md:justify-center items-center justify-between mb-40">
+        <div className="md:grid md:grid-cols-12 md:gap-4 md:mt-20 mt-10 items-center justify-center">
+          <div className="col-span-12 md:col-span-4 mx-2 md:mb-4 mb-10 flex justify-center w-full">
+            <Card className="hover:scale-105 hover:z-10 ">
+              <CardHeader>
+                <CardTitle className="text-xl">Adaptive Learning</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>
+                  <Image
+                    src={path}
+                    alt="discovery"
+                    width={0}
+                    height={0}
+                    className="md:object-cover object-cover w-full h-full"
+                  />
+                </CardDescription>
+              </CardContent>
+            </Card>
+          </div>
+          <div className="col-span-12 md:col-span-4 mx-2 md:mb-4 mb-10 flex justify-center w-full">
+            <Card className="hover:scale-105 hover:z-10">
+              <CardHeader>
+                <CardTitle className="text-xl">Classrooms</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>
+                  <Image
+                    src={filemanager}
+                    alt="File Manager"
+                    width={0}
+                    height={0}
+                    className="md:object-cover object-cover w-full h-full"
+                  />
+                </CardDescription>
+              </CardContent>
+            </Card>
+          </div>
+          <div className="col-span-12 md:col-span-4 mx-2 md:mb-4 mb-10 flex justify-center w-full">
+            <Card className="hover:scale-105 hover:z-10">
+              <CardHeader>
+                <CardTitle className="text-xl">Forums</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>
+                  <Image
+                    src={forum}
+                    alt="Forum"
+                    width={0}
+                    height={0}
+                    className="md:object-cover object-cover w-full h-full"
+                  />
+                </CardDescription>
+              </CardContent>
+            </Card>
+          </div>
+          <div className="col-span-12 md:col-span-4 mx-2 md:mb-4 mb-10 flex justify-center w-full">
+            <Card className="hover:scale-105 hover:z-10">
+              <CardHeader>
+                <CardTitle className="text-xl">Announcements</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>
+                  <Image
+                    src={announcement}
+                    alt="Announcements"
+                    width={0}
+                    height={0}
+                    className="md:object-cover object-cover w-full h-full"
+                  />
+                </CardDescription>
+              </CardContent>
+            </Card>
+          </div>
+          <div className="col-span-12 md:col-span-4 mx-2 md:mb-4 mb-10 flex justify-center w-full">
+            <Card className="hover:scale-105 hover:z-10">
+              <CardHeader>
+                <CardTitle className="text-xl">Detailed Insight</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>
+                  <Image
+                    src={analytics}
+                    alt="discovery"
+                    width={0}
+                    height={0}
+                    className="md:object-cover object-cover w-full h-full"
+                  />
+                </CardDescription>
+              </CardContent>
+            </Card>
+          </div>
+          <div className="col-span-12 md:col-span-4 mx-2 md:mb-4 mb-10 flex justify-center w-full">
+            <Card className="hover:scale-105 hover:z-10">
+              <CardHeader>
+                <CardTitle className="text-xl">Assessments</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>
+                  <Image
+                    src={assesments}
+                    alt="Assessments"
+                    width={0}
+                    height={0}
+                    className="md:object-cover object-cover w-full h-full"
+                  />
+                </CardDescription>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
     </>
-  );
+  )
 }

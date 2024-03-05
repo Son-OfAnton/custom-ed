@@ -22,6 +22,7 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
+import { PasswordInput } from "@/components/passwordInput"
 
 const formSchema = z
   .object({
@@ -89,9 +90,8 @@ const signupPage = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input
+                      <PasswordInput
                         className="font-semibold text-primary"
-                        type="password"
                         placeholder="Password"
                         {...field}
                       />
@@ -106,9 +106,8 @@ const signupPage = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input
+                      <PasswordInput
                         className="font-semibold text-primary"
-                        type="password"
                         placeholder="Confirm Password"
                         {...field}
                       />
@@ -156,7 +155,6 @@ const signupPage = () => {
                   </FormItem>
                 )}
               />
-<<<<<<< HEAD
               <div className="flex flex-col gap-y-4 w-full">
                 <Button className="w-full" type="submit">
                   Submit
@@ -172,20 +170,11 @@ const signupPage = () => {
                   </Link>
                 </span>
               </div>
-=======
-              <Button className="w-full" type="submit">
-                Submit
-              </Button>
->>>>>>> f487309 (feat: Complete signup page)
             </form>
           </Form>
         </section>
 
-<<<<<<< HEAD
         <section className="hidden lg:flex lg:flex-col lg:justify-center lg:items-center gap-8 rounded-r-2xl w-1/2 bg-zinc-800">
-=======
-        <section className="hidden lg:flex lg:flex-col lg:justify-center lg:items-center gap-8 rounded-r-2xl w-1/2 bg-[#292929]">
->>>>>>> f487309 (feat: Complete signup page)
           <h1 className="text-white text-3xl font-extrabold">
             Begin Your Journey
           </h1>
@@ -195,16 +184,12 @@ const signupPage = () => {
             height={300}
             alt="Signup Illustration"
           />
-<<<<<<< HEAD
           <span className="text-primary-foreground">
             Already have an account ?{" "}
             <Link className="hover:underline" href="/auth/signin">
               Signin
             </Link>
           </span>
-=======
-          <Link className="text-primary-foreground hover:underline" href="/">Already have an account ? </Link>
->>>>>>> f487309 (feat: Complete signup page)
         </section>
       </div>
     </main>
