@@ -1,33 +1,32 @@
-"use client";
+"use client"
 
-import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
-import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import { HamburgerMenuIcon, Cross1Icon } from "@radix-ui/react-icons"
+import Link from "next/link"
+import React, { useState, useEffect } from "react"
 
 const NavBar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 0) {
-        setIsScrolled(true);
+        setIsScrolled(true)
       } else {
-        setIsScrolled(false);
+        setIsScrolled(false)
       }
-    };
+    }
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll)
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+      window.removeEventListener("scroll", handleScroll)
+    }
+  }, [])
 
   const toggle = () => {
-    setIsOpen(!isOpen);
-  };
+    setIsOpen(!isOpen)
+  }
 
   return (
     <nav
@@ -59,7 +58,11 @@ const NavBar = () => {
 
         <div className="md:hidden flex items-center mr-5">
           <button onClick={toggle}>
-            {isOpen ? <X size={30} /> : <Menu size={30} />}
+            {isOpen ? (
+              <Cross1Icon width={30} height={30} />
+            ) : (
+              <HamburgerMenuIcon width={30} height={30} />
+            )}
           </button>
         </div>
 
@@ -67,7 +70,6 @@ const NavBar = () => {
           <div className="md:hidden absolute top-full left-0 w-full bg-white z-50">
             <div className="flex flex-col items-end mr-7 py-8">
               <ul className="flex flex-col items-end">
-          
                 <li className="my-3 relative">
                   <Link href="/" className="bg-hover-blue hover:text-blue-500">
                     Login
@@ -78,14 +80,13 @@ const NavBar = () => {
                     Register
                   </Link>
                 </li>
-        
               </ul>
             </div>
           </div>
         )}
       </div>
     </nav>
-  );
-};
+  )
+}
 
-export default NavBar;
+export default NavBar
