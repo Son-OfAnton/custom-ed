@@ -37,7 +37,7 @@ const NavBar = () => {
       }`}
     >
       <div className="w-full flex justify-between flex-wrap">
-        <div className="text-2xl font-bold md:ml-20 ml-3">Custom-ed</div>
+        <div className="text-2xl font-bold md:ml-20 ml-3">CustomEd</div>
 
         <div className="hidden md:flex flex-1 justify-end">
           <div className="flex items-center">
