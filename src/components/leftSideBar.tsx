@@ -1,121 +1,137 @@
 "use client";
-import { LogOut, Settings } from "lucide-react";
-import { Menu, X } from "lucide-react";
+
+import { AdminSideBarItems } from "../../constants/AdminSideBarItems";
+import { StudentSideBarItems } from "../../constants/StudentSideBarItems";
+import { TeacherSideBarItems } from "../../constants/TeacherSideBarItems";
+import { SideBarItem } from "@/types/SideNavItems";
+import classNames from "classnames";
+import { LogOut, Settings, ListCollapse, Menu, X } from "lucide-react";
 import Link from "next/link";
-import React from "react";
-import { useState } from "react";
-
-
-interface Item {
-  text: string;
-  icon: React.ReactNode;
-  path: string;
-}
+import { usePathname } from "next/navigation";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 
 interface Props {
-  items: Item[];
-  currentPage: string;
+  role: string;
 }
 
-const SideBar = ({ items, currentPage }: Props) => {
+const LeftSideBar: React.FC<Props> = ({ role }: Props) => {
+  let items: SideBarItem[] = [];
+  if (role === "teacher") {
+    items = TeacherSideBarItems;
+  } else if (role === "student") {
+    items = StudentSideBarItems;
+  } else {
+    items = AdminSideBarItems;
+  }
+
   const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
   const toggle = () => {
     setIsOpen(!isOpen);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div>
-      <div className="hidden md:flex md:flex-col items-center w-72 shadow-md justify-around h-screen">
-        <div className="text-2xl font-bold mx-auto">CustomEd</div>
-        <div>
-          {items.map((item) => (
-            <ul key={item.text}>
-              <li className="mx-auto">
-                <Link href={item.path} passHref>
-                  <span
-                    className={`flex items-center mb-20 hover:text-blue-500${
-                      currentPage === item.text ? "active-item" : ""
-                    }`}
-                    style={{
-                      width: "100%",
-                      padding: "5px 72px",
-                      background: `${
-                        currentPage === item.text
-                          ? "linear-gradient(to bottom, #FFFFFF,  #C6D6FF)"
-                          : "none"
-                      }`,
-                      
-                    }}
-                  >
-                    <span className="mr-7">{item.icon}</span>
-                    {item.text}
-                  </span>
-                </Link>
-              </li>
-            </ul>
-          ))}
+    <>
+      <div className="md:w-60 bg-white h-screen flex-1 fixed justify-between  shadow-md hidden md:flex">
+        <div className="flex flex-col  justify-between w-full">
+          <div>
+          <Link
+            href="/"
+            className="flex flex-row mx-6 items-center justify-center md:justify-start md:px-6   h-12 w-full"
+          >
+            <span className="font-bold text-3xl hidden md:flex mt-20">CustomEd</span>
+          </Link>
+
+          <div className="flex flex-col space-y-10 justify-center mt-20 py-10 md:px-6">
+            {items.map((item, idx) => {
+              return <MenuItem key={idx} item={item} />;
+            })}
+          </div>
+          </div>
+        <div className="flex flex-col space-y-10 justify-center mt-20 mx-6 py-10 md:px-6">
+          <div className="flex items-center  p-2 rounded-lg cursor-pointer hover:bg-zinc-100">
+              <LogOut size={24} className="mr-4"/>
+              <span className= "font-semibold text-lg flex">Logout</span>
+          </div>
+          <div className="flex items-center  p-2 rounded-lg cursor-pointer hover:bg-zinc-100">
+              <Settings size={24} className="mr-4"/>
+              <span className= "font-semibold text-lg flex">Settings</span>
+          </div>
         </div>
-        <div className="mx-auto">
-          <div className="flex items-center mb-14 hover:text-blue-500">
-            <LogOut size={30} className="mr-7" />
-            <Link href="/">Logout</Link>
-          </div>
-          <div className="flex items-center hover:text-blue-500">
-            <Settings size={30} className="mr-7" />
-            <Link href="/">Setting</Link>
-          </div>
         </div>
       </div>
-       <div className="md:hidden flex items-center ml-5 mt-5">
-          <button onClick={toggle}>
-            {isOpen ? <X size={30} className="bg" /> : <Menu size={30} />}
-          </button>
-        </div>
-      {isOpen && (
-        <div className="md:hidden absolute left-0 bg-white z-50">
-      <div className="md:hidden flex flex-col items-center w-72 shadow-md justify-around h-screen">
-        <div className="text-2xl font-bold mx-auto">CustomEd</div>
-        <div>
-          {items.map((item) => (
-            <ul key={item.text}>
-              <li className="mx-auto">
-                <Link href={item.path} passHref>
-                  <span
-                    className={`flex items-center mb-20 hover:text-blue-500${
-                      currentPage === item.text ? "active-item" : ""
-                    }`}
-                    style={{
-                      width: "100%",
-                      padding: "5px 72px",
-                      background: `${
-                        currentPage === item.text
-                          ? "linear-gradient(to bottom, #FFFFFF,  #C6D6FF)"
-                          : "none"
-                      }`,
-                      
-                    }}
-                  >
-                    <span className="mr-7">{item.icon}</span>
-                    {item.text}
-                  </span>
-                </Link>
-              </li>
-            </ul>
-          ))}
-        </div>
-        <div className="mx-auto">
-          <div className="flex items-center mb-14 hover:text-blue-500">
-            <LogOut size={30} className="mr-7" />
-            <Link href="/">Logout</Link>
+      <div>
+        {!isOpen && (
+          <div className="md:hidden fixed top-4 left-4 z-50">
+            <Menu size={32} className="cursor-pointer bg-white shadow-sm" onClick={toggle} />
           </div>
-          <div className="flex items-center hover:text-blue-500">
-            <Settings size={30} className="mr-7" />
-            <Link href="/">Setting</Link>
+        )}
+        {isOpen && (
+          <div
+            className="md:hidden fixed top-0 left-0 w-10/12 h-full z-50 bg-white justify-between"
+            ref={menuRef}
+          >
+            <div className="flex flex-col  justify-between w-full h-full">
+            <div>
+            <div className="flex justify-between items-center p-4 mt-8">
+              <div className="text-lg font-bold mx-6">CustomEd</div>
+              <X size={24} className="cursor-pointer" onClick={toggle} />
+            </div>
+            <div className="flex flex-col space-y-10 justify-center mt-10 py-10 md:px-6 mx-6">
+              {items.map((item, idx) => {
+                return <MenuItem key={idx} item={item} />;
+              })}
+            </div>
+            </div>
+            <div className="flex flex-col space-y-10 justify-end my-20 mx-12  md:px-6">
+          <div className="flex items-center p-2 rounded-lg cursor-pointer hover:bg-zinc-100">
+              <LogOut size={24} className="mr-4"/>
+              <span className= "font-semibold text-lg">Logout</span>
+          </div>
+          <div className="flex items-center p-2 rounded-lg  cursor-pointer hover:bg-zinc-100">
+              <Settings size={24} className="mr-4"/>
+              <span className= "font-semibold text-lg flex">Settings</span>
           </div>
         </div>
+          </div>
+          </div>
+        )}
       </div>
-      </div>)}
-    </div>
+    </>
   );
 };
 
-export default SideBar;
+export default LeftSideBar;
+
+const MenuItem = ({ item }: { item: SideBarItem }) => {
+  const pathname = usePathname();
+
+  return (
+    <div className="flex justify-between items-center w-full px-4">
+       <Link
+          href={item.path}
+          className={`flex flex-row space-x-4 items-center py-2 pl-2 pr-10 rounded-lg hover:bg-zinc-100 ${
+            item.path === pathname ? 'bg-zinc-100' : ''
+          }`}
+        >
+          {item.icon}
+          <span className="font-semibold text-xl flex">{item.text}</span>
+        </Link>
+    </div>
+  );
+};
