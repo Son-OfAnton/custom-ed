@@ -7,7 +7,7 @@ export const TeacherSideBarItems: SideBarItem[] = [
     id: "1",
     text: "Classroom",
     icon: <School size={30} />,
-    path: "/teacher/classroom/listOfClassrooms",
+    path: "/teacher/classroom/classroom-list",
   },
   {
     id: "2",

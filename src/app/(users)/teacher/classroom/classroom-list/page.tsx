@@ -1,7 +1,7 @@
 "use client";
 
 import LeftSideBar from "@/components/LeftSideBar";
-import SearchAndBell from "@/components/searchAndBell";
+import SearchAndBell from "@/components/SearchAndBell";
 import { Button } from "@/components/ui/button";
 import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { School, User, MessagesSquare, Users, Trash, Pencil } from "lucide-react";

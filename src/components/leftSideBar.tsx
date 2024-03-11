@@ -1,10 +1,9 @@
 "use client";
 
-import { AdminSideBarItems } from "../../constants/AdminSideBarItems";
-import { StudentSideBarItems } from "../../constants/StudentSideBarItems";
-import { TeacherSideBarItems } from "../../constants/TeacherSideBarItems";
+import { AdminSideBarItems } from "../constants/AdminSideBarItems";
+import { StudentSideBarItems } from "../constants/StudentSideBarItems";
+import { TeacherSideBarItems } from "../constants/TeacherSideBarItems";
 import { SideBarItem } from "@/types/SideNavItems";
-import classNames from "classnames";
 import { LogOut, Settings, ListCollapse, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
