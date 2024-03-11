@@ -1,16 +1,7 @@
-"use client"
+"use client";
 
-import { Input } from "@/components/ui/input"
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form"
+import { PasswordInput } from "@/components/PasswordInput";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -19,14 +10,23 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Label } from "@/components/ui/label"
-import { Button } from "@/components/ui/button"
-import Image from "next/image"
-import Link from "next/link"
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { PasswordInput } from "@/components/passwordInput"
+} from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 const formSchema = z.object({
   email: z
@@ -35,21 +35,21 @@ const formSchema = z.object({
   password: z
     .string({ required_error: "Password is required" })
     .min(8, { message: "Password must contain at least 8 characters" }),
-})
+});
 
-type FormType = z.infer<typeof formSchema>
+type FormType = z.infer<typeof formSchema>;
 
 const signinPage = () => {
   const form = useForm<FormType>({
     resolver: zodResolver(formSchema),
-  })
+  });
 
   const onSubmit = (values: FormType) => {
-    console.log(values)
-  }
+    console.log(values);
+  };
 
-  const router = useRouter()
-  const [otpSent, setOtpSent] = useState(false)
+  const router = useRouter();
+  const [otpSent, setOtpSent] = useState(false);
 
   return (
     <main className="flex h-screen w-screen justify-center items-center bg-[url(/signup-bg.jpg)]">
@@ -199,6 +199,6 @@ const signinPage = () => {
         </section>
       </div>
     </main>
-  )
-}
-export default signinPage
+  );
+};
+export default signinPage;

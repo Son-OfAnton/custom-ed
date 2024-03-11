@@ -1,16 +1,7 @@
-"use client"
+"use client";
 
-import { Input } from "@/components/ui/input"
-import { tuple, z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form"
+import { PasswordInput } from "@/components/PasswordInput";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -19,13 +10,22 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Label } from "@/components/ui/label"
-import { Button } from "@/components/ui/button"
-import Image from "next/image"
-import Link from "next/link"
-import { useState } from "react"
-import { PasswordInput } from "@/components/passwordInput"
+} from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { tuple, z } from "zod";
 
 const formSchema = z
   .object({
@@ -39,18 +39,18 @@ const formSchema = z
   .refine((data) => data.newPassword === data.confirmPassword, {
     path: ["confirmPassword"],
     message: "Passwords do not match",
-  })
+  });
 
-type FormType = z.infer<typeof formSchema>
+type FormType = z.infer<typeof formSchema>;
 
 const forgotPassworgPage = () => {
   const form = useForm<FormType>({
     resolver: zodResolver(formSchema),
-  })
+  });
 
   const onSubmit = (values: FormType) => {
-    console.log(values)
-  }
+    console.log(values);
+  };
 
   return (
     <main className="flex h-screen w-screen justify-center items-center bg-[url(/signup-bg.jpg)]">
@@ -119,6 +119,6 @@ const forgotPassworgPage = () => {
         </section>
       </div>
     </main>
-  )
-}
-export default forgotPassworgPage
+  );
+};
+export default forgotPassworgPage;

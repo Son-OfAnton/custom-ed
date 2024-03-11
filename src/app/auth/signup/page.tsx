@@ -1,28 +1,28 @@
-"use client"
+"use client";
 
-import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { PasswordInput } from "@/components/PasswordInput";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from "@/components/ui/form"
-import { Button } from "@/components/ui/button"
-import Image from "next/image"
-import { cn } from "@/lib/utils"
-import Link from "next/link"
-import { PasswordInput } from "@/components/passwordInput"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
+import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 const formSchema = z
   .object({
@@ -40,18 +40,18 @@ const formSchema = z
   .refine((data) => data.password === data.confirmPassword, {
     path: ["confirmPassword"],
     message: "Passwords do not match",
-  })
+  });
 
-type FormType = z.infer<typeof formSchema>
+type FormType = z.infer<typeof formSchema>;
 
 const signupPage = () => {
   const form = useForm<FormType>({
     resolver: zodResolver(formSchema),
-  })
+  });
 
   const onSubmit = (values: FormType) => {
-    console.log(values)
-  }
+    console.log(values);
+  };
 
   return (
     <main className="flex h-screen w-screen justify-center items-center bg-[url(/signup-bg.jpg)]">
@@ -193,6 +193,6 @@ const signupPage = () => {
         </section>
       </div>
     </main>
-  )
-}
-export default signupPage
+  );
+};
+export default signupPage;
