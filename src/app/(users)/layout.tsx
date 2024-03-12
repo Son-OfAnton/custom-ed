@@ -1,19 +1,19 @@
-import LeftSidebar from "@/components/LeftSideBar";
-import React from 'react';
+import React from 'react'
 
+import LeftSidebar from '@/components/LeftSideBar'
 
 interface LayoutProps {
-  role: string;
-  children: React.ReactNode;
+	role: string
+	children: React.ReactNode
 }
 
 const Layout: React.FC<LayoutProps> = ({ role, children }) => {
-    return (
-        <div className="layout">
-            <LeftSidebar role={role} />
-            <div className="content">{children}</div>
-        </div>
-    );
-};
+	return (
+		<div className='layout'>
+			<LeftSidebar role={role} />
+			<div className='content'>{children}</div>
+		</div>
+	)
+}
 
-export default Layout;
+export default Layout
