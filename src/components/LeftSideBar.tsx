@@ -7,6 +7,8 @@ import { ListCollapse, LogOut, Menu, Settings, X } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
+import { cn } from '@/lib/utils'
+
 import { AdminSideBarItems } from '../constants/AdminSideBarItems'
 import { StudentSideBarItems } from '../constants/StudentSideBarItems'
 import { TeacherSideBarItems } from '../constants/TeacherSideBarItems'
@@ -106,11 +108,11 @@ const LeftSideBar: React.FC<Props> = ({ role }: Props) => {
 								</div>
 							</div>
 							<div className='flex flex-col space-y-10 justify-end my-20 mx-12  md:px-6'>
-								<div className='flex items-center p-2 rounded-lg cursor-pointer hover:bg-zinc-100'>
+								<div className='flex items-center p-2 cursor-pointer hover:bg-zinc-100 hover:bg-primary hover:text-primary-foreground  py-2 pl-2 rounded-lg'>
 									<LogOut size={24} className='mr-4' />
 									<span className='font-semibold text-lg'>Logout</span>
 								</div>
-								<div className='flex items-center p-2 rounded-lg  cursor-pointer hover:bg-zinc-100'>
+								<div className='flex items-center p-2 cursor-pointer hover:bg-zinc-100 hover:bg-primary hover:text-primary-foreground  py-2 pl-2 rounded-lg'>
 									<Settings size={24} className='mr-4' />
 									<span className='font-semibold text-lg flex'>Settings</span>
 								</div>
@@ -132,9 +134,12 @@ const MenuItem = ({ item }: { item: SideBarItem }) => {
 		<div className='flex justify-between items-center w-full px-4'>
 			<Link
 				href={item.path}
-				className={`flex flex-row space-x-4 items-center py-2 pl-2 pr-10 rounded-lg hover:bg-zinc-100 ${
-					item.path === pathname ? 'bg-zinc-100' : ''
-				}`}
+				className={cn(
+					'flex flex-row space-x-4 items-center py-2 pl-2 pr-10 rounded-lg hover:bg-primary hover:text-primary-foreground',
+					{
+						'bg-primary text-primary-foreground': item.path === pathname,
+					},
+				)}
 			>
 				{item.icon}
 				<span className='font-semibold text-xl flex'>{item.text}</span>

@@ -1,15 +1,17 @@
 import React from 'react'
 
 import LeftSidebar from '@/components/LeftSideBar'
+import RightSideBar from '@/components/RightSideBar'
 
 interface LayoutProps {
 	role: string
 	children: React.ReactNode
 }
 
-const Layout: React.FC<LayoutProps> = ({ role, children }) => {
+const Layout: React.FC<LayoutProps> = ({ role = 'teacher', children }) => {
 	return (
 		<div className='layout'>
+			<RightSideBar role={role} classname='dsa' />
 			<LeftSidebar role={role} />
 			<div className='content'>{children}</div>
 		</div>
