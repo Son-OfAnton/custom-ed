@@ -51,7 +51,7 @@ const LeftSideBar: React.FC<Props> = ({ role }: Props) => {
 	return (
 		<>
 			<div className='md:w-60 bg-white h-screen flex-1 fixed justify-between  shadow-md hidden md:flex'>
-				<div className='flex flex-col  justify-between w-full'>
+				<div className='flex flex-col  justify-between h-full w-full'>
 					<div>
 						<Link
 							href='/'
@@ -62,18 +62,18 @@ const LeftSideBar: React.FC<Props> = ({ role }: Props) => {
 							</span>
 						</Link>
 
-						<div className='flex flex-col space-y-10 justify-center mt-20 py-10 md:px-6'>
+						<div className='flex flex-col space-y-7 xl:space-y-10  justify-center mt-20 py-10 md:px-6'>
 							{items.map((item, idx) => {
 								return <MenuItem key={idx} item={item} />
 							})}
 						</div>
 					</div>
-					<div className='flex flex-col space-y-10 justify-center mt-20 mx-6 py-10 md:px-6'>
-						<div className='flex items-center  p-2 rounded-lg cursor-pointer hover:bg-zinc-100'>
+					<div className='flex flex-col space-y-7 xl:space-y-10 justify-center md:px-6 ml-4 mb-6'>
+						<div className='flex items-center  p-2 rounded-lg cursor-pointer hover:bg-primary hover:text-primary-foreground'>
 							<LogOut size={24} className='mr-4' />
 							<span className='font-semibold text-lg flex'>Logout</span>
 						</div>
-						<div className='flex items-center  p-2 rounded-lg cursor-pointer hover:bg-zinc-100'>
+						<div className='flex items-center  p-2 rounded-lg cursor-pointer hover:bg-primary hover:text-primary-foreground '>
 							<Settings size={24} className='mr-4' />
 							<span className='font-semibold text-lg flex'>Settings</span>
 						</div>
