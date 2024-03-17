@@ -12,7 +12,6 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 
-import LeftSideBar from '@/components/LeftSideBar'
 import SearchAndBell from '@/components/SearchAndBell'
 import { Button } from '@/components/ui/button'
 import { Card, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
@@ -91,7 +90,7 @@ const ListOfClassroomPage = () => {
 				</div>
 				<div className='ml-8 mt-10 block'>
 					<Button>
-						<Link href='/teacher/classroom/createClassroom'>
+						<Link href='/teacher/classroom/create-classroom'>
 							Create Classroom
 						</Link>
 					</Button>
