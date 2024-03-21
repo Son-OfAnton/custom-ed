@@ -1,5 +1,5 @@
 export interface profileFieldItems {
-    icon: React.ReactNode, 
-    text: string, 
-    value: string
+	icon: React.ReactNode
+	text: string
+	value: string
 }
