@@ -21,7 +21,7 @@ export const TeacherSideBarItems: SideBarItem[] = [
 		id: '2',
 		text: 'Profile',
 		icon: <User size={30} />,
-		path: '/',
+		path: '/teacher/profile',
 	},
 	{
 		id: '3',
