@@ -14,7 +14,7 @@ const ScoreProfile = () => {
 					</Avatar>
 					<span>Henon Solomon</span>
 				</div>
-				<div>20/20</div>
+				<div className='2xl:text-md text-sm'>20/20</div>
 			</CardContent>
 		</Card>
 	)

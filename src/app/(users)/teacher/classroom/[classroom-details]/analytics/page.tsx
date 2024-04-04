@@ -2,39 +2,24 @@
 
 import React from 'react'
 
-import { BarChart, CategoryBar, Color } from '@tremor/react'
 import { Hash } from 'lucide-react'
+import { CircularProgressbar } from 'react-circular-progressbar'
 
-import GradientBar from '@/components/GradientBar'
+import 'react-circular-progressbar/dist/styles.css'
+
+import ProgressBar from '@ramonak/react-progress-bar'
+import LineChartComponent from '@/components/LineChartComponent'
 import ScoreProfile from '@/components/ScoreProfile'
 import {
 	Card,
 	CardContent,
-	CardDescription,
-	CardFooter,
 	CardHeader,
 	CardTitle,
 } from '@/components/ui/card'
 
-const barData = [
-	{
-		name: 'Min',
-		'Stack and queue': 2,
-	},
-	{
-		name: 'Avg',
-		'Stack and queue': 10,
-	},
-	{
-		name: 'Max',
-		'Stack and queue': 15,
-	},
-]
+const percentage = 66
 
-const dataFormatter = (number: number) =>
-	Intl.NumberFormat('us').format(number).toString()
-
-const page = () => {
+export default function Page() {
 	return (
 		<div>
 			<div className='flex md:ml-40 lg:ml-0 lg:w-11/12 xl:w-full text-3xl justify-center'>
@@ -43,80 +28,113 @@ const page = () => {
 					<span>Stack and Queue</span>
 				</div>
 			</div>
-
-			<div className='md:flex md:justify-end  lg:w-10/12 lg:justify-center 2xl:mx-24  lg:ml-14 md:pr-3'>
-				<Card className='xl:w-6/12  2xl:w-8/12 md:w-8/12 lg:w-6/12 '>
+			<div className='lg:mr-24 lg:ml-3 xl:ml-0 xl:mr-20 mb-6 md:ml-64'>
+				<Card className='py-10 2xl:w-8/12  xl:w-7/12 lg:mx-auto lg:w-6/12'>
 					<CardContent>
-						<h3 className='text-lg font-medium text-tremor-content-strong text-dark-tremor-content-strong my-4 text-center'>
-							Stack and queue assesment overview
-						</h3>
-						<BarChart
-							className='mt-6'
-							data={barData}
-							index='name'
-							categories={['Stack and queue']}
-							valueFormatter={dataFormatter}
-							yAxisWidth={48}
-						/>
+						<div className='w-full z-50'>
+							<LineChartComponent />
+						</div>
 					</CardContent>
 				</Card>
 			</div>
-			<div className='md:flex lg:justify-center  md:justify-end lg:w-10/12  2xl:mx-24  lg:ml-14 items-center my-6  md:pr-3'>
-				<div className='lg:w-6/12 md:w-8/12 2xl:w-8/12'>
-					<div className='justify-center items-center w-full'>
-						<div>
-							<Card className='2xl:mx-auto pt-3 mb-6'>
-								<CardContent>
-									<GradientBar />
-									<div className='flex justify-between w-full mt-4'>
-										<div>5</div>
-										<div>20</div>
-									</div>
-									<div className='pt-5 font-bold'>Range: 15</div>
-								</CardContent>
-							</Card>
+			<div className='lg:mr-24 lg:ml-3 xl:ml-0 xl:mr-20 md:ml-64'>
+				<Card className='2xl:w-8/12 xl:w-7/12 lg:w-6/12 mx-auto'>
+					<div className='flex  justify-around xl:mr-20 my-7'>
+						<div className='flex w-3/12 flex-col justify-center'>
+							<CircularProgressbar
+								value={percentage}
+								text={`Min: ${percentage}`}
+								styles={{
+									root: {},
+									path: {
+										stroke: `rgba(255, 0, 0, ${percentage / 100})`,
+									},
+									text: {
+										fill: '#FF0000',
+
+										fontSize: '16px',
+									},
+								}}
+							/>
 						</div>
-						<div>
-							<Card className='mx-auto py-7'>
-								<CardContent>
-									<GradientBar />
-									<div className='pt-5 font-bold'>Mean: 15</div>
-								</CardContent>
-							</Card>
+						<div className='flex w-3/12 flex-col justify-center'>
+							<CircularProgressbar
+								value={90}
+								text={`Max: ${90}`}
+								styles={{
+									root: {},
+									path: {
+										stroke: `rgba(75, 181, 67, ${percentage / 100})`,
+									},
+									text: {
+										fill: '#4BB543',
+
+										fontSize: '16px',
+									},
+								}}
+							/>
+						</div>
+						<div className='flex w-3/12 flex-col justify-center'>
+							<CircularProgressbar
+								value={50}
+								text={`Avg: ${50}`}
+								styles={{
+									root: {},
+									path: {
+										stroke: `rgba(0, 0, 0, ${percentage / 100})`,
+									},
+									text: {
+										fill: '#000000',
+
+										fontSize: '16px',
+									},
+								}}
+							/>
 						</div>
 					</div>
-				</div>
+				</Card>
 			</div>
-			<div className='md:flex lg:w-10/12  lg:justify-center lg:mx-14  2xl:mx-24 md:justify-end md:pr-3'>
-				<div className='lg:w-6/12 md:w-8/12 2xl:w-8/12'>
-					<Card>
-						<CardHeader>
-							<CardTitle className='text-center'>Top Five</CardTitle>
-						</CardHeader>
-						<CardContent>
-							{[0, 1, 2, 3, 5].map((index: number) => (
-								<ScoreProfile key={index} />
-							))}
-						</CardContent>
-					</Card>
-				</div>
+			<div className='lg:mr-24 lg:ml-3 xl:ml-0 xl:mr-20 md:ml-64'>
+				<Card className='mx-auto 2xl:w-8/12 xl:w-7/12 lg:w-6/12 my-6 p-10'>
+					<div className='xl:text-3xl text-xl font-bold mb-6'>
+						Number of Students attended
+					</div>
+					<ProgressBar
+						completed='60'
+						bgColor='#000000'
+						height='40px'
+					></ProgressBar>
+				</Card>
 			</div>
-			<div className='md:flex lg:w-10/12 lg:justify-center my-6 lg:mx-14 2xl:mx-24 md:justify-end md:pr-3'>
-				<div className='lg:w-6/12 md:w-8/12 2xl:w-8/12'>
-					<Card>
-						<CardHeader>
-							<CardTitle className='text-center'>Bottom Five</CardTitle>
-						</CardHeader>
-						<CardContent>
-							{[0, 1, 2, 3, 5].map((index: number) => (
-								<ScoreProfile key={index} />
-							))}
-						</CardContent>
-					</Card>
+
+			<div className='xl:flex xl:mr-20 lg:ml-60 xl:ml-0  xl:pl-0 justify-center md:ml-64'>
+				<div className='xl:flex block 2xl:w-8/12 xl:w-7/12   lg:w-12/12 xl:pl-0    xl:justify-between'>
+					<div className='xl:w-6/12 2xl:mr-3 xl:mr-1 lg:w-7/12 mb-6'>
+						<Card>
+							<CardHeader>
+								<CardTitle className='text-center'>Top Five</CardTitle>
+							</CardHeader>
+							<CardContent>
+								{[0, 1, 2, 3, 5].map((index: number) => (
+									<ScoreProfile key={index} />
+								))}
+							</CardContent>
+						</Card>
+					</div>
+					<div className='xl:w-6/12 lg:w-7/12'>
+						<Card>
+							<CardHeader>
+								<CardTitle className='text-center'>Bottom Five</CardTitle>
+							</CardHeader>
+							<CardContent>
+								{[0, 1, 2, 3, 5].map((index: number) => (
+									<ScoreProfile key={index} />
+								))}
+							</CardContent>
+						</Card>
+					</div>
 				</div>
 			</div>
 		</div>
 	)
 }
-
-export default page
