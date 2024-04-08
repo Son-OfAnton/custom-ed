@@ -4,13 +4,12 @@ import React, { useState } from 'react'
 
 import { profileFieldItems } from '@/types/profileFieldItems'
 
-import { Input } from '@/components/ui/input'
 
 interface profileFieldsProps {
 	ProfileFieldItems: profileFieldItems
 }
 
-const ProfileFields = ({ ProfileFieldItems }: profileFieldsProps) => {
+const NonEditableProfileFields = ({ ProfileFieldItems }: profileFieldsProps) => {
 	const [value, setValue] = useState(ProfileFieldItems.value)
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,20 +17,18 @@ const ProfileFields = ({ ProfileFieldItems }: profileFieldsProps) => {
 	}
 
 	return (
-		<div className='flex flex-col space-y-3 md:w-5/12 w-11/12 '>
+		
+            <div className="flex  justify-center">
 			<div className='flex items-center space-x-2'>
 				<span>{ProfileFieldItems.icon}</span>
 				<span className='flex-grow whitespace-nowrap'>
 					{ProfileFieldItems.text}:
 				</span>
 			</div>
-			<Input
-				value={value}
-				onChange={handleChange}
-				className='bg-profile_input py-7 rounded-lg'
-			/>
-		</div>
+			<div className="my-4 mx-5">{value}</div>
+            </div>
+		
 	)
 }
 
-export default ProfileFields
+export default NonEditableProfileFields
