@@ -1,4 +1,5 @@
 import React from 'react'
+
 import RightSidebar from '@/components/RightSideBar'
 
 interface LayoutProps {
@@ -9,7 +10,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ role = 'teacher', children }) => {
 	return (
 		<div className='layout'>
-			<RightSidebar role="teacher"  classname="Data structures" />
+			<RightSidebar role='teacher' classname='Data structures' />
 			<div className='content'>{children}</div>
 		</div>
 	)

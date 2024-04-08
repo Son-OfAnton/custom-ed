@@ -8,14 +8,10 @@ import { CircularProgressbar } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 
 import ProgressBar from '@ramonak/react-progress-bar'
+
 import LineChartComponent from '@/components/LineChartComponent'
 import ScoreProfile from '@/components/ScoreProfile'
-import {
-	Card,
-	CardContent,
-	CardHeader,
-	CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 const percentage = 66
 

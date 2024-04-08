@@ -1,27 +1,16 @@
-'use client';
+'use client'
 
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
+import { profileFieldItems } from '@/types/profileFieldItems'
 
-
-import { profileFieldItems } from '@/types/profileFieldItems';
-
-
-
-import { Input } from '@/components/ui/input';
-
-
-
-
+import { Input } from '@/components/ui/input'
 
 interface profileFieldsProps {
 	ProfileFieldItems: profileFieldItems
-	required: boolean
 }
 
-const EditableProfileFields = ({
-	ProfileFieldItems,
-	required}: profileFieldsProps) => {
+const EditableProfileFields = ({ ProfileFieldItems }: profileFieldsProps) => {
 	const [value, setValue] = useState(ProfileFieldItems.value)
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +29,7 @@ const EditableProfileFields = ({
 				value={value}
 				onChange={handleChange}
 				className='bg-profile_input py-7 rounded-lg'
-				required = {required}
+				required
 			/>
 		</div>
 	)
