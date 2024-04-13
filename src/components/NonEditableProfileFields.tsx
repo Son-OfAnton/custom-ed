@@ -1,11 +1,17 @@
-'use client'
+'use client';
 
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
-import { profileFieldItems } from '@/types/profileFieldItems'
+
+
+import { nonEditableProfileFieldItems } from '@/types/profileFieldItems'
+
+
+
+
 
 interface profileFieldsProps {
-	ProfileFieldItems: profileFieldItems
+	ProfileFieldItems: nonEditableProfileFieldItems
 }
 
 const NonEditableProfileFields = ({

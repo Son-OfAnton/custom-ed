@@ -1,5 +1,3 @@
-'use client'
-
 import React, { useState } from 'react'
 
 import { profileFieldItems } from '@/types/profileFieldItems'
@@ -12,10 +10,16 @@ interface profileFieldsProps {
 
 const EditableProfileFields = ({ ProfileFieldItems }: profileFieldsProps) => {
 	const [value, setValue] = useState(ProfileFieldItems.value)
+	const [error, setError] = useState('')
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setValue(event.target.value)
-	}
+		setError('')
+		if (!event.target.value.trim()) {
+			setError(`${ProfileFieldItems.text} is required`)	
+		}
+		ProfileFieldItems.setError(error)
+}
 
 	return (
 		<div className='flex flex-col space-y-3 md:w-5/12 w-11/12 '>
@@ -26,11 +30,12 @@ const EditableProfileFields = ({ ProfileFieldItems }: profileFieldsProps) => {
 				</span>
 			</div>
 			<Input
-				value={value}
+				defaultValue={value}
 				onChange={handleChange}
 				className='bg-profile_input py-7 rounded-lg'
-				required
+				
 			/>
+			{error && <div className='text-red-500'>{error}</div>}
 		</div>
 	)
 }
