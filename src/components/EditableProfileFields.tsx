@@ -1,16 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
+import { profileFieldItems } from '@/types/profileFieldItems'
 
-
-import { profileFieldItems } from '@/types/profileFieldItems';
-
-
-
-import { Input } from '@/components/ui/input';
-
-
-
-
+import { Input } from '@/components/ui/input'
 
 interface profileFieldsProps {
 	ProfileFieldItems: profileFieldItems
@@ -24,7 +16,6 @@ const EditableProfileFields = ({ ProfileFieldItems }: profileFieldsProps) => {
 		const inputValue = event.target.value
 		setValue(inputValue)
 
-		
 		if (!inputValue.trim()) {
 			setError(`${ProfileFieldItems.text} is required`)
 			ProfileFieldItems.setError(`${ProfileFieldItems.text} is required`)
@@ -46,7 +37,6 @@ const EditableProfileFields = ({ ProfileFieldItems }: profileFieldsProps) => {
 				defaultValue={value}
 				onChange={handleChange}
 				className='bg-profile_input py-7 rounded-lg'
-				
 			/>
 			{error && <div className='text-red-500'>{error}</div>}
 		</div>
