@@ -23,12 +23,10 @@ const PhoneField = ({ ProfileFieldItems }: profileFieldsProps) => {
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setValue(event.target.value) 
 
-		
-		setError('')
 
-		
 		if (!event.target.value.trim()) {
 			setError(`${ProfileFieldItems.text} is required`)
+            ProfileFieldItems.setError(`${ProfileFieldItems.text} is required`)
 		} else if (
 			event.target.value.match(/[^0-9]/) ||
 			event.target.value.length !== 8
@@ -37,8 +35,15 @@ const PhoneField = ({ ProfileFieldItems }: profileFieldsProps) => {
 			setError(
 				`${ProfileFieldItems.text} should contain only numbers and have a length of 8.`,
 			)
+            ProfileFieldItems.setError(
+							`${ProfileFieldItems.text} should contain only numbers and have a length of 8.`,
+						)
            
-		}
+		}else{
+            setError('')
+            ProfileFieldItems.setError('')
+        }
+       
        
 	}
 
