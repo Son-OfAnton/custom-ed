@@ -92,7 +92,7 @@ const Page = () => {
 							}}
 						/>
 					</div>
-					<div className='md:flex justify-around w-full   mb-8 space-y-8 md:space-y-0'>
+					<div className='md:flex justify-around w-full mb-8 space-y-8 md:space-y-0'>
 						<EditableProfileDatePickerField
 							ProfileFieldItems={{
 								icon: <Calendar />,
@@ -112,7 +112,7 @@ const Page = () => {
 					</div>
 					<div className='flex justify-center mt-10 w-full'>
 						<Button
-							className='text-center w-2/12'
+							className='text-center md:w-2/12 w-4/12'
 							type='submit'
 							onClick={handleSubmit}
 						>

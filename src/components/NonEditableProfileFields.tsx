@@ -18,7 +18,8 @@ const NonEditableProfileFields = ({
 	}
 
 	return (
-		<div className='flex my-7 justify-center'>
+		<div className="flex justify-center w-full">
+		<div className='flex md:my-7 my-3 justify-around md:w-full w-11/12'>
 			<div className='flex items-center space-x-2 '>
 				<span>{ProfileFieldItems.icon}</span>
 				<span className='flex-grow whitespace-nowrap'>
@@ -26,6 +27,7 @@ const NonEditableProfileFields = ({
 				</span>
 			</div>
 			<div className='my-4 mx-5'>{value}</div>
+		</div>
 		</div>
 	)
 }
