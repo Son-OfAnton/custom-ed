@@ -50,7 +50,7 @@ const RightSideBar: React.FC<Props> = ({ role, classname }: Props) => {
 		<div className='fixed top-0 left-0 h-screen w-full z-50 flex justify-end'>
 			<div
 				className={cn(
-					'md:w-65 bg-white z-50 h-screen flex-1 fixed justify-between shadow-md  hidden md:flex',
+					'lg:w-65 bg-white z-50 h-screen flex-1 fixed justify-between shadow-md  hidden lg:flex',
 					{
 						flex: isOpen,
 					},
@@ -88,9 +88,10 @@ const RightSideBar: React.FC<Props> = ({ role, classname }: Props) => {
 			</div>
 			<div
 				className={cn(
-					'fixed bg-primary px-1 py-1 rounded-sm shadow-md cursor-pointer md:hidden chevron-button top-1/2 -translate-y-1/2 right-0',
+					'fixed bg-primary px-1 py-1 rounded-sm shadow-md cursor-pointer lg:hidden chevron-button top-1/2 -translate-y-1/2 right-0',
 					{
-						'top-1/2 -translate-y-1/2 left-0': isOpen,
+						'top-1/2 fixed bg-primary px-1 py-1 rounded-sm shadow-md cursor-pointer lg:hidden chevron-button w-8 -translate-y-1/2 left-0':
+							isOpen,
 					},
 				)}
 				onClick={toggle}
