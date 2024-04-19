@@ -1,4 +1,5 @@
-"use client"
+'use client'
+
 import React from 'react'
 
 import { Calendar, CircleUser, Library, Phone } from 'lucide-react'
@@ -42,7 +43,6 @@ const Page = () => {
 						/>
 					</div>
 					<div className='md:flex flex-col md:ml-0 ml-3 items-start mb-8 space-y-8 md:space-y-0'>
-						
 						{/* Changed items-center to items-start */}
 						<NonEditableProfileFields
 							ProfileFieldItems={{
