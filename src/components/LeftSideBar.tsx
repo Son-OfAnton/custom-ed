@@ -50,14 +50,14 @@ const LeftSideBar: React.FC<Props> = ({ role }: Props) => {
 
 	return (
 		<>
-			<div className='md:w-60 bg-white h-screen flex-1 fixed justify-between  shadow-md hidden md:flex'>
+			<div className='md:w-45 bg-white h-screen flex-1 fixed justify-between  shadow-md hidden md:flex'>
 				<div className='flex flex-col  justify-between h-full w-full'>
 					<div>
 						<Link
 							href='/'
 							className='flex flex-row mx-6 items-center justify-center md:justify-start md:px-6   h-12 w-full'
 						>
-							<span className='font-bold text-3xl hidden md:flex mt-20'>
+							<span className='font-bold text-2xl hidden md:flex mt-20'>
 								CustomEd
 							</span>
 						</Link>
@@ -71,11 +71,11 @@ const LeftSideBar: React.FC<Props> = ({ role }: Props) => {
 					<div className='flex flex-col space-y-7 xl:space-y-10 justify-center md:px-6 ml-4 mb-6'>
 						<div className='flex items-center  p-2 rounded-lg cursor-pointer hover:bg-primary hover:text-primary-foreground'>
 							<LogOut size={24} className='mr-4' />
-							<span className='font-semibold text-lg flex'>Logout</span>
+							<span className='font-semibold text-md flex'>Logout</span>
 						</div>
 						<div className='flex items-center  p-2 rounded-lg cursor-pointer hover:bg-primary hover:text-primary-foreground '>
 							<Settings size={24} className='mr-4' />
-							<span className='font-semibold text-lg flex'>Settings</span>
+							<span className='font-semibold text-md flex'>Settings</span>
 						</div>
 					</div>
 				</div>
@@ -142,7 +142,7 @@ const MenuItem = ({ item }: { item: SideBarItem }) => {
 				)}
 			>
 				{item.icon}
-				<span className='font-semibold text-xl flex'>{item.text}</span>
+				<span className='font-semibold text-md flex'>{item.text}</span>
 			</Link>
 		</div>
 	)

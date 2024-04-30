@@ -123,7 +123,7 @@ const MenuItem = ({ item }: { item: SideBarItem }) => {
 				)}
 			>
 				{item.icon}
-				<span className='font-semibold text-xl flex'>{item.text}</span>
+				<span className='font-semibold text-md flex'>{item.text}</span>
 			</Link>
 		</div>
 	)
