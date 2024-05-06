@@ -1,6 +1,5 @@
-'use client'
-
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+"use client"
+import React, { useEffect, useRef, useState } from 'react'
 
 import { AdminRightSideBarItems } from '@/constants/AdminSideBarItems'
 import { StudentRightSideBarItems } from '@/constants/StudentSideBarItems'
@@ -20,7 +19,9 @@ interface Props {
 const RightSideBar: React.FC<Props> = ({ role, classname }: Props) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const menuRef = useRef<HTMLDivElement>(null)
+
 	let items: SideBarItem[]
+
 	if (role === 'teacher') {
 		items = TeacherRightSideBarItems
 	} else if (role === 'student') {
@@ -28,6 +29,7 @@ const RightSideBar: React.FC<Props> = ({ role, classname }: Props) => {
 	} else {
 		items = AdminRightSideBarItems
 	}
+
 	const toggle = () => {
 		setIsOpen(!isOpen)
 	}
@@ -50,9 +52,9 @@ const RightSideBar: React.FC<Props> = ({ role, classname }: Props) => {
 		<div className='fixed top-0 left-0 h-screen w-full z-50 flex justify-end'>
 			<div
 				className={cn(
-					'lg:w-65 bg-white z-50 h-screen flex-1 fixed justify-between shadow-md  hidden lg:flex',
+					'bg-white z-50 h-screen w-55  fixed justify-between shadow-md hidden',
 					{
-						flex: isOpen,
+						flex: isOpen, 
 					},
 				)}
 				ref={menuRef}
@@ -87,15 +89,14 @@ const RightSideBar: React.FC<Props> = ({ role, classname }: Props) => {
 				</div>
 			</div>
 			<div
-				className={cn(
-					'fixed bg-primary px-1 py-1 rounded-sm shadow-md cursor-pointer lg:hidden chevron-button top-1/2 -translate-y-1/2 right-0',
-					{
-						'top-1/2 fixed bg-primary px-1 py-1 rounded-sm shadow-md cursor-pointer lg:hidden chevron-button w-8 -translate-y-1/2 left-0':
-							isOpen,
-					},
-				)}
-				onClick={toggle}
-			>
+  className={cn(
+  'fixed bg-primary px-1 py-1 rounded-sm shadow-md cursor-pointer chevron-button top-20',
+  {
+    'right-60 z-50 ': isOpen,
+  },
+)}
+  onClick={toggle}
+>
 				{isOpen ? (
 					<ChevronRight className='text-white' />
 				) : (
