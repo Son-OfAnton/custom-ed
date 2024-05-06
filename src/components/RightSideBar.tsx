@@ -1,4 +1,5 @@
-"use client"
+'use client'
+
 import React, { useEffect, useRef, useState } from 'react'
 
 import { AdminRightSideBarItems } from '@/constants/AdminSideBarItems'
@@ -54,7 +55,7 @@ const RightSideBar: React.FC<Props> = ({ role, classname }: Props) => {
 				className={cn(
 					'bg-white z-50 h-screen w-55  fixed justify-between shadow-md hidden',
 					{
-						flex: isOpen, 
+						flex: isOpen,
 					},
 				)}
 				ref={menuRef}
@@ -89,14 +90,14 @@ const RightSideBar: React.FC<Props> = ({ role, classname }: Props) => {
 				</div>
 			</div>
 			<div
-  className={cn(
-  'fixed bg-primary px-1 py-1 rounded-sm shadow-md cursor-pointer chevron-button top-20',
-  {
-    'right-60 z-50 ': isOpen,
-  },
-)}
-  onClick={toggle}
->
+				className={cn(
+					'fixed bg-primary px-1 py-1 rounded-sm shadow-md cursor-pointer chevron-button top-20',
+					{
+						'right-60 z-50 ': isOpen,
+					},
+				)}
+				onClick={toggle}
+			>
 				{isOpen ? (
 					<ChevronRight className='text-white' />
 				) : (
