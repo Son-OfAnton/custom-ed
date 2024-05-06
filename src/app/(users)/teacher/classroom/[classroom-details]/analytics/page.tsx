@@ -25,8 +25,8 @@ export default function Page() {
 					<span>Stack and Queue</span>
 				</div>
 			</div>
-			<div className='lg:mr-24 lg:ml-3 xl:ml-0 xl:mr-20 mb-6 md:ml-64'>
-				<Card className='py-10 2xl:w-8/12  xl:w-7/12 lg:mx-auto lg:w-6/12'>
+			<div className='mb-6 md:ml-64 md:mr-3'>
+				<Card className='py-10  lg:mx-auto'>
 					<CardContent>
 						<div className='w-full z-50'>
 							<LineChartComponent />
@@ -34,8 +34,8 @@ export default function Page() {
 					</CardContent>
 				</Card>
 			</div>
-			<div className='lg:mr-24 lg:ml-3 xl:ml-0 xl:mr-20 md:ml-64'>
-				<Card className='2xl:w-8/12 xl:w-7/12 lg:w-6/12 mx-auto'>
+			<div className='md:ml-64 md:mr-3'>
+				<Card className='mx-auto'>
 					<div className='md:flex  justify-around space-y-5 md:space-y-0  ml-3 md:ml-0 xl:mr-20 my-7'>
 						<div className='flex md:w-5/12 w-11/12  flex-col justify-center'>
 							<CircularProgressbarWithChildren
@@ -120,8 +120,8 @@ export default function Page() {
 					</div>
 				</Card>
 			</div>
-			<div className='lg:mr-24 lg:ml-3 xl:ml-0 xl:mr-20 md:ml-64'>
-				<Card className='mx-auto 2xl:w-8/12 xl:w-7/12 lg:w-6/12 my-6 p-10'>
+			<div className='md:ml-64 md:mr-3'>
+				<Card className='mx-auto my-6 p-10'>
 					<div className='xl:text-3xl text-xl font-bold mb-6 flex justify-center'>
 						Number of Students attended
 					</div>
@@ -131,9 +131,9 @@ export default function Page() {
 				</Card>
 			</div>
 
-			<div className='xl:flex xl:mr-20 lg:ml-60 xl:ml-0  xl:pl-0 justify-center md:ml-64'>
-				<div className='xl:flex block 2xl:w-8/12 xl:w-7/12   lg:w-12/12 xl:pl-0    xl:justify-between'>
-					<div className='xl:w-6/12 2xl:mr-3 xl:mr-1 lg:w-7/12 mb-6'>
+			<div className='xl:flex justify-center md:ml-64'>
+				<div className='xl:flex block w-full'>
+					<div className='xl:w-6/12 2xl:mr-3  md:mr-3 xl:mr-1 mb-6'>
 						<Card>
 							<CardHeader>
 								<CardTitle className='text-center'>Top Five</CardTitle>
@@ -145,7 +145,7 @@ export default function Page() {
 							</CardContent>
 						</Card>
 					</div>
-					<div className='xl:w-6/12 lg:w-7/12'>
+					<div className='xl:w-6/12  md:mr-3'>
 						<Card>
 							<CardHeader>
 								<CardTitle className='text-center'>Bottom Five</CardTitle>
