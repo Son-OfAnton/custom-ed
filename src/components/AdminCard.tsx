@@ -1,13 +1,16 @@
 import React from 'react'
 import { Users } from 'lucide-react'
 import { Card, CardContent } from './ui/card'
-const AdminCard = () => {
+interface props {
+     name: string;
+}
+const AdminCard = ({name}:props) => {
   return (
     <div>
       <Card className='flex items-center  font-bold pt-4'>
         <CardContent className='flex space-x-2'>   
                 <Users />
-                <span>Software engineering</span>
+                <span>{name}</span>
         </CardContent>
         
         
