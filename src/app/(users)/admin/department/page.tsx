@@ -5,7 +5,7 @@ import { FolderTree } from 'lucide-react'
 
 import AdminCard from '@/components/AdminCard'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-
+import AdminStudentList from '@/components/AdminStudentList'
 const departments: Department[] = [
 	{ name: 'Marketing' },
 	{ name: 'Sales' },
@@ -42,6 +42,7 @@ const Page = () => {
 					))}
 				</div>
 			</div>
+		
 		</div>
 	)
 }
