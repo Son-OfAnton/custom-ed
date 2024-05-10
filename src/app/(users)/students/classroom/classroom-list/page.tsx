@@ -74,14 +74,12 @@ const ListOfClassroomPage = () => {
 											<Users size={20} className='mr-2' />
 											<p>{course.numberOfStudents}</p>
 										</div>
-										<div className='flex'>
+							
 											<button>
 												<Trash size={20} className='md:mr-5 mr-3' />
 											</button>
-											<button>
-												<Pencil size={20} />
-											</button>
-										</div>
+											
+										
 									</div>
 								</CardFooter>
 							</Card>
