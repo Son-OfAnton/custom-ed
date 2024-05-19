@@ -36,7 +36,7 @@ const Page = () => {
 		if (phoneError || InputError) {
 			return
 		}
-		router.push('/students/profile')
+		router.push('/student/profile')
 	}
 
 	const handleFileInputChange = (event: Event) => {

@@ -1,16 +1,15 @@
 'use client'
 
-import { useState } from 'react'
-
 import { useLocalStorage } from '@/hooks/useLocalStorage'
 import { useStudentSignupMutation } from '@/store/auth/studentAuthApi'
 import { useTeacherSignupMutation } from '@/store/auth/teacherAuthApi'
 import { useSendOtpMutation } from '@/store/otp/otpApi'
+import { ExtendedError } from '@/types/Error.type'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ReloadIcon } from '@radix-ui/react-icons'
 import Image from 'next/image'
 import Link from 'next/link'
-import { redirect, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
@@ -97,7 +96,7 @@ const SignupPage = () => {
 			studentSignup(credentials)
 				.unwrap()
 				.then((res) => {
-					console.log(`studentSignupData: ${JSON.stringify(res)}`)
+					console.log(`studentSignupResponse: ${JSON.stringify(res)}`)
 					setEmailForVerification(res.data?.email!)
 					setIdForVerification(res.data?.id!)
 					setRoleForVerification(res.data?.role!)
@@ -109,9 +108,9 @@ const SignupPage = () => {
 					toast.success('Please check your email for verification.')
 					router.push('/auth/verify-email')
 				})
-				.catch((err) => {
-					toast.error((err as any)?.data.errors[0])
-					console.log(`signup error ${JSON.stringify(studentSignupError)}`)
+				.catch((err: ExtendedError) => {
+					console.log(`signup error ${JSON.stringify(err)}`)
+					toast.error(err.data.errors![0])
 				})
 		} else if (credentials.role.toLowerCase() === 'teacher') {
 			teacherSignup(credentials)
@@ -129,9 +128,9 @@ const SignupPage = () => {
 					toast.success('Please check your email for verification.')
 					router.push('/auth/verify-email')
 				})
-				.catch((err) => {
-					toast.error((err as any)?.data.errors[0])
-					console.log(`signup error ${JSON.stringify(teacherSignupError)}`)
+				.catch((err: ExtendedError) => {
+					console.log(`signup error ${JSON.stringify(err)}`)
+					toast.error(err.data.errors![0])
 				})
 		}
 	}
@@ -249,7 +248,7 @@ const SignupPage = () => {
 									{isLoadingStudentSignup || isLoadingTeacherSignup ? (
 										<ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
 									) : null}
-									Submit
+									Signup
 								</Button>
 
 								<span className='md:hidden text-primary text-center text-sm'>
