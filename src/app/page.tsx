@@ -7,22 +7,9 @@ import Link from 'next/link'
 
 import NavBar from '@/components/NavBar'
 import { Button } from '@/components/ui/button'
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from '@/components/ui/card'
-
-import analytics from '../../public/assets/analytics.svg'
-import filemanager from '../../public/assets/file_manager.svg'
+import { LandingPageItems } from '@/constants/LandingPageItems'
 import landingPage from '../../public/assets/landing-page.svg'
-import announcement from '../../public/assets/news.svg'
-import forum from '../../public/assets/online_discussion.svg'
-import path from '../../public/assets/personalized path.svg'
-import assesments from '../../public/assets/questions.svg'
+import HomepageCard from '@/components/HomepageCard'
 
 export default function Home() {
 	return (
@@ -64,121 +51,37 @@ export default function Home() {
 					</div>
 				</div>
 			</div>
-			<div className='block md:mb-10 md:mt-40 mt-1 w-full'>
-				<h1 className='text-4xl font-bold text-center'>Our Services</h1>
-			</div>
-			<div className='md:flex block md:justify-center items-center justify-between mb-40'>
-				<div className='md:grid md:grid-cols-12 md:gap-4 md:mt-20 mt-10 items-center justify-center'>
-					<div className='col-span-12 md:col-span-4 mx-2 md:mb-4 mb-10 flex justify-center w-full'>
-						<Card className='hover:scale-105 hover:z-10 '>
-							<CardHeader>
-								<CardTitle className='text-xl'>Adaptive Learning</CardTitle>
-							</CardHeader>
-							<CardContent>
-								<CardDescription>
-									<Image
-										src={path}
-										alt='discovery'
-										width={0}
-										height={0}
-										className='md:object-cover object-cover w-full h-full'
-									/>
-								</CardDescription>
-							</CardContent>
-						</Card>
+			<section className="bg-gray-900 text-white">
+				<div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
+					<div className="mx-auto max-w-lg text-center">
+						<h2 className="text-3xl font-bold sm:text-4xl">Our Service</h2>
+
+						<p className="mt-4 text-gray-300">
+							Our innovative platform is designed to revolutionize the traditional education system, making learning more personalized, inclusive, and effective.
+						</p>
 					</div>
-					<div className='col-span-12 md:col-span-4 mx-2 md:mb-4 mb-10 flex justify-center w-full'>
-						<Card className='hover:scale-105 hover:z-10'>
-							<CardHeader>
-								<CardTitle className='text-xl'>Classrooms</CardTitle>
-							</CardHeader>
-							<CardContent>
-								<CardDescription>
-									<Image
-										src={filemanager}
-										alt='File Manager'
-										width={0}
-										height={0}
-										className='md:object-cover object-cover w-full h-full'
-									/>
-								</CardDescription>
-							</CardContent>
-						</Card>
+
+					<div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+						{LandingPageItems.map((item) => (
+							<HomepageCard
+								key={item.title}
+								title={item.title}
+								description={item.description}
+								icon={item.icon}
+							/>
+						))}
 					</div>
-					<div className='col-span-12 md:col-span-4 mx-2 md:mb-4 mb-10 flex justify-center w-full'>
-						<Card className='hover:scale-105 hover:z-10'>
-							<CardHeader>
-								<CardTitle className='text-xl'>Forums</CardTitle>
-							</CardHeader>
-							<CardContent>
-								<CardDescription>
-									<Image
-										src={forum}
-										alt='Forum'
-										width={0}
-										height={0}
-										className='md:object-cover object-cover w-full h-full'
-									/>
-								</CardDescription>
-							</CardContent>
-						</Card>
-					</div>
-					<div className='col-span-12 md:col-span-4 mx-2 md:mb-4 mb-10 flex justify-center w-full'>
-						<Card className='hover:scale-105 hover:z-10'>
-							<CardHeader>
-								<CardTitle className='text-xl'>Announcements</CardTitle>
-							</CardHeader>
-							<CardContent>
-								<CardDescription>
-									<Image
-										src={announcement}
-										alt='Announcements'
-										width={0}
-										height={0}
-										className='md:object-cover object-cover w-full h-full'
-									/>
-								</CardDescription>
-							</CardContent>
-						</Card>
-					</div>
-					<div className='col-span-12 md:col-span-4 mx-2 md:mb-4 mb-10 flex justify-center w-full'>
-						<Card className='hover:scale-105 hover:z-10'>
-							<CardHeader>
-								<CardTitle className='text-xl'>Detailed Insight</CardTitle>
-							</CardHeader>
-							<CardContent>
-								<CardDescription>
-									<Image
-										src={analytics}
-										alt='discovery'
-										width={0}
-										height={0}
-										className='md:object-cover object-cover w-full h-full'
-									/>
-								</CardDescription>
-							</CardContent>
-						</Card>
-					</div>
-					<div className='col-span-12 md:col-span-4 mx-2 md:mb-4 mb-10 flex justify-center w-full'>
-						<Card className='hover:scale-105 hover:z-10'>
-							<CardHeader>
-								<CardTitle className='text-xl'>Assessments</CardTitle>
-							</CardHeader>
-							<CardContent>
-								<CardDescription>
-									<Image
-										src={assesments}
-										alt='Assessments'
-										width={0}
-										height={0}
-										className='md:object-cover object-cover w-full h-full'
-									/>
-								</CardDescription>
-							</CardContent>
-						</Card>
+
+					<div className="mt-12 text-center">
+						<a
+							href="#"
+							className="inline-block rounded bg-blue-500 px-12 py-3 text-sm font-medium text-white transition hover:bg-blue-700 focus:outline-none focus:ring focus:ring-yellow-400"
+						>
+							Get Started Today
+						</a>
 					</div>
 				</div>
-			</div>
+			</section>
 		</>
 	)
 }
