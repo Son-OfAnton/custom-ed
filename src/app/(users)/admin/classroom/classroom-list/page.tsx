@@ -74,11 +74,10 @@ const ListOfClassroomPage = () => {
 											<Users size={20} className='mr-2' />
 											<p>{course.numberOfStudents}</p>
 										</div>
-							
+										
 											<button>
 												<Trash size={20} className='md:mr-5 mr-3' />
 											</button>
-											
 										
 									</div>
 								</CardFooter>

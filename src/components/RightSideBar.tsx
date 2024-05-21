@@ -61,7 +61,7 @@ const RightSideBar: React.FC<Props> = ({ role, classname }: Props) => {
 				ref={menuRef}
 			>
 				<div className='flex flex-col justify-between w-full h-full'>
-					<div>
+					<div> 
 						<Link
 							href='/'
 							className='flex flex-row mx-6 items-center justify-center md:justify-start md:px-6 h-12 w-full'
