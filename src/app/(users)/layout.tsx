@@ -7,7 +7,7 @@ interface LayoutProps {
 	children: React.ReactNode
 }
 
-const Layout: React.FC<LayoutProps> = ({ role = 'teacher', children }) => {
+const Layout: React.FC<LayoutProps> = ({ role, children }) => {
 	return (
 		<div className='layout'>
 			<LeftSidebar role={role} />

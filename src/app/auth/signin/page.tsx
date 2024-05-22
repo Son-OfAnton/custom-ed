@@ -1,34 +1,39 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
+import { useState } from 'react';
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import Image from 'next/image'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
 
-import { PasswordInput } from '@/components/PasswordInput'
-import { Button } from '@/components/ui/button'
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from '@/components/ui/dialog'
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+
+import { useStudentSigninMutation } from '@/store/auth/studentAuthApi';
+import { useTeacherSigninMutation } from '@/store/auth/teacherAuthApi';
+import { StudentLoginResponse } from '@/types/auth/studentAuth.type';
+import { ExtendedError } from '@/types/Error.type';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ReloadIcon } from '@radix-ui/react-icons';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
+
+
+
+import { cn } from '@/lib/utils';
+
+
+
+import { PasswordInput } from '@/components/PasswordInput';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
+
+
+
 
 const formSchema = z.object({
 	email: z
@@ -37,6 +42,7 @@ const formSchema = z.object({
 	password: z
 		.string({ required_error: 'Password is required' })
 		.min(8, { message: 'Password must contain at least 8 characters' }),
+	role: z.string({ required_error: 'Role is required' }),
 })
 
 type FormType = z.infer<typeof formSchema>
@@ -46,8 +52,54 @@ const SigninPage = () => {
 		resolver: zodResolver(formSchema),
 	})
 
-	const onSubmit = (values: FormType) => {
-		console.log(values)
+	const [
+		studentSignin,
+		{
+			data: studentSigninData,
+			isLoading: isLoadingStudentSignin,
+			isSuccess: isSuccessStudentSignin,
+			isError: isErrorStudentSignin,
+			error: studentSigninError,
+		},
+	] = useStudentSigninMutation()
+
+	const [
+		teacherSignin,
+		{
+			data: teacherSigninData,
+			isLoading: isLoadingTeacherSignin,
+			isSuccess: isSuccessTeacherSignin,
+			isError: isErrorTeacherSignin,
+			error: teacherSigninError,
+		},
+	] = useTeacherSigninMutation()
+
+	const onSubmit = (credentials: FormType) => {
+		console.log(`credentials ${JSON.stringify(credentials)}`)
+		const { email, password } = credentials
+		if (credentials.role.toLowerCase() === 'student') {
+			studentSignin({ email, password })
+				.unwrap()
+				.then((res: StudentLoginResponse) => {
+					console.log(`response ${JSON.stringify(res)}`)
+					toast.success('Signin successful')
+				})
+				.catch((err: ExtendedError) => {
+					console.log(`error ${JSON.stringify(err)}`)
+					toast.error('Can not sign in')
+				})
+		} else if (credentials.role.toLowerCase() === 'teacher') {
+			teacherSignin({ email, password })
+				.unwrap()
+				.then((res) => {
+					console.log(`response ${JSON.stringify(res)}`)
+					toast.success('Signin successful')
+				})
+				.catch((err: ExtendedError) => {
+					console.log(`error ${JSON.stringify(err)}`)
+					toast.error('Can not sign in')
+				})
+		}
 	}
 
 	const router = useRouter()
@@ -119,6 +171,45 @@ const SigninPage = () => {
 									</FormItem>
 								)}
 							/>
+							<FormField
+								control={form.control}
+								name='role'
+								render={({ field }) => (
+									<FormItem>
+										<FormControl>
+											<Select onValueChange={field.onChange}>
+												<FormControl>
+													<SelectTrigger
+														className={cn(
+															'font-semibold text-muted-foreground',
+															{
+																'text-primary': field.value !== undefined,
+															},
+														)}
+													>
+														<SelectValue placeholder='Role' />
+													</SelectTrigger>
+												</FormControl>
+												<SelectContent>
+													<SelectItem
+														className='font-semibold text-primary'
+														value='teacher'
+													>
+														Teacher
+													</SelectItem>
+													<SelectItem
+														className='font-semibold text-primary'
+														value='student'
+													>
+														Student
+													</SelectItem>
+												</SelectContent>
+											</Select>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
 							{otpSent ? (
 								<Dialog>
 									<DialogTrigger asChild>
@@ -182,10 +273,19 @@ const SigninPage = () => {
 								</Dialog>
 							)}
 							<div className='flex flex-col gap-y-4 w-full'>
-								<Button className='w-full' type='submit'>
-									Submit
+								<Button
+									className={cn('w-full', {
+										'bg-primary/90':
+											isLoadingStudentSignin || isLoadingTeacherSignin,
+									})}
+									disabled={isLoadingStudentSignin || isLoadingTeacherSignin}
+									type='submit'
+								>
+									{isLoadingStudentSignin || isLoadingTeacherSignin ? (
+										<ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
+									) : null}
+									Signin
 								</Button>
-
 								<span className='md:hidden text-primary text-center text-sm'>
 									Don't have an account ?
 									<Link

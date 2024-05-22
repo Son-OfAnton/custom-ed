@@ -1,9 +1,16 @@
 'use client'
+import { useLocalStorage } from '@/hooks/useLocalStorage'
+import { useStudentSignupMutation } from '@/store/auth/studentAuthApi'
+import { useTeacherSignupMutation } from '@/store/auth/teacherAuthApi'
 
+import { ExtendedError } from '@/types/Error.type'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { ReloadIcon } from '@radix-ui/react-icons'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 import { cn } from '@/lib/utils'
@@ -47,12 +54,68 @@ const formSchema = z
 type FormType = z.infer<typeof formSchema>
 
 const SignupPage = () => {
+	const router = useRouter()
+	const { setItem: setEmailForVerification } = useLocalStorage(
+		'emailForVerification',
+	)
+	const { setItem: setIdForVerification } = useLocalStorage('idForVerification')
+	const { setItem: setRoleForVerification } = useLocalStorage(
+		'roleForVerification',
+	)
+
+	const [
+		studentSignup,
+		{
+			data: studentSignupData,
+			error: studentSignupError,
+			isLoading: isLoadingStudentSignup,
+			isSuccess: isSuccessStudentSignup,
+		},
+	] = useStudentSignupMutation()
+	const [
+		teacherSignup,
+		{
+			data: teacherSignupData,
+			error: teacherSignupError,
+			isLoading: isLoadingTeacherSignup,
+			isSuccess: isSuccessTeacherSignup,
+		},
+	] = useTeacherSignupMutation()
+	
 	const form = useForm<FormType>({
 		resolver: zodResolver(formSchema),
 	})
 
-	const onSubmit = (values: FormType) => {
-		console.log(values)
+	const onSubmit = async (credentials: FormType) => {
+		if (credentials.role.toLowerCase() === 'student') {
+			studentSignup(credentials)
+				.unwrap()
+				.then((res) => {
+					console.log(`studentSignupResponse: ${JSON.stringify(res)}`)
+					setEmailForVerification(res.data?.email!)
+					setIdForVerification(res.data?.id!)
+					setRoleForVerification(res.data?.role!)
+					
+					toast.success('Please check your email for verification.')
+					router.push('/auth/verify-email')
+				})
+				.catch((err: ExtendedError) => {
+					console.log(`signup error ${JSON.stringify(err)}`)
+					toast.error(err.data.errors![0])
+				})
+		} else if (credentials.role.toLowerCase() === 'teacher') {
+			teacherSignup(credentials)
+				.unwrap()
+				.then((res) => {
+					console.log(`teacherSignupData: ${JSON.stringify(res)}`)
+					toast.success('Please check your email for verification.')
+					router.push('/auth/verify-email')
+				})
+				.catch((err: ExtendedError) => {
+					console.log(`signup error ${JSON.stringify(err)}`)
+					toast.error("Can not sign in ")
+				})
+		}
 	}
 
 	return (
@@ -158,8 +221,17 @@ const SignupPage = () => {
 								)}
 							/>
 							<div className='flex flex-col gap-y-4 w-full'>
-								<Button className='w-full' type='submit'>
-									Submit
+								<Button
+									className={cn('w-full', {
+										'bg-primary/90': isLoadingStudentSignup,
+									})}
+									disabled={isLoadingStudentSignup}
+									type='submit'
+								>
+									{isLoadingStudentSignup || isLoadingTeacherSignup ? (
+										<ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
+									) : null}
+									Signup
 								</Button>
 
 								<span className='md:hidden text-primary text-center text-sm'>
