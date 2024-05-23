@@ -104,6 +104,7 @@ const VerifyEmailPage = () => {
 			.then((res) => {
 				console.log('OTP Verify Response: ', JSON.stringify(res))
 				toast.success('OTP Verified Successfully')
+				router.push('/auth/signin')
 			})
 			.catch((err) => {
 				console.error('OTP Verification Error: ', err)

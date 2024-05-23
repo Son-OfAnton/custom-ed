@@ -1,9 +1,18 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { useStudentSigninMutation } from '@/store/auth/studentAuthApi'
-import { useTeacherSigninMutation } from '@/store/auth/teacherAuthApi'
+import { useLocalStorage } from '@/hooks/useLocalStorage'
+import { RootState } from '@/store'
+import { closeDialog, openDialog } from '@/store/features/dialogSlice'
+import {
+	useGetStudentByIdQuery,
+	useStudentSigninMutation,
+} from '@/store/student/studentApi'
+import {
+	useGetTeacherByIdQuery,
+	useTeacherSigninMutation,
+} from '@/store/teacher/teacherApi'
 import { StudentSigninResponse } from '@/types/auth/studentAuth.type'
 import { ExtendedError } from '@/types/Error.type'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -12,6 +21,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
+import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
@@ -62,6 +72,9 @@ const SigninPage = () => {
 		resolver: zodResolver(formSchema),
 	})
 
+	const [studentId, setStudentId] = useState('')
+	const [teacherId, setTeacherId] = useState('')
+
 	const [
 		studentSignin,
 		{
@@ -84,6 +97,63 @@ const SigninPage = () => {
 		},
 	] = useTeacherSigninMutation()
 
+	const {
+		data: singleStudentData,
+		isLoading: isLoadingSingleStudent,
+		isSuccess: isSuccessSingleStudent,
+		isError: isErrorSingleStudent,
+		error: singleStudentError,
+		refetch: singleStudentRefetch,
+	} = useGetStudentByIdQuery(studentId, { skip: !studentId })
+
+	const {
+		data: singleTeacherData,
+		isLoading: isLoadingSingleTeacher,
+		isSuccess: isSuccessSingleTeacher,
+		isError: isErrorSingleTeacher,
+		error: singleTeacherError,
+		refetch: singleTeacherRefetch,
+	} = useGetTeacherByIdQuery(teacherId, { skip: !teacherId })
+
+	const { setItem: setCurrUser, getItem: getCurrUser } =
+		useLocalStorage('currUser')
+	const router = useRouter()
+	const [otpSent, setOtpSent] = useState(false)
+	const isOpen = useSelector((state: RootState) => state.dialog.isOpen)
+	const dispatch = useDispatch()
+
+	useEffect(() => {
+		if (studentId) {
+			singleStudentRefetch()
+		}
+	}, [studentId, singleStudentRefetch])
+
+	useEffect(() => {
+		if (teacherId) {
+			singleTeacherRefetch()
+		}
+	}, [teacherId, singleTeacherRefetch])
+
+	useEffect(() => {
+		if (singleStudentData) {
+			if (singleStudentData!.data!.firstName === null) {
+				dispatch(openDialog('student'))
+			} else {
+				router.push('/dashboard')
+			}
+		}
+	}, [singleStudentData, dispatch, router])
+
+	useEffect(() => {
+		if (singleTeacherData) {
+			if (singleTeacherData!.data!.firstName === null) {
+				dispatch(openDialog('teacher'))
+			} else {
+				router.push('/dashboard')
+			}
+		}
+	}, [singleTeacherData, dispatch, router])
+
 	const onSubmit = (credentials: FormType) => {
 		console.log(`credentials ${JSON.stringify(credentials)}`)
 		if (credentials.role.toLowerCase() === 'student') {
@@ -91,28 +161,31 @@ const SigninPage = () => {
 				.unwrap()
 				.then((res: StudentSigninResponse) => {
 					console.log(`response ${JSON.stringify(res)}`)
+					setCurrUser(res.data)
+					setStudentId(res.data?.id!)
+					dispatch(openDialog('student'))
 					toast.success('Signin successful')
 				})
 				.catch((err: ExtendedError) => {
 					console.log(`error ${JSON.stringify(err)}`)
-					toast.error(err.data.message)
+					toast.error('Invalid credentials')
 				})
 		} else if (credentials.role.toLowerCase() === 'teacher') {
 			teacherSignin(credentials)
 				.unwrap()
 				.then((res) => {
 					console.log(`response ${JSON.stringify(res)}`)
+					setCurrUser(res.data)
+					setTeacherId(res.data?.id!)
+					dispatch(openDialog('teacher'))
 					toast.success('Signin successful')
 				})
 				.catch((err: ExtendedError) => {
 					console.log(`error ${JSON.stringify(err)}`)
-					toast.error(err.data.message)
+					toast.error('Invalid credentials')
 				})
 		}
 	}
-
-	const router = useRouter()
-	const [otpSent, setOtpSent] = useState(false)
 
 	return (
 		<main className='flex h-screen w-screen justify-center items-center bg-[url(/signup-bg.jpg)]'>
