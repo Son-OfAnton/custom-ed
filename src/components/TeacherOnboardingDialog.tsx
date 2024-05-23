@@ -1,11 +1,15 @@
 'use client'
 
 import { departments } from '@/constants/departments'
+import { useLocalStorage } from '@/hooks/useLocalStorage'
 import { closeDialog } from '@/store/features/dialogSlice'
 import { RootState } from '@/store/index'
+import { useEditTeacherProfileMutation } from '@/store/teacher/teacherApi'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'sonner'
 import z from 'zod'
 
 import { Button } from '@/components/ui/button'
@@ -32,17 +36,22 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select'
-import { useEditTeacherProfileMutation } from '@/store/teacher/teacherApi'
-import { toast } from 'sonner'
-import { useLocalStorage } from '@/hooks/useLocalStorage'
-import { useRouter } from 'next/navigation'
 
 const formSchema = z.object({
-	firstName: z.string({ required_error: 'First name is required' }),
-	lastName: z.string({ required_error: 'Last name is required' }),
-	phoneNumber: z.string({ required_error: 'Phone number is required' }),
-	department: z.string({ required_error: 'Department is required' }),
-})
+  firstName: z
+    .string()
+    .regex(/^[A-Za-z]+$/, 'First name should only contain alphabets')
+    .min(1, 'First name is required'),
+  lastName: z
+    .string()
+    .regex(/^[A-Za-z]+$/, 'Last name should only contain alphabets')
+    .min(1, 'Last name is required'),
+  phoneNumber: z
+    .string({ required_error: 'Phone number is required' })
+    .startsWith('+251')
+    .length(13, 'Phone number length is invalid'),
+  department: z.string({ required_error: 'Department is required' }),
+});
 
 type FormType = z.infer<typeof formSchema>
 
@@ -51,18 +60,19 @@ export default function TeacherOnboardingDialog() {
 		resolver: zodResolver(formSchema),
 	})
 	const isOpen = useSelector((state: RootState) => state.dialog.isOpen)
-  const userType = useSelector((state: RootState) => state.dialog.userType)
+	const userType = useSelector((state: RootState) => state.dialog.userType)
 	const dispatch = useDispatch()
 	const router = useRouter()
 
 	const [changeProfile, { data, isLoading, isSuccess, isError, error }] =
 		useEditTeacherProfileMutation()
 
-	const {getItem: getCurrUser, setItem: setCurrUser} = useLocalStorage('currUser')
+	const { getItem: getCurrUser, setItem: setCurrUser } =
+		useLocalStorage('currUser')
 
 	const onSubmit = (profileData: FormType) => {
 		const currUser = getCurrUser()
-    const profile = {
+		const profile = {
 			...profileData,
 			id: currUser.id as string,
 			email: currUser.email as string,
@@ -79,13 +89,16 @@ export default function TeacherOnboardingDialog() {
 				router.push('/teacher')
 			})
 			.catch((err) => {
-				toast.success('Could not update profile')
+				toast.error('Could not update profile')
 			})
 	}
 
 	return (
 		<>
-			<Dialog open={isOpen && userType == 'teacher'} onOpenChange={() => dispatch(closeDialog())}>
+			<Dialog
+				open={isOpen && userType == 'teacher'}
+				onOpenChange={() => dispatch(closeDialog())}
+			>
 				<DialogContent className='w-5/6'>
 					<DialogHeader>
 						<DialogTitle>👋 Welcome Onboard</DialogTitle>
