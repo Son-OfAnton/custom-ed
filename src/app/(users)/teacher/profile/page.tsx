@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button'
 const Page = () => {
 	const router = useRouter()
 	const handleSubmit = () => {
-		router.push('/teacher/Profile/Edit')
+		router.push('/teacher/profile/edit')
 	}
 
 	return (

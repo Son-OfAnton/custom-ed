@@ -1,13 +1,31 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
+import { useLocalStorage } from '@/hooks/useLocalStorage'
+import { RootState } from '@/store'
+import { closeDialog, openDialog } from '@/store/features/dialogSlice'
+import {
+	useGetStudentByIdQuery,
+	useStudentSigninMutation,
+} from '@/store/student/studentApi'
+import {
+	useGetTeacherByIdQuery,
+	useTeacherSigninMutation,
+} from '@/store/teacher/teacherApi'
+import { StudentSigninResponse } from '@/types/auth/studentAuth.type'
+import { ExtendedError } from '@/types/Error.type'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { ReloadIcon } from '@radix-ui/react-icons'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
+import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'sonner'
 import { z } from 'zod'
+
+import { cn } from '@/lib/utils'
 
 import { PasswordInput } from '@/components/PasswordInput'
 import { Button } from '@/components/ui/button'
@@ -29,6 +47,13 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '@/components/ui/select'
 
 const formSchema = z.object({
 	email: z
@@ -37,6 +62,7 @@ const formSchema = z.object({
 	password: z
 		.string({ required_error: 'Password is required' })
 		.min(8, { message: 'Password must contain at least 8 characters' }),
+	role: z.string({ required_error: 'Role is required' }),
 })
 
 type FormType = z.infer<typeof formSchema>
@@ -46,12 +72,120 @@ const SigninPage = () => {
 		resolver: zodResolver(formSchema),
 	})
 
-	const onSubmit = (values: FormType) => {
-		console.log(values)
-	}
+	const [studentId, setStudentId] = useState('')
+	const [teacherId, setTeacherId] = useState('')
 
+	const [
+		studentSignin,
+		{
+			data: studentSigninData,
+			isLoading: isLoadingStudentSignin,
+			isSuccess: isSuccessStudentSignin,
+			isError: isErrorStudentSignin,
+			error: studentSigninError,
+		},
+	] = useStudentSigninMutation()
+
+	const [
+		teacherSignin,
+		{
+			data: teacherSigninData,
+			isLoading: isLoadingTeacherSignin,
+			isSuccess: isSuccessTeacherSignin,
+			isError: isErrorTeacherSignin,
+			error: teacherSigninError,
+		},
+	] = useTeacherSigninMutation()
+
+	const {
+		data: singleStudentData,
+		isLoading: isLoadingSingleStudent,
+		isSuccess: isSuccessSingleStudent,
+		isError: isErrorSingleStudent,
+		error: singleStudentError,
+		refetch: singleStudentRefetch,
+	} = useGetStudentByIdQuery(studentId, { skip: !studentId })
+
+	const {
+		data: singleTeacherData,
+		isLoading: isLoadingSingleTeacher,
+		isSuccess: isSuccessSingleTeacher,
+		isError: isErrorSingleTeacher,
+		error: singleTeacherError,
+		refetch: singleTeacherRefetch,
+	} = useGetTeacherByIdQuery(teacherId, { skip: !teacherId })
+
+	const { setItem: setCurrUser, getItem: getCurrUser } =
+		useLocalStorage('currUser')
 	const router = useRouter()
 	const [otpSent, setOtpSent] = useState(false)
+	const isOpen = useSelector((state: RootState) => state.dialog.isOpen)
+	const dispatch = useDispatch()
+
+	useEffect(() => {
+		if (studentId) {
+			singleStudentRefetch()
+		}
+	}, [studentId, singleStudentRefetch])
+
+	useEffect(() => {
+		if (teacherId) {
+			singleTeacherRefetch()
+		}
+	}, [teacherId, singleTeacherRefetch])
+
+	useEffect(() => {
+		if (singleStudentData) {
+			if (singleStudentData!.data!.firstName === null) {
+				dispatch(openDialog('student'))
+			} else {
+				router.push('/dashboard')
+			}
+		}
+	}, [singleStudentData, dispatch, router])
+
+	useEffect(() => {
+		if (singleTeacherData) {
+			if (singleTeacherData!.data!.firstName === null) {
+				dispatch(openDialog('teacher'))
+			} else {
+				router.push('/dashboard')
+			}
+		}
+	}, [singleTeacherData, dispatch, router])
+
+	const onSubmit = (credentials: FormType) => {
+		console.log(`credentials ${JSON.stringify(credentials)}`)
+		if (credentials.role.toLowerCase() === 'student') {
+			studentSignin(credentials)
+				.unwrap()
+				.then((res: StudentSigninResponse) => {
+					console.log(`response ${JSON.stringify(res)}`)
+					setCurrUser(res.data)
+					setStudentId(res.data?.id!)
+					dispatch(openDialog('student'))
+					toast.success('Signin successful')
+				})
+				.catch((err: ExtendedError) => {
+					console.log(`error ${JSON.stringify(err)}`)
+					toast.error('Invalid credentials')
+				})
+		} else if (credentials.role.toLowerCase() === 'teacher') {
+			teacherSignin(credentials)
+				.unwrap()
+				.then((res) => {
+					console.log(`response ${JSON.stringify(res)}`)
+					setCurrUser(res.data)
+					setTeacherId(res.data?.id!)
+					dispatch(openDialog('teacher'))
+					toast.success('Signin successful')
+				})
+				.catch((err: ExtendedError) => {
+					console.log(`error ${JSON.stringify(err)}`)
+					toast.error('Invalid credentials')
+				})
+		}
+	}
 
 	return (
 		<main className='flex h-screen w-screen justify-center items-center bg-[url(/signup-bg.jpg)]'>
@@ -114,6 +248,45 @@ const SigninPage = () => {
 												placeholder='Password'
 												{...field}
 											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name='role'
+								render={({ field }) => (
+									<FormItem>
+										<FormControl>
+											<Select onValueChange={field.onChange}>
+												<FormControl>
+													<SelectTrigger
+														className={cn(
+															'font-semibold text-muted-foreground',
+															{
+																'text-primary': field.value !== undefined,
+															},
+														)}
+													>
+														<SelectValue placeholder='Role' />
+													</SelectTrigger>
+												</FormControl>
+												<SelectContent>
+													<SelectItem
+														className='font-semibold text-primary'
+														value='teacher'
+													>
+														Teacher
+													</SelectItem>
+													<SelectItem
+														className='font-semibold text-primary'
+														value='student'
+													>
+														Student
+													</SelectItem>
+												</SelectContent>
+											</Select>
 										</FormControl>
 										<FormMessage />
 									</FormItem>
@@ -182,10 +355,19 @@ const SigninPage = () => {
 								</Dialog>
 							)}
 							<div className='flex flex-col gap-y-4 w-full'>
-								<Button className='w-full' type='submit'>
-									Submit
+								<Button
+									className={cn('w-full', {
+										'bg-primary/90':
+											isLoadingStudentSignin || isLoadingTeacherSignin,
+									})}
+									disabled={isLoadingStudentSignin || isLoadingTeacherSignin}
+									type='submit'
+								>
+									{isLoadingStudentSignin || isLoadingTeacherSignin ? (
+										<ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
+									) : null}
+									Signin
 								</Button>
-
 								<span className='md:hidden text-primary text-center text-sm'>
 									Don't have an account ?
 									<Link

@@ -1,7 +1,12 @@
+import AllProviders from '@/providers/AllProviders'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
 import './globals.css'
+
+import StudentOnboardingDialog from '@/components/StudentOnboardingDialog'
+import { Toaster } from '@/components/ui/sonner'
+import TeacherOnboardingDialog from '@/components/TeacherOnboardingDialog'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,7 +22,12 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en'>
-			<body className={inter.className}>{children}</body>
+			<AllProviders>
+				<Toaster position='top-center' richColors />
+				<StudentOnboardingDialog />
+				<TeacherOnboardingDialog />
+				<body className={inter.className}>{children}</body>
+			</AllProviders>
 		</html>
 	)
 }
