@@ -1,9 +1,9 @@
 'use client'
 
 import { useLocalStorage } from '@/hooks/useLocalStorage'
-import { useStudentSignupMutation } from '@/store/auth/studentAuthApi'
-import { useTeacherSignupMutation } from '@/store/auth/teacherAuthApi'
+import { useTeacherSignupMutation } from '@/store/teacher/teacherApi'
 import { useSendOtpMutation } from '@/store/otp/otpApi'
+import { useStudentSignupMutation } from '@/store/student/studentApi'
 import { ExtendedError } from '@/types/Error.type'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ReloadIcon } from '@radix-ui/react-icons'

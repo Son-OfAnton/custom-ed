@@ -4,7 +4,9 @@ import { Inter } from 'next/font/google'
 
 import './globals.css'
 
+import StudentOnboardingDialog from '@/components/StudentOnboardingDialog'
 import { Toaster } from '@/components/ui/sonner'
+import TeacherOnboardingDialog from '@/components/TeacherOnboardingDialog'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,6 +24,8 @@ export default function RootLayout({
 		<html lang='en'>
 			<AllProviders>
 				<Toaster position='top-center' richColors />
+				<StudentOnboardingDialog />
+				<TeacherOnboardingDialog />
 				<body className={inter.className}>{children}</body>
 			</AllProviders>
 		</html>
