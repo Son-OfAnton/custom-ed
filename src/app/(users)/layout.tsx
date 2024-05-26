@@ -3,15 +3,15 @@ import React from 'react'
 import LeftSidebar from '@/components/LeftSideBar'
 
 interface LayoutProps {
-	role: string
 	children: React.ReactNode
 }
 
-const Layout: React.FC<LayoutProps> = ({ role = 'teacher', children }) => {
+const Layout: React.FC<LayoutProps> = ({ children }) => {
+	const role = "teacher"
 	return (
-		<div className='layout'>
+		<div>
 			<LeftSidebar role={role} />
-			<div className='content'>{children}</div>
+			<div className='md:ml-64'>{children}</div>
 		</div>
 	)
 }

@@ -1,12 +1,15 @@
 'use client'
 
 import { departments } from '@/constants/departments'
+import { useLocalStorage } from '@/hooks/useLocalStorage'
 import { closeDialog } from '@/store/features/dialogSlice'
 import { RootState } from '@/store/index'
 import { useEditStudentProfileMutation } from '@/store/student/studentApi'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'sonner'
 import z from 'zod'
 
 import { Button } from '@/components/ui/button'
@@ -33,15 +36,21 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select'
-import { toast } from 'sonner'
-import { useLocalStorage } from '@/hooks/useLocalStorage'
-import { useRouter } from 'next/navigation'
 
 const formSchema = z.object({
-	studentId: z.string({required_error: 'Student ID is required'}),
-	firstName: z.string({ required_error: 'First name is required' }),
-	lastName: z.string({ required_error: 'Last name is required' }),
-	phoneNumber: z.string({ required_error: 'Phone number is required' }),
+	studentId: z.string({ required_error: 'Student ID is required' }),
+	firstName: z
+    .string()
+    .regex(/^[A-Za-z]+$/, 'First name should only contain alphabets')
+    .min(1, 'First name is required'),
+  lastName: z
+    .string()
+    .regex(/^[A-Za-z]+$/, 'Last name should only contain alphabets')
+    .min(1, 'Last name is required'),
+	phoneNumber: z
+		.string({ required_error: 'Phone number is required' })
+		.startsWith('+251')
+		.length(13, 'Phone number length is invalid'),
 	department: z.string({ required_error: 'Department is required' }),
 	section: z.string(),
 	year: z.string(),
@@ -60,9 +69,9 @@ export default function StudentOnboardingDialog() {
 
 	const [changeProfile, { data, isLoading, isSuccess, isError, error }] =
 		useEditStudentProfileMutation()
-	
-	const {getItem: getCurrUser, setItem: setCurrUser} = useLocalStorage('currUser')
 
+	const { getItem: getCurrUser, setItem: setCurrUser } =
+		useLocalStorage('currUser')
 
 	const onSubmit = (profileData: FormType) => {
 		const currUser = getCurrUser()
@@ -85,7 +94,7 @@ export default function StudentOnboardingDialog() {
 				router.push('/student')
 			})
 			.catch((err) => {
-				toast.success('Could not update profile')
+				toast.error('Could not update profile')
 			})
 	}
 
