@@ -50,8 +50,8 @@ const LeftSideBar: React.FC<Props> = ({ role }: Props) => {
 
 	return (
 		<>
-			<div className='md:w-45 bg-white h-screen flex-1 fixed justify-between  shadow-md hidden md:flex'>
-				<div className='flex flex-col  justify-between h-full w-full'>
+			<div className='h-screen fixed justify-between shadow-md hidden md:flex'>
+				<div className='flex flex-col justify-between h-full w-full'>
 					<div>
 						<Link
 							href='/'
