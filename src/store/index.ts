@@ -1,18 +1,18 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { studentAuthApi } from './auth/studentAuthApi'
-import { teacherAuthApi } from './auth/teacherAuthApi'
-// import { otpApi } from './otp/otpApi'
+import { studentAuthApi } from './student/studentApi'
+import { teacherAuthApi } from './teacher/teacherApi'
+
+
 
 
 export const store = configureStore({
   reducer: {
     [studentAuthApi.reducerPath]: studentAuthApi.reducer,
     [teacherAuthApi.reducerPath]: teacherAuthApi.reducer,
-    // [otpApi.reducerPath]: otpApi.reducer,
+   
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware()
     .concat(studentAuthApi.middleware, 
-      // otpApi.middleware, 
       teacherAuthApi.middleware),
 })
 

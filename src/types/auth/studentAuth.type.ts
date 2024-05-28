@@ -5,15 +5,15 @@ export interface StudentLoginRequest{
 export interface StudentLoginResponse {
     isSuccess?: boolean;
     message?:   string;
-    data?:      Student;
+    data:      Student;
     errors?:    string[];
 }
 
 export interface Student {
-    id?:    string;
-    email?: string;
-    role?:  number;
-    token?: string;
+    id:    string;
+    email: string;
+    role:  number;
+    token: string;
 }
 export interface StudentSignupRequest {
     email: string
@@ -22,7 +22,7 @@ export interface StudentSignupRequest {
 export interface StudentSignupResponse{
     isSuccess?: boolean;
     message?:   string;
-    data?:      StudentSignup;
+    data:      StudentSignup;
     errors?:    string[];
 }
 
@@ -30,7 +30,7 @@ export interface  StudentSignup {
     id?:          string;
     createdAt?:   Date;
     updatedAt?:   Date;
-    email?:       string;
+    email:       string;
     password?:    string;
     role?:        number;
     isVerified?:  boolean;

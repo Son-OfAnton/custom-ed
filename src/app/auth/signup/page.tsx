@@ -1,37 +1,33 @@
-'use client'
-import { useLocalStorage } from '@/hooks/useLocalStorage'
-import { useStudentSignupMutation } from '@/store/auth/studentAuthApi'
-import { useTeacherSignupMutation } from '@/store/auth/teacherAuthApi'
+'use client';
 
-import { ExtendedError } from '@/types/Error.type'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { ReloadIcon } from '@radix-ui/react-icons'
-import Image from 'next/image'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
-import { z } from 'zod'
+import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { useStudentSignupMutation } from '@/store/student/studentApi';
+import { useTeacherSignupMutation } from '@/store/teacher/teacherApi';
+import { ExtendedError } from '@/types/Error.type';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ReloadIcon } from '@radix-ui/react-icons';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 
-import { cn } from '@/lib/utils'
 
-import { PasswordInput } from '@/components/PasswordInput'
-import { Button } from '@/components/ui/button'
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from '@/components/ui/select'
+
+import { cn } from '@/lib/utils';
+
+
+
+import { PasswordInput } from '@/components/PasswordInput';
+import { Button } from '@/components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
+
+
+
 
 const formSchema = z
 	.object({
@@ -55,13 +51,7 @@ type FormType = z.infer<typeof formSchema>
 
 const SignupPage = () => {
 	const router = useRouter()
-	const { setItem: setEmailForVerification } = useLocalStorage(
-		'emailForVerification',
-	)
-	const { setItem: setIdForVerification } = useLocalStorage('idForVerification')
-	const { setItem: setRoleForVerification } = useLocalStorage(
-		'roleForVerification',
-	)
+	
 
 	const [
 		studentSignup,
@@ -81,39 +71,44 @@ const SignupPage = () => {
 			isSuccess: isSuccessTeacherSignup,
 		},
 	] = useTeacherSignupMutation()
-	
+
 	const form = useForm<FormType>({
 		resolver: zodResolver(formSchema),
 	})
 
 	const onSubmit = async (credentials: FormType) => {
+		const { email, password } = credentials
 		if (credentials.role.toLowerCase() === 'student') {
-			studentSignup(credentials)
+			studentSignup({email, password})
 				.unwrap()
 				.then((res) => {
 					console.log(`studentSignupResponse: ${JSON.stringify(res)}`)
-					setEmailForVerification(res.data?.email!)
-					setIdForVerification(res.data?.id!)
-					setRoleForVerification(res.data?.role!)
-					
+
+					localStorage.setItem('email', res.data.email)
+					localStorage.setItem('role', "student")
+					localStorage.setItem('id', JSON.stringify(res.data.id))
+
 					toast.success('Please check your email for verification.')
-					router.push('/auth/verify-email')
+					router.push(`/auth/verify-email`)
 				})
 				.catch((err: ExtendedError) => {
 					console.log(`signup error ${JSON.stringify(err)}`)
 					toast.error(err.data.errors![0])
 				})
 		} else if (credentials.role.toLowerCase() === 'teacher') {
-			teacherSignup(credentials)
+			teacherSignup({email, password})
 				.unwrap()
 				.then((res) => {
 					console.log(`teacherSignupData: ${JSON.stringify(res)}`)
 					toast.success('Please check your email for verification.')
-					router.push('/auth/verify-email')
+					localStorage.setItem('email', res.data.email)
+					localStorage.setItem('role', "teacher")
+					localStorage.setItem('id', JSON.stringify(res.data.id))
+					router.push(`/auth/verify-email`,)
 				})
 				.catch((err: ExtendedError) => {
 					console.log(`signup error ${JSON.stringify(err)}`)
-					toast.error("Can not sign in ")
+					toast.error('Can not sign in ')
 				})
 		}
 	}
@@ -223,9 +218,9 @@ const SignupPage = () => {
 							<div className='flex flex-col gap-y-4 w-full'>
 								<Button
 									className={cn('w-full', {
-										'bg-primary/90': isLoadingStudentSignup,
+										'bg-primary/90': isLoadingStudentSignup || isLoadingTeacherSignup,
 									})}
-									disabled={isLoadingStudentSignup}
+									disabled={isLoadingStudentSignup || isLoadingTeacherSignup}
 									type='submit'
 								>
 									{isLoadingStudentSignup || isLoadingTeacherSignup ? (

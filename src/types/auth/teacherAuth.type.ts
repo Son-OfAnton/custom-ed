@@ -5,15 +5,15 @@ export interface TeacherLoginRequest {
 export interface TeacherLoginResponseType {
     isSuccess?: boolean;
     message?:   string;
-    data?:      TeacherLogin;
+    data:      TeacherLogin;
     errors?:    string[];
 }
 
 export interface TeacherLogin  {
-    id?:    string;
-    email?: string;
-    role?:  number;
-    token?: string;
+    id:    string;
+    email: string;
+    role:  number;
+    token: string;
 }
 export interface TeacherSignupRequest {
     email: string;
@@ -23,15 +23,15 @@ export interface TeacherSignupRequest {
 export interface TeacherSignupResponse {
     isSuccess?: boolean;
     message?:   string;
-    data?:      TeacherSignup;
+    data:      TeacherSignup;
     errors?:    string[];
 }
 
 export interface TeacherSignup {
-    id?:          string;
+    id:          string;
     firstName?:   string;
     lastName?:    string;
-    email?:       string;
+    email:       string;
     phoneNumber?: string;
     joinDate?:    Date;
     department?:  number;

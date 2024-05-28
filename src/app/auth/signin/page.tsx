@@ -4,19 +4,19 @@ import { useState } from 'react';
 
 
 
-import { useStudentSigninMutation } from '@/store/auth/studentAuthApi';
-import { useTeacherSigninMutation } from '@/store/auth/teacherAuthApi';
+import { useStudentSigninMutation, useStudentSendOtpForForgotPasswordMutation} from '@/store/student/studentApi';
+import { useTeacherSigninMutation, useTeacherSendOtpForForgotPasswordMutation} from '@/store/teacher/teacherApi';
 import { StudentLoginResponse } from '@/types/auth/studentAuth.type';
 import { ExtendedError } from '@/types/Error.type';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ReloadIcon } from '@radix-ui/react-icons';
+import {  ReloadIcon } from '@radix-ui/react-icons';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
-
+import {ChevronDownIcon} from '@radix-ui/react-icons';
 
 
 import { cn } from '@/lib/utils';
@@ -26,6 +26,7 @@ import { cn } from '@/lib/utils';
 import { PasswordInput } from '@/components/PasswordInput';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -73,7 +74,24 @@ const SigninPage = () => {
 			error: teacherSigninError,
 		},
 	] = useTeacherSigninMutation()
-
+	const [
+		studentSendOtpForForgotPassword,
+		{
+			data: StudentotpVerifyDataForgotPassword,
+			isLoading: StudentisLoadingOtpVerifyForgotPassword,
+			isError: StudentisErrorOtpVerifyForgotPassword,
+			error: StudentotpVerifyErrorForgotPassword,
+		},
+	] = useStudentSendOtpForForgotPasswordMutation()
+	const [
+		teacherSendOtpForForgotPassword,
+		{
+			data: TeacherotpVerifyDataForgotPassword,
+			isLoading: TeacheisLoadingOtpVerifyForgotPassword,
+			isError: TeacheisErrorOtpVerifyForgotPassword,
+			error: TeacheotpVerifyErrorForgotPassword,
+		},
+	] = useTeacherSendOtpForForgotPasswordMutation()
 	const onSubmit = (credentials: FormType) => {
 		console.log(`credentials ${JSON.stringify(credentials)}`)
 		const { email, password } = credentials
@@ -83,6 +101,9 @@ const SigninPage = () => {
 				.then((res: StudentLoginResponse) => {
 					console.log(`response ${JSON.stringify(res)}`)
 					toast.success('Signin successful')
+					localStorage.setItem('token', res.data.token)
+					localStorage.setItem('role', "student")
+					localStorage.setItem('id', JSON.stringify(res.data.id))
 				})
 				.catch((err: ExtendedError) => {
 					console.log(`error ${JSON.stringify(err)}`)
@@ -93,6 +114,9 @@ const SigninPage = () => {
 				.unwrap()
 				.then((res) => {
 					console.log(`response ${JSON.stringify(res)}`)
+					localStorage.setItem('token', res.data.token)
+					localStorage.setItem('role', 'teacher')
+					localStorage.setItem('id', JSON.stringify(res.data.id))
 					toast.success('Signin successful')
 				})
 				.catch((err: ExtendedError) => {
@@ -101,9 +125,48 @@ const SigninPage = () => {
 				})
 		}
 	}
-
+	
+	
 	const router = useRouter()
-	const [otpSent, setOtpSent] = useState(false)
+	const [email, setEmail] = useState("")
+	const [roleForOtp, setRoleForOtp] = useState('')
+	const handleSelectRole = (role: string) => {
+		setRoleForOtp(role)
+	}
+	const handleDialogButton = () => {
+		localStorage.setItem('email', email)
+		localStorage.setItem('source', 'forgotpassword')
+		localStorage.setItem('role', roleForOtp.toLowerCase())
+		
+		if (localStorage.getItem("role")?.toLowerCase() === 'student') {
+				studentSendOtpForForgotPassword({ Email: email })
+					.unwrap()
+					.then((res) => {
+						console.log('OTP Verify Response: ', JSON.stringify(res))
+						toast.success('OTP Verified Successfully')
+						router.push(`/auth/verify-email`)
+					})
+					.catch((err) => {
+						console.error('OTP Verification Error: ', err)
+						toast.error('OTP Verification Failed. Please try again.')
+					})
+			} else if (localStorage.getItem("role")?.toLowerCase() === 'teacher') {
+				teacherSendOtpForForgotPassword({ Email: email })
+					.unwrap()
+					.then((res) => {
+						console.log('OTP Verify Response: ', JSON.stringify(res))
+						toast.success('OTP Verified Successfully')
+						router.push(`/auth/verify-email`)
+					})
+					.catch((err) => {
+						console.error('OTP Verification Error: ', err)
+						toast.error('OTP Verification Failed. Please try again.')
+					})
+			}
+
+		}
+		
+	
 
 	return (
 		<main className='flex h-screen w-screen justify-center items-center bg-[url(/signup-bg.jpg)]'>
@@ -210,39 +273,7 @@ const SigninPage = () => {
 									</FormItem>
 								)}
 							/>
-							{otpSent ? (
-								<Dialog>
-									<DialogTrigger asChild>
-										<Button variant='link' className='text-gray-500 self-end'>
-											Forgot password ?
-										</Button>
-									</DialogTrigger>
-									<DialogContent className='sm:max-w-[425px]'>
-										<DialogHeader>
-											<DialogTitle>Recover password</DialogTitle>
-											<DialogDescription>
-												Please enter the OTP you received.
-											</DialogDescription>
-										</DialogHeader>
-										<div className='grid gap-4 py-4'>
-											<div className='grid grid-cols-4 items-center gap-4'>
-												<Label htmlFor='otp' className='text-right'>
-													OTP
-												</Label>
-												<Input id='otp' className='col-span-3' />
-											</div>
-										</div>
-										<DialogFooter>
-											<Button
-												type='submit'
-												onClick={() => router.push('/auth/forgot-password')}
-											>
-												Submit
-											</Button>
-										</DialogFooter>
-									</DialogContent>
-								</Dialog>
-							) : (
+								
 								<Dialog>
 									<DialogTrigger asChild>
 										<Button variant='link' className=' text-gray-500 self-end'>
@@ -261,17 +292,47 @@ const SigninPage = () => {
 												<Label htmlFor='email' className='text-right'>
 													Email
 												</Label>
-												<Input id='email' className='col-span-3' />
+												<Input id='email' className='col-span-3' onChange={(e) => setEmail(e.target.value)} />
 											</div>
+											<div className='grid grid-cols-4 items-center gap-4'>
+												<span className='text-right'>Role</span>
+												<DropdownMenu>
+																	<DropdownMenuTrigger className="col-span-3 border rounded-md p-2">
+																		<div className='flex justify-between w-full items-center'>
+																	{roleForOtp ? roleForOtp : 'Select a role'}
+																	<ChevronDownIcon/>
+																		</div>
+																</DropdownMenuTrigger>
+																<DropdownMenuContent>
+																	<DropdownMenuItem onClick={() => handleSelectRole('Teacher')}>
+																	Teacher
+																	</DropdownMenuItem>
+																	<DropdownMenuItem onClick={() => handleSelectRole('Student')}>
+																	Student
+																	</DropdownMenuItem>
+																</DropdownMenuContent>
+														</DropdownMenu>
+												</div>
+
 										</div>
 										<DialogFooter>
-											<Button type='submit' onClick={() => setOtpSent(true)}>
-												Submit
-											</Button>
+											
+											<Button type='submit' onClick={() => handleDialogButton()}
+									className={cn('w-full', {
+										'bg-primary/90':
+											StudentisLoadingOtpVerifyForgotPassword || TeacheisLoadingOtpVerifyForgotPassword,
+									})}
+									disabled={StudentisLoadingOtpVerifyForgotPassword || TeacheisLoadingOtpVerifyForgotPassword}
+								>
+									{StudentisLoadingOtpVerifyForgotPassword || TeacheisLoadingOtpVerifyForgotPassword ? (
+										<ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
+									) : null}
+									Send Otp
+								</Button>
 										</DialogFooter>
 									</DialogContent>
 								</Dialog>
-							)}
+							
 							<div className='flex flex-col gap-y-4 w-full'>
 								<Button
 									className={cn('w-full', {

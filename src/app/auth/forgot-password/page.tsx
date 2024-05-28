@@ -1,33 +1,37 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
+import { useState } from 'react';
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import Image from 'next/image'
-import Link from 'next/link'
-import { useForm } from 'react-hook-form'
-import { tuple, z } from 'zod'
 
-import { PasswordInput } from '@/components/PasswordInput'
-import { Button } from '@/components/ui/button'
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from '@/components/ui/dialog'
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+
+import { useChangePasswordMutation } from "@/store/student/studentApi";
+import { useChangeTeacherPasswordMutation } from "@/store/teacher/teacherApi";
+import { changePasswordResponse } from "@/types/auth/profile.type";
+import { ExtendedError } from '@/types/Error.type';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ReloadIcon } from '@radix-ui/react-icons';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { tuple, z } from 'zod';
+
+
+
+import { cn } from '@/lib/utils';
+
+
+
+import { PasswordInput } from '@/components/PasswordInput';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+
+
+
+
 
 const formSchema = z
 	.object({
@@ -50,10 +54,58 @@ const ForgotPasswordPage = () => {
 		resolver: zodResolver(formSchema),
 	})
 
-	const onSubmit = (values: FormType) => {
-		console.log(values)
-	}
+const role = localStorage.getItem("role")
+const email = localStorage.getItem("email") ?? ""
+	const [
+		changePassword,
+		{
+			data: studentChangePasswordData,
+			isLoading: isLoadingStudentchangePassword,
+			isSuccess: isSuccessStudentchangePassword,
+			isError: isErrorStudentchangePassword,
+			error: StudentchangePasswordError,
+		},
+	] = useChangePasswordMutation()
 
+	const [
+		changeTeacherPassword,
+		{
+			data: teacherChangePassword,
+			isLoading: isLoadingTeacherChangePassword,
+			isSuccess: isSuccessTeacherChangePassword,
+			isError: isErrorTeacherChangePassword,
+			error: teacherChangePasswordError,
+		},
+	] = useChangeTeacherPasswordMutation()
+	const onSubmit = (credentials: FormType) => {
+		console.log(credentials)
+		console.log(`credentials ${JSON.stringify(credentials)}`)
+		const { newPassword } = credentials
+		if (role?.toLowerCase() === 'student') {
+			changePassword({ email, newPassword })
+				.unwrap()
+				.then((res: changePasswordResponse) => {
+					console.log(`response ${JSON.stringify(res)}`)
+					toast.success('Password changed successfully')
+					
+				})
+				.catch((err: ExtendedError) => {
+					console.log(`error ${JSON.stringify(err)}`)
+					toast.success('Password changed successfully')
+				})
+		} else if (role?.toLowerCase() === 'teacher') {
+			changeTeacherPassword({ email, newPassword })
+				.unwrap()
+				.then((res: changePasswordResponse) => {
+					console.log(`response ${JSON.stringify(res)}`)
+					toast.success('Password changed successfully')
+				})
+				.catch((err: ExtendedError) => {
+					console.log(`error ${JSON.stringify(err)}`)
+					toast.success('Password changed successfully')
+				})
+		}
+	}
 	return (
 		<main className='flex h-screen w-screen justify-center items-center bg-[url(/signup-bg.jpg)]'>
 			<div className='flex h-[80vh] w-[80vw] shadow-lg'>
@@ -112,7 +164,16 @@ const ForgotPasswordPage = () => {
 								)}
 							/>
 							<div className='flex flex-col gap-y-4 w-full'>
-								<Button className='w-full mt-12' type='submit'>
+								<Button type='submit'
+									className={cn('w-full', {
+										'bg-primary/90':
+											isLoadingStudentchangePassword ||isLoadingTeacherChangePassword,
+									})}
+									disabled={isLoadingStudentchangePassword ||isLoadingTeacherChangePassword}
+								>
+									{isLoadingStudentchangePassword ||isLoadingTeacherChangePassword? (
+										<ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
+									) : null}
 									Submit
 								</Button>
 							</div>

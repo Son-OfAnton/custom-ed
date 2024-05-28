@@ -1,8 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
-import { profileFieldItems } from '@/types/profileFieldItems'
 
-import { Input } from '@/components/ui/input'
+
+import { profileFieldItems } from '@/types/profileFieldItems';
+
+
+
+import { Input } from '@/components/ui/input';
+
+
+
+
 
 interface profileFieldsProps {
 	ProfileFieldItems: profileFieldItems
@@ -14,7 +22,7 @@ const EditableProfileFields = ({ ProfileFieldItems }: profileFieldsProps) => {
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const inputValue = event.target.value
-		setValue(inputValue)
+		ProfileFieldItems.onChange(inputValue)
 
 		if (!inputValue.trim()) {
 			setError(`${ProfileFieldItems.text} is required`)
