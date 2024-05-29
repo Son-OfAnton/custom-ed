@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { StudentSignupRequest, StudentSignupResponse } from '@/types/auth/studentAuth.type'
 import {  VerifyOtpRequest, VerifyOtpResponse, SendOtpForForgotPasswordResponse, SendOtpForForgotPasswordRequest } from '@/types/auth/verifyOtp.type'
-import {getProfileByIdResponse, getProfileByIdRequest, updateProfileFieldResponse, updateProfileFieldRequest, getPictureResponse,changePasswordRequest, getPictureRequest, changePasswordResponse} from "@/types/auth/profile.type"
+import {getProfileByIdResponse, getProfileByIdRequest, updateProfileFieldResponse, updateProfileFieldRequest, getPictureResponse,changePasswordRequest, getPictureRequest, changePasswordResponse, uploadImageRequest,uploadImageResponse } from "@/types/auth/profile.type"
 export const studentAuthApi = createApi({
   reducerPath: 'studentAuthApi',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://customed-user-service.onrender.com/api/user/student' }),
@@ -69,7 +69,14 @@ export const studentAuthApi = createApi({
         body,
       }),
     }),
+     uploadImageStudent: builder.mutation<uploadImageResponse, uploadImageRequest>({
+      query: (body) => ({
+        url: '/uploadImage',
+        method: 'POST',
+        body,
+      }),
+    }),
 }),
 })
 
-export const { useStudentSignupMutation, useStudentSigninMutation, useStudentVerifyOtpMutation, useStudentSendOtpForForgotPasswordMutation, useStudentVerifyOtpForForgotPasswordMutation, useStudentGetProfileByIdQuery, useStudentGetPictureByIdQuery, useStudentUpdatePhoneNumberMutation, useChangePasswordMutation} = studentAuthApi
+export const { useStudentSignupMutation, useStudentSigninMutation, useStudentVerifyOtpMutation, useStudentSendOtpForForgotPasswordMutation, useStudentVerifyOtpForForgotPasswordMutation, useStudentGetProfileByIdQuery, useStudentGetPictureByIdQuery, useStudentUpdatePhoneNumberMutation, useChangePasswordMutation, useUploadImageStudentMutation} = studentAuthApi

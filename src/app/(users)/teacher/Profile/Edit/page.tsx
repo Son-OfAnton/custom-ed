@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 
 
 
-import { useTeacherGetPictureByIdQuery, useTeacherGetProfileByIdQuery, useTeacherUpdatePhoneNumberMutation } from '@/store/teacher/teacherApi';
+import { useTeacherGetPictureByIdQuery, useTeacherGetProfileByIdQuery, useTeacherUpdatePhoneNumberMutation, useUploadImageTeacherMutation } from '@/store/teacher/teacherApi';
 import { updateProfileFieldResponse } from '@/types/auth/profile.type';
 import { ExtendedError } from '@/types/Error.type';
 import { ReloadIcon } from '@radix-ui/react-icons';
@@ -35,22 +35,8 @@ const Page = () => {
 	const id = localStorage.getItem('id') ?? ''
 	const data = useTeacherGetProfileByIdQuery({ id })
 	const url = useTeacherGetPictureByIdQuery({ id }) 
-	const [avatarUrl, setAvatarUrl] = useState(url.data?.data.imageUrl)
+	const [avatarUrl, setAvatarUrl] = useState(url.data?.data)
 	const user = data?.data?.data
-	const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const file = event.target.files?.[0]
-		if (file) {
-			const reader = new FileReader()
-			reader.onload = () => {
-				if (typeof reader.result === 'string') {
-					setAvatarUrl(reader.result)
-				} else {
-					console.error('Error reading file')
-				}
-			}
-			reader.readAsDataURL(file)
-		}
-	}
 	const [
 		teacherUpdatePhoneNumber,
 		{
@@ -60,6 +46,45 @@ const Page = () => {
 			error: TeacherUpdatePhoneNumberError,
 		},
 	] = useTeacherUpdatePhoneNumberMutation()
+
+	const [
+		uploadImageTeacher,
+		{
+			data: TeacherUploadImageData,
+			isLoading: TeacherUploadImageisLoading,
+			isError: TeacherUploadImageisError,
+			error: TeacherUploadImageError,
+		},
+	] = useUploadImageTeacherMutation()
+
+	const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const file = event.target.files?.[0]
+		if (file) {
+			const reader = new FileReader()
+			reader.onload = () => {
+				if (reader.result) {
+					const binaryArray = new Uint8Array(reader.result as ArrayBuffer)
+					const binaryData = new TextDecoder().decode(binaryArray)
+
+					if (binaryData !== avatarUrl) {
+						uploadImageTeacher({ image: binaryData })
+							.unwrap()
+							.then((res) => {
+								toast.success('Image uploaded successfully')
+								setAvatarUrl(URL.createObjectURL(file))
+							})
+							.catch((err: ExtendedError) => {
+								console.error('Error uploading image:', err)
+								toast.error('Failed to upload image')
+							})
+					}
+				} else {
+					console.error('Error reading file')
+				}
+			}
+			reader.readAsArrayBuffer(file)
+		}
+	}
 
 	const handleInputChange = (value: string) => {
 		setPhone(value)

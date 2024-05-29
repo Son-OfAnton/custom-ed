@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { TeacherSignupRequest, TeacherSignupResponse } from '@/types/auth/teacherAuth.type'
 import {  VerifyOtpRequest, VerifyOtpResponse, SendOtpForForgotPasswordResponse, SendOtpForForgotPasswordRequest } from '@/types/auth/verifyOtp.type'
-import {getProfileByIdResponse, getProfileByIdRequest, updateProfileFieldResponse,updateProfileFieldRequest, getPictureResponse,changePasswordRequest, changePasswordResponse} from "@/types/auth/profile.type"
+import {getProfileByIdResponse, getProfileByIdRequest, updateProfileFieldResponse,updateProfileFieldRequest, getPictureResponse,changePasswordRequest, changePasswordResponse, uploadImageRequest,uploadImageResponse,getPictureRequest} from "@/types/auth/profile.type"
 export const teacherAuthApi = createApi({
   reducerPath: 'teacherAuthApi',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://customed-user-service.onrender.com/api/user/teacher' }),
@@ -48,7 +48,7 @@ export const teacherAuthApi = createApi({
         body,
     }),
   }),
-  teacherGetPictureById: builder.query<getProfileByIdResponse, getProfileByIdRequest>({
+  teacherGetPictureById: builder.query<getPictureResponse, getPictureRequest>({
       query: (body) => ({
         url: 'getPicture/${userId}',
         method: 'GET',
@@ -69,7 +69,14 @@ export const teacherAuthApi = createApi({
         body,
       }),
     }),
+     uploadImageTeacher: builder.mutation<uploadImageResponse, uploadImageRequest>({
+      query: (body) => ({
+        url: '/uploadImage',
+        method: 'POST',
+        body,
+      }),
+    }),
 }),
 })
 
-export const { useTeacherSignupMutation, useTeacherSigninMutation, useTeacherVerifyOtpMutation, useTeacherSendOtpForForgotPasswordMutation, useTeacherVerifyOtpForForgotPasswordMutation, useTeacherGetProfileByIdQuery, useTeacherGetPictureByIdQuery, useTeacherUpdatePhoneNumberMutation, useChangeTeacherPasswordMutation} = teacherAuthApi
+export const { useTeacherSignupMutation, useTeacherSigninMutation, useTeacherVerifyOtpMutation, useTeacherSendOtpForForgotPasswordMutation, useTeacherVerifyOtpForForgotPasswordMutation, useTeacherGetProfileByIdQuery, useTeacherGetPictureByIdQuery, useTeacherUpdatePhoneNumberMutation, useChangeTeacherPasswordMutation, useUploadImageTeacherMutation} = teacherAuthApi

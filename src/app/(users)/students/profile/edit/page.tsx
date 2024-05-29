@@ -1,30 +1,25 @@
-'use client';
+'use client'
 
-import React, { useState } from 'react';
+import React, {  useState } from 'react'
 
-
-
-import { useStudentGetPictureByIdQuery, useStudentGetProfileByIdQuery, useStudentUpdatePhoneNumberMutation } from '@/store/student/studentApi';
-import { updateProfileFieldResponse } from '@/types/auth/profile.type';
-import { ExtendedError } from '@/types/Error.type';
-import { ReloadIcon } from '@radix-ui/react-icons';
-import { Calendar, CircleUser, Library, Pencil, Phone } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import {
+	useStudentGetPictureByIdQuery,
+	useStudentGetProfileByIdQuery,
+	useStudentUpdatePhoneNumberMutation,
+	useUploadImageStudentMutation,
+} from '@/store/student/studentApi'
+import { updateProfileFieldResponse } from '@/types/auth/profile.type'
+import { ExtendedError } from '@/types/Error.type'
+import { ReloadIcon } from '@radix-ui/react-icons'
+import { Calendar, CircleUser, Library, Pencil, Phone } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
 import { cn } from '@/lib/utils'
-
-
-
-import EditableProfileFields from '@/components/EditableProfileFields';
-import NonEditableProfileFields from '@/components/NonEditableProfileFields';
-import PhoneField from '@/components/PhoneField';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-
-
-
-
+import NonEditableProfileFields from '@/components/NonEditableProfileFields'
+import PhoneField from '@/components/PhoneField'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
 
 const Page = () => {
 	const router = useRouter()
@@ -32,10 +27,11 @@ const Page = () => {
 	const [InputError, setInputError] = useState('')
 	const [phone, setPhone] = useState('097979779')
 	const id = localStorage.getItem('id') ?? ''
-	const url = useStudentGetPictureByIdQuery({id})
+	const url = useStudentGetPictureByIdQuery({ id })
 	const [avatarUrl, setAvatarUrl] = useState(url.data?.data)
-	const data = useStudentGetProfileByIdQuery({id})
+	const data = useStudentGetProfileByIdQuery({ id })
 	const user = data?.data?.data
+
 	const [
 		studentUpdatePhoneNumber,
 		{
@@ -45,41 +41,79 @@ const Page = () => {
 			error: StudentUpdatePhoneNumberError,
 		},
 	] = useStudentUpdatePhoneNumberMutation()
-	
+
+	const [
+		uploadImageStudent,
+		{
+			data: StudentUploadImageData,
+			isLoading: StudentUploadImageisLoading,
+			isError: StudentUploadImageisError,
+			error: StudentUploadImageError,
+		},
+	] = useUploadImageStudentMutation()
+
 	const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const file = event.target.files?.[0]
 		if (file) {
 			const reader = new FileReader()
 			reader.onload = () => {
-				if (typeof reader.result === 'string') {
-					setAvatarUrl(reader.result)
+				if (reader.result) {
+					const binaryArray = new Uint8Array(reader.result as ArrayBuffer)
+					const binaryData = new TextDecoder().decode(binaryArray)
+
+					if (binaryData !== avatarUrl) {
+						
+						uploadImageStudent({ image: binaryData })
+							.unwrap()
+							.then((res) => {
+								toast.success('Image uploaded successfully')
+								setAvatarUrl(URL.createObjectURL(file))
+							})
+							.catch((err: ExtendedError) => {
+								console.error('Error uploading image:', err)
+								toast.error('Failed to upload image')
+							})
+					}
 				} else {
 					console.error('Error reading file')
 				}
 			}
-			reader.readAsDataURL(file)
+			reader.readAsArrayBuffer(file)
 		}
 	}
+
 	const handleInputChange = (value: string) => {
 		setPhone(value)
 	}
+
 	const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault()
-		console.log(phoneError)
 		if (phoneError || InputError) {
 			return
 		}
-		studentUpdatePhoneNumber({ phoneNumber: phone})
+
+		studentUpdatePhoneNumber({ phoneNumber: phone })
 			.unwrap()
 			.then((res: updateProfileFieldResponse) => {
 				toast.success('Profile Updated successfully')
-				router.push('/teacher/Profile')
+				if (avatarUrl) {
+				
+					const fileInput = document.createElement('input')
+					fileInput.type = 'file'
+					fileInput.accept = 'image/*'
+					fileInput.onchange = (event) =>
+						handleFileUpload(
+							event as unknown as React.ChangeEvent<HTMLInputElement>,
+						)
+					fileInput.click()
+				} else {
+					router.push('/teacher/Profile')
+				}
 			})
 			.catch((err: ExtendedError) => {
 				console.log(`signup error ${JSON.stringify(err)}`)
 				toast.error(err.data.errors![0])
 			})
-		
 	}
 
 	const handleFileInputChange = (event: Event) => {
@@ -99,6 +133,7 @@ const Page = () => {
 		fileInput.onchange = handleFileInputChange
 		fileInput.click()
 	}
+
 	return (
 		<div>
 			<div>
@@ -122,19 +157,18 @@ const Page = () => {
 							ProfileFieldItems={{
 								icon: <CircleUser />,
 								text: 'Full Name',
-								value: user?.firstName + " " + user?.lastName,
+								value: user?.firstName + ' ' + user?.lastName,
 							}}
 						/>
 						<NonEditableProfileFields
 							ProfileFieldItems={{
 								icon: <Library />,
 								text: 'Department',
-								value: String(user?.department) ?? "",
+								value: String(user?.department) ?? '',
 							}}
 						/>
 					</div>
 					<div className='md:flex flex-col md:ml-0 ml-3 items-start mb-8 space-y-8 md:space-y-0'>
-						{/* Changed items-center to items-start */}
 						<NonEditableProfileFields
 							ProfileFieldItems={{
 								icon: <Calendar />,
@@ -157,14 +191,17 @@ const Page = () => {
 							type='submit'
 							onClick={handleSubmit}
 							className={cn('w-full', {
-										'bg-primary/90':
-											StudentUpdatePhoneNumberisLoading,
-									})}
-									disabled={StudentUpdatePhoneNumberisLoading}
-								>
-									{StudentUpdatePhoneNumberisLoading? (
-										<ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
-									) : null}
+								'bg-primary/90':
+									StudentUpdatePhoneNumberisLoading ||
+									StudentUploadImageisLoading,
+							})}
+							disabled={
+								StudentUpdatePhoneNumberisLoading || StudentUploadImageisLoading
+							}
+						>
+							{StudentUpdatePhoneNumberisLoading ? (
+								<ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
+							) : null}
 							Save
 						</Button>
 					</div>

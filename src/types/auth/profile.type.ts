@@ -49,3 +49,13 @@ export interface changePasswordResponse {
   data:  boolean
   errors: string[]
 }
+export interface uploadImageRequest {
+  image : string
+}
+export interface uploadImageResponse {
+  isSuccess: boolean
+  message: string
+  data: string
+  errors: string[]
+}
+
