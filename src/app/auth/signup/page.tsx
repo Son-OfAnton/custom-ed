@@ -93,7 +93,7 @@ const SignupPage = () => {
 				})
 				.catch((err: ExtendedError) => {
 					console.log(`signup error ${JSON.stringify(err)}`)
-					toast.error(err.data.errors![0])
+					toast.error('Can not signin')
 				})
 		} else if (credentials.role.toLowerCase() === 'teacher') {
 			teacherSignup({email, password})

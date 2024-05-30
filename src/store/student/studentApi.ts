@@ -42,19 +42,18 @@ export const studentAuthApi = createApi({
     }),
   }),
   studentGetProfileById: builder.query<getProfileByIdResponse, getProfileByIdRequest>({
-      query: (body) => ({
-        url: '/student-id',
+      query: ({ id }: getProfileByIdRequest) => ({
+        url: `/${id}`,
         method: 'GET',
-        body,
     }),
   }),
-  studentGetPictureById: builder.query<getPictureResponse, getPictureRequest>({
-      query: (body) => ({
-        url: 'getPicture/${userId}',
-        method: 'GET',
-        body,
-    }),
-  }), 
+ studentGetPictureById: builder.query<getPictureResponse, getPictureRequest>({
+  query: ({ id }: getPictureRequest) => ({
+    url: `getPicture/${id}`,
+    method: 'GET',
+    
+  }),
+}),
   studentUpdatePhoneNumber: builder.mutation<updateProfileFieldResponse,updateProfileFieldRequest>({
       query: (body) => ({
         url: '/updatePhoneAndDepartment',

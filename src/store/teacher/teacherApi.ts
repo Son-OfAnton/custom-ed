@@ -42,17 +42,15 @@ export const teacherAuthApi = createApi({
     }),
   }),
   teacherGetProfileById: builder.query<getProfileByIdResponse, getProfileByIdRequest>({
-      query: (body) => ({
-        url: '/{id}',
+      query: ({ id }: getProfileByIdRequest) => ({
+        url: `/${id}`,
         method: 'GET',
-        body,
     }),
   }),
   teacherGetPictureById: builder.query<getPictureResponse, getPictureRequest>({
-      query: (body) => ({
-        url: 'getPicture/${userId}',
-        method: 'GET',
-        body,
+     query: ({ id }: getPictureRequest) => ({
+    url: `getPicture/${id}`,
+    method: 'GET',
     }),
   }),
   teacherUpdatePhoneNumber: builder.mutation<updateProfileFieldResponse,updateProfileFieldRequest>({
