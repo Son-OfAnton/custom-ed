@@ -4,7 +4,12 @@ import { teacherAuthApi } from './teacher/teacherApi'
 import { otpApi } from './otp/otpApi'
 import dialogSlice from './features/dialogSlice'
 import chatbotSlice from './features/chatbotSlice'
+import classroomSlice from './features/classroomSlice'
+import announcementDialogSlice from './features/announcementDialogSlice'
 import { chatbotApi } from './chatbot/chatbotApi'
+import { classroomApi } from './classroom/classroomApi'
+import { announcementApi } from './announcement/announcementApi'
+import announcementSlice from './features/announcementSlice'
 
 
 export const store = configureStore({
@@ -13,14 +18,22 @@ export const store = configureStore({
     [teacherAuthApi.reducerPath]: teacherAuthApi.reducer,
     [otpApi.reducerPath]: otpApi.reducer,
     [chatbotApi.reducerPath]: chatbotApi.reducer,
+    [classroomApi.reducerPath]: classroomApi.reducer,
+    [announcementApi.reducerPath]: announcementApi.reducer,
     dialog: dialogSlice,
-    chat: chatbotSlice
+    chat: chatbotSlice,
+    announcementDialog: announcementDialogSlice,
+    classroom: classroomSlice,
+    announcement: announcementSlice,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware()
     .concat(studentAuthApi.middleware, 
       otpApi.middleware, 
       teacherAuthApi.middleware,
-      chatbotApi.middleware),
+      chatbotApi.middleware,
+      classroomApi.middleware,
+      announcementApi.middleware
+      ),
 })
 
 export type RootState = ReturnType<typeof store.getState>

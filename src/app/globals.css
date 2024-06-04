@@ -84,5 +84,17 @@
 		padding-left: 2rem;
 	}
 
-	.foo {white-space: 'pre-wrap';}
+	.foo {
+		white-space: 'pre-wrap';
+	}
+}
+
+@layer utilities {
+	.no-scrollbar::-webkit-scrollbar {
+		display: none;
+	}
+	.no-scrollbar {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
 }

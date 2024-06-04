@@ -3,22 +3,18 @@
 import React from 'react'
 
 import { useLocalStorage } from '@/hooks/useLocalStorage'
-import { useTeacherClassroomQuery } from '@/store/classroom/classroomApi'
-import { useGetTeacherByIdQuery } from '@/store/teacher/teacherApi'
+import { useStudentClassroomQuery, useTeacherClassroomQuery } from '@/store/classroom/classroomApi'
+import { useGetStudentByIdQuery } from '@/store/student/studentApi'
 import { Users } from 'lucide-react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 
 import SearchAndBell from '@/components/SearchAndBell'
-import { Button } from '@/components/ui/button'
 import { Card, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 
 const ListOfClassroomPage = () => {
-	const router = useRouter()
 	const { getItem: getCurrUser } = useLocalStorage('currUser')
 	const currUser = getCurrUser()
 	const { data: currUserData, isSuccess: isSuccessCurrUser } =
-		useGetTeacherByIdQuery(currUser.id)
+		useGetStudentByIdQuery(currUser.id)
 	const {
 		data: classrooms,
 		isSuccess: isSuccessClassrooms,
@@ -26,7 +22,7 @@ const ListOfClassroomPage = () => {
 		isFetching: isFetchingClassrooms,
 		isError: isErrorClassrooms,
 		error: classroomsError,
-	} = useTeacherClassroomQuery(currUser.id, { skip: !isSuccessCurrUser })
+	} = useStudentClassroomQuery(currUser.id, { skip: !isSuccessCurrUser })
 
 	return (
 		<div className='md:flex overflow-x-hidden md:w-11/12 md:ml-auto h-screen'>
@@ -40,7 +36,6 @@ const ListOfClassroomPage = () => {
 						<div
 							key={classroom.id}
 							className='w-full mb-2 md:mb-0 cursor-pointer hover:border hover:border-primary hover:rounded-xl'
-							onClick={() => router.push(`/teacher/classroom/${classroom.id}/announcement`)}
 						>
 							<Card>
 								<CardHeader>
@@ -59,13 +54,6 @@ const ListOfClassroomPage = () => {
 							</Card>
 						</div>
 					))}
-				</div>
-				<div className='ml-8 mt-10 block'>
-					<Button>
-						<Link href='/teacher/classroom/create-classroom'>
-							Create Classroom
-						</Link>
-					</Button>
 				</div>
 			</div>
 		</div>

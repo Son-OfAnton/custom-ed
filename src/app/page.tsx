@@ -2,16 +2,27 @@
 
 import React from 'react'
 
+import { LandingPageItems } from '@/constants/LandingPageItems'
+import { useLocalStorage } from '@/hooks/useLocalStorage'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
+import HomepageCard from '@/components/HomepageCard'
 import NavBar from '@/components/NavBar'
 import { Button } from '@/components/ui/button'
-import { LandingPageItems } from '@/constants/LandingPageItems'
+
 import landingPage from '../../public/assets/landing-page.svg'
-import HomepageCard from '@/components/HomepageCard'
 
 export default function Home() {
+	const { getItem: getCurrUser } = useLocalStorage('currUser')
+	const currUser = getCurrUser()
+	const router = useRouter()
+
+	if (currUser) {
+		if (currUser.role == 0) router.push('/student/classroom/classroom-list')
+		else if (currUser.role == 1) router.push('/teacher/classroom/classroom-list')
+	}
 	return (
 		<>
 			<div className='relative overflow-hidden text-primary h-full'>
@@ -51,17 +62,19 @@ export default function Home() {
 					</div>
 				</div>
 			</div>
-			<section className="bg-gray-900 text-white">
-				<div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
-					<div className="mx-auto max-w-lg text-center">
-						<h2 className="text-3xl font-bold sm:text-4xl">Our Service</h2>
+			<section className='bg-gray-900 text-white'>
+				<div className='mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16'>
+					<div className='mx-auto max-w-lg text-center'>
+						<h2 className='text-3xl font-bold sm:text-4xl'>Our Service</h2>
 
-						<p className="mt-4 text-gray-300">
-							Our innovative platform is designed to revolutionize the traditional education system, making learning more personalized, inclusive, and effective.
+						<p className='mt-4 text-gray-300'>
+							Our innovative platform is designed to revolutionize the
+							traditional education system, making learning more personalized,
+							inclusive, and effective.
 						</p>
 					</div>
 
-					<div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+					<div className='mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3'>
 						{LandingPageItems.map((item) => (
 							<HomepageCard
 								key={item.title}
@@ -72,10 +85,10 @@ export default function Home() {
 						))}
 					</div>
 
-					<div className="mt-12 text-center">
+					<div className='mt-12 text-center'>
 						<a
-							href="#"
-							className="inline-block rounded bg-blue-500 px-12 py-3 text-sm font-medium text-white transition hover:bg-blue-700 focus:outline-none focus:ring focus:ring-yellow-400"
+							href='#'
+							className='inline-block rounded bg-blue-500 px-12 py-3 text-sm font-medium text-white transition hover:bg-blue-700 focus:outline-none focus:ring focus:ring-yellow-400'
 						>
 							Get Started Today
 						</a>

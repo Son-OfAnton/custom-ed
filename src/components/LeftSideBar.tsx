@@ -1,11 +1,11 @@
 'use client'
 
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import { SideBarItem } from '@/types/SideNavItems'
-import { ListCollapse, LogOut, Menu, Settings, X } from 'lucide-react'
+import { LogOut, Menu, Settings, X } from 'lucide-react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 import { cn } from '@/lib/utils'
 
@@ -29,6 +29,7 @@ const LeftSideBar: React.FC<Props> = ({ role }: Props) => {
 
 	const [isOpen, setIsOpen] = useState(false)
 	const menuRef = useRef<HTMLDivElement>(null)
+	const router = useRouter()
 
 	const toggle = () => {
 		setIsOpen(!isOpen)
@@ -47,6 +48,11 @@ const LeftSideBar: React.FC<Props> = ({ role }: Props) => {
 			document.removeEventListener('mousedown', handleClickOutside)
 		}
 	}, [])
+
+	const handleLogout = () => {
+		localStorage.removeItem('currUser')
+		router.replace('/')
+	}
 
 	return (
 		<>
@@ -69,13 +75,13 @@ const LeftSideBar: React.FC<Props> = ({ role }: Props) => {
 						</div>
 					</div>
 					<div className='flex flex-col space-y-7 xl:space-y-10 justify-center md:px-6 ml-4 mb-6'>
-						<div className='flex items-center  p-2 rounded-lg cursor-pointer hover:bg-primary hover:text-primary-foreground'>
-							<LogOut size={24} className='mr-4' />
-							<span className='font-semibold text-md flex'>Logout</span>
-						</div>
 						<div className='flex items-center  p-2 rounded-lg cursor-pointer hover:bg-primary hover:text-primary-foreground '>
 							<Settings size={24} className='mr-4' />
 							<span className='font-semibold text-md flex'>Settings</span>
+						</div>
+						<div className='flex items-center  p-2 rounded-lg cursor-pointer hover:bg-primary hover:text-primary-foreground'>
+							<LogOut size={24} className='mr-4' />
+							<span className='font-semibold text-md flex' onClick={() => router.replace('/')}>Logout</span>
 						</div>
 					</div>
 				</div>
@@ -108,13 +114,12 @@ const LeftSideBar: React.FC<Props> = ({ role }: Props) => {
 								</div>
 							</div>
 							<div className='flex flex-col space-y-10 justify-end my-20 mx-12  md:px-6'>
-								<div className='flex items-center p-2 cursor-pointer hover:bg-zinc-100 hover:bg-primary hover:text-primary-foreground  py-2 pl-2 rounded-lg'>
+								<div
+									className='flex items-center p-2 cursor-pointer hover:bg-zinc-100 hover:bg-primary hover:text-primary-foreground  py-2 pl-2 rounded-lg'
+									onClick={() => handleLogout()}
+								>
 									<LogOut size={24} className='mr-4' />
 									<span className='font-semibold text-lg'>Logout</span>
-								</div>
-								<div className='flex items-center p-2 cursor-pointer hover:bg-zinc-100 hover:bg-primary hover:text-primary-foreground  py-2 pl-2 rounded-lg'>
-									<Settings size={24} className='mr-4' />
-									<span className='font-semibold text-lg flex'>Settings</span>
 								</div>
 							</div>
 						</div>
@@ -137,7 +142,9 @@ const MenuItem = ({ item }: { item: SideBarItem }) => {
 				className={cn(
 					'flex flex-row space-x-4 items-center py-2 pl-2 pr-10 rounded-lg hover:bg-primary hover:text-primary-foreground',
 					{
-						'bg-primary text-primary-foreground': item.path === pathname,
+						'bg-primary text-primary-foreground': pathname.includes(
+							item.text.replace(/\s/g, '').toLowerCase(),
+						),
 					},
 				)}
 			>
