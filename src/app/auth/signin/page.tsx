@@ -139,7 +139,8 @@ const SigninPage = () => {
 			if (singleStudentData!.data!.firstName === null) {
 				dispatch(openDialog('student'))
 			} else {
-				router.push('/dashboard')
+				dispatch(closeDialog())
+				router.push('/student/classroom/classroom-list')
 			}
 		}
 	}, [singleStudentData, dispatch, router])
@@ -149,7 +150,8 @@ const SigninPage = () => {
 			if (singleTeacherData!.data!.firstName === null) {
 				dispatch(openDialog('teacher'))
 			} else {
-				router.push('/dashboard')
+				dispatch(closeDialog())
+				router.push('/teacher/classroom/classroom-list')
 			}
 		}
 	}, [singleTeacherData, dispatch, router])

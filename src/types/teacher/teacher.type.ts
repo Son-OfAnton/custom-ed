@@ -1,3 +1,20 @@
+export interface Teacher {
+  firstName?:   string;
+  lastName?:    string;
+  dateOfBirth?: Date;
+  department?:  number;
+  phoneNumber?: string;
+  joinDate?:    Date;
+  email?:       string;
+  password?:    string;
+  role?:        number;
+  isVerified?:  boolean;
+  imageUrl?:    string;
+  id?:          string;
+  createdAt?:   Date;
+  updatedAt?:   Date;
+}
+
 export interface GetSingleTeacherResponse {
   isSuccess?: boolean;
   message?:   string;

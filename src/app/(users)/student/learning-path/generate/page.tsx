@@ -143,7 +143,7 @@ const GenerateLearningPathPage = () => {
 	}, [currState])
 
 	return (
-		<div className='h-screen'>
+		<div className='h-screen md:ml-64'>
 			<Chat />
 		</div>
 	)

@@ -1,17 +1,21 @@
+'use client'
 import React from 'react'
 
 import LeftSidebar from '@/components/LeftSideBar'
+import { useLocalStorage } from '@/hooks/useLocalStorage'
 
 interface LayoutProps {
 	children: React.ReactNode
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-	const role = "teacher"
+	const {getItem: getCurrUser} = useLocalStorage('currUser')
+	const role = getCurrUser().role == 0 ? 'student' : 'teacher'
+	
 	return (
 		<div>
 			<LeftSidebar role={role} />
-			<div className='md:ml-64'>{children}</div>
+			<div>{children}</div>
 		</div>
 	)
 }

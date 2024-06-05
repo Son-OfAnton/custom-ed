@@ -7,6 +7,7 @@ import { addMessage } from '@/store/features/chatbotSlice'
 import { MessageType } from '@/types/Message'
 import { SendHorizonal } from 'lucide-react'
 import { useDispatch, useSelector } from 'react-redux'
+import { usePathname } from 'next/navigation'
 
 import { cn } from '@/lib/utils'
 
@@ -19,6 +20,7 @@ const Chat = () => {
 	const dispatch = useDispatch()
 	const inputRef = useRef<HTMLInputElement>(null)
 	const endOfMessagesRef = useRef<HTMLDivElement>(null)
+	const pathname = usePathname()
 
 	const sendHandler = () => {
 		const currMessage = inputRef.current?.value
@@ -48,7 +50,9 @@ const Chat = () => {
 					<div ref={endOfMessagesRef} />
 				</div>
 			</main>
-			<div className='flex items-center gap-2 border-t bg-white px-4 py-3 dark:border-gray-800 dark:bg-gray-950'>
+			<div className={cn('flex items-center gap-2 border-t bg-white px-4 py-3 dark:border-gray-800 dark:bg-gray-950', {
+				'hidden': pathname.includes('announcement')
+			})}>
 				<Input
 					ref={inputRef}
 					className='flex-1 rounded-md bg-gray-100 px-4 py-2 text-sm focus:outline-none dark:bg-gray-800'
