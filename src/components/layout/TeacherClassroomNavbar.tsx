@@ -21,7 +21,8 @@ const TeacherClassroomNavbar = () => {
 	const dispatch = useDispatch()
 	const currPath = usePathname()
 	const basePath = currPath.split('/')
-	dispatch(setCurrClassroomId(basePath[basePath.length - 2]))
+	console.log(basePath)
+	dispatch(setCurrClassroomId(basePath[3]))
 	
 	// console.log(`currPath ${currPath}`)
 	// console.log(basePath)

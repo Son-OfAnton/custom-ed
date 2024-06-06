@@ -13,6 +13,7 @@ import announcementSlice from './features/announcementSlice'
 import assessmentDialogSlice from './features/assessmentDialogSlice'
 import { assessmentApi } from './assessment/assessmentApi'
 import classroomDialogSlice from './features/classroomDialogSlice'
+import assessmentSlice from './features/assessmentSlice'
 
 export const store = configureStore({
   reducer: {
@@ -28,6 +29,7 @@ export const store = configureStore({
     announcementDialog: announcementDialogSlice,
     classroom: classroomSlice,
     announcement: announcementSlice,
+    assessment: assessmentSlice,
     assessmentDialog: assessmentDialogSlice,
     classroomDialog: classroomDialogSlice,
   },

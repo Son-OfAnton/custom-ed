@@ -1,3 +1,11 @@
+export interface Question {
+  text: string,
+  weight: number,
+  answers: string[],
+  correctAnswerIndex: number,
+  assessmentId: string,
+  tags: string[]
+}
 export interface CreateAssessementRequest {
   name: string
   description: string
@@ -65,3 +73,47 @@ export interface GetAssessmentResponseData extends CreateAssessementResponseData
 export interface PublishAssessmentResponse extends CreateAssessementResponse {}
 
 export interface GetSingleAnnouncementResponse extends CreateAssessementResponse {}
+
+export interface AddQuestionResponse {}
+
+export interface GetQuestionsResponse extends CreateAssessementResponse{}
+
+export interface PostSubmitAnswerRequest {
+  studentId: string;
+  assessmentId: string;
+  answers: string[];
+}
+
+export interface PostSubmitAnswerResponse {
+  isSuccess: boolean;
+  message: string;
+  data: PostSubmitAnswerResponseData;
+  errors: string[];
+}
+
+export interface PostSubmitAnswerResponseData {
+  id: string;
+  studentId: string;
+  assessmentId: string;
+  answers: string[];
+  score: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CheckAnswerResponse {
+  isSuccess: boolean;
+  message: string;
+  data: CheckAnswerResponseData;
+  errors: string[];
+}
+
+export interface CheckAnswerResponseData {
+  id: string;
+  studentId: string;
+  assessmentId: string;
+  answers: string[];
+  score: number;
+  createdAt: string;
+  updatedAt: string;
+}

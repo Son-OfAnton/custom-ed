@@ -2,7 +2,11 @@ import {
   CreateAssessementResponse, 
   CreateAssessementRequest, 
   GetAssessmentResponse, 
-  PublishAssessmentResponse 
+  PublishAssessmentResponse, 
+  Question,
+  GetQuestionsResponse,
+  PostSubmitAnswerResponse,
+  PostSubmitAnswerRequest
 } from "@/types/assessment/assessment.type";
 import { createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 
@@ -34,14 +38,50 @@ export const assessmentApi = createApi({
     publishAssessment: builder.mutation<PublishAssessmentResponse, any>({
       query: ({classroomId, assessmentId}) => ({
         url: `/${classroomId}/assessment/publish/${assessmentId}`,
-        method: 'POST'
+        method: 'PUT'
+      }),
+    }),
+    addQuestion: builder.mutation<any, {classroomId: string, question: Question}>({
+      query: ({classroomId, question}) => ({
+        url: `/${classroomId}/assessment/add-question`,
+        method: 'POST',
+        body: question,
       })
-  })
+    }),
+    deleteQuestion: builder.mutation<any, {classroomId: string, questionId: string}>({
+      query: ({classroomId, questionId}) => ({
+        url: `/${classroomId}/assessment/question/${questionId}`,
+        method: 'DELETE',
+      })
+    }),
+    getQuestions: builder.query<GetQuestionsResponse, {classroomId: string, assessmentId: string}>({
+      query: ({ classroomId, assessmentId }) => ({
+        url: `/${classroomId}/assessment/${assessmentId}`,
+        method: 'GET',
+      })
+    }),
+    submitAssessment: builder.mutation<PostSubmitAnswerResponse, {body: PostSubmitAnswerRequest, classroomId: string}>({
+      query: ({body, classroomId}) => ({
+        url: `/${classroomId}/assessment/add-submission`,
+        method: 'POST',
+        body,
+      })
+    }),
+    checkAnswer: builder.query<any, {classroomId: string, submissionId: string}>({
+      query: ({classroomId, submissionId}) => ({
+        url: `/${classroomId}/assessment/submission/${submissionId}`,
+        method: 'GET',
+      })
+    }),
+    })
 })
-})
+
 
 export const { 
   useCreateAssessmentMutation, 
   useGetAssessmentsQuery, 
-  usePublishAssessmentMutation 
+  usePublishAssessmentMutation,
+  useAddQuestionMutation,
+  useDeleteQuestionMutation,
+  useGetQuestionsQuery,
 } = assessmentApi;
