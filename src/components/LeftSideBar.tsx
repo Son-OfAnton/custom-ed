@@ -50,6 +50,7 @@ const LeftSideBar: React.FC<Props> = ({ role }: Props) => {
 	}, [])
 
 	const handleLogout = () => {
+		console.log('logging out')
 		localStorage.removeItem('currUser')
 		router.replace('/')
 	}
@@ -79,9 +80,12 @@ const LeftSideBar: React.FC<Props> = ({ role }: Props) => {
 							<Settings size={24} className='mr-4' />
 							<span className='font-semibold text-md flex'>Settings</span>
 						</div>
-						<div className='flex items-center  p-2 rounded-lg cursor-pointer hover:bg-primary hover:text-primary-foreground'>
+						<div
+							className='flex items-center  p-2 rounded-lg cursor-pointer hover:bg-primary hover:text-primary-foreground'
+							onClick={() => handleLogout()}
+						>
 							<LogOut size={24} className='mr-4' />
-							<span className='font-semibold text-md flex' onClick={() => router.replace('/')}>Logout</span>
+							<span className='font-semibold text-md flex'>Logout</span>
 						</div>
 					</div>
 				</div>
@@ -115,7 +119,7 @@ const LeftSideBar: React.FC<Props> = ({ role }: Props) => {
 							</div>
 							<div className='flex flex-col space-y-10 justify-end my-20 mx-12  md:px-6'>
 								<div
-									className='flex items-center p-2 cursor-pointer hover:bg-zinc-100 hover:bg-primary hover:text-primary-foreground  py-2 pl-2 rounded-lg'
+									className='flex items-center p-2 cursor-pointer hover:bg-primary hover:text-primary-foreground  py-2 pl-2 rounded-lg'
 									onClick={() => handleLogout()}
 								>
 									<LogOut size={24} className='mr-4' />

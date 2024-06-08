@@ -9,8 +9,10 @@ import { Users } from 'lucide-react'
 
 import SearchAndBell from '@/components/SearchAndBell'
 import { Card, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { useRouter } from 'next/navigation'
 
 const ListOfClassroomPage = () => {
+	const router = useRouter()
 	const { getItem: getCurrUser } = useLocalStorage('currUser')
 	const currUser = getCurrUser()
 	const { data: currUserData, isSuccess: isSuccessCurrUser } =
@@ -36,6 +38,9 @@ const ListOfClassroomPage = () => {
 						<div
 							key={classroom.id}
 							className='w-full mb-2 md:mb-0 cursor-pointer hover:border hover:border-primary hover:rounded-xl'
+							onClick={() =>
+								router.push(`/student/classroom/${classroom.id}/announcement`)
+							}
 						>
 							<Card>
 								<CardHeader>

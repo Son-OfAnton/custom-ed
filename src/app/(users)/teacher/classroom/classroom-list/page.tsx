@@ -75,20 +75,14 @@ const ListOfClassroomPage = () => {
 						{classrooms?.data.map((classroom) => (
 							<div
 								key={classroom.id}
-								className='w-full mb-2 md:mb-0 hover:border hover:border-primary hover:rounded-xl transition duration-300'
+								className='w-full mb-2 md:mb-0 hover:border hover:border-primary hover:rounded-xl transition duration-300 cursor-pointer'
+								onClick={() =>
+									router.push(`/teacher/classroom/${classroom.id}/announcement`)
+								}
 							>
 								<Card>
 									<CardHeader className='flex flex-row justify-between'>
-										<CardTitle
-											className='cursor-pointer'
-											onClick={() =>
-												router.push(
-													`/teacher/classroom/${classroom.id}/announcement`,
-												)
-											}
-										>
-											{classroom.name}
-										</CardTitle>
+										<CardTitle>{classroom.name}</CardTitle>
 										<DropdownMenu>
 											<DropdownMenuTrigger>
 												<EllipsisVertical className='h-4 w-4' />
@@ -96,7 +90,10 @@ const ListOfClassroomPage = () => {
 											<DropdownMenuContent>
 												<DropdownMenuItem
 													className='hover:bg-destructive hover:text-destructive-foreground cursor-pointer'
-													onClick={() => onDelete(classroom.id)}
+													onClick={(e) => {
+														e.stopPropagation()
+														onDelete(classroom.id)
+													}}
 												>
 													Delete
 												</DropdownMenuItem>

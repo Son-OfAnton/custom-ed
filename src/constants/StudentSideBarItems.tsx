@@ -13,38 +13,44 @@ export const StudentSideBarItems: SideBarItem[] = [
 		id: '1',
 		text: 'Classroom',
 		icon: <School size={25} />,
-		path: '/',
+		path: '/teacher/classroom/classroom-list',
 	},
 	{
 		id: '2',
 		text: 'Learning Paths',
 		icon: <Waypoints size={25} />,
-		path: '/',
+		path: '/student/learningPath',
 	},
 	{
 		id: '3',
 		text: 'Profile',
 		icon: <User size={25} />,
-		path: '/',
+		path: '/student/profile',
 	},
 ]
 export const StudentRightSideBarItems: SideBarItem[] = [
 	{
 		id: '1',
 		text: 'Announcement',
-		icon: <Megaphone size={25} />,
-		path: '/',
+		icon: <Megaphone size={16} />,
+		path: '/announcement',
 	},
 	{
 		id: '2',
-		text: 'Forum',
-		icon: <MessageSquare size={25} />,
-		path: '/',
+		text: 'Discussion',
+		icon: <MessageSquare size={16} />,
+		path: '/discussion',
 	},
 	{
 		id: '3',
-		text: 'Test Center',
-		icon: <TabletSmartphone size={25} />,
-		path: '/',
+		text: 'Assessment',
+		icon: <TabletSmartphone size={16} />,
+		path: '/assessment',
 	},
+	{
+		id: '4',
+		text: 'Students',
+		icon: <User size={16} />,
+		path: '/students',
+	}
 ]

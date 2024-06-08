@@ -6,7 +6,9 @@ import {
   Question,
   GetQuestionsResponse,
   PostSubmitAnswerResponse,
-  PostSubmitAnswerRequest
+  PostSubmitAnswerRequest,
+  CrossAssessmentResponse,
+  SingleAssessmentAnalyticsResponse
 } from "@/types/assessment/assessment.type";
 import { createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 
@@ -73,7 +75,26 @@ export const assessmentApi = createApi({
         method: 'GET',
       })
     }),
-    })
+    crossAssessmentAnalytics: builder.query<CrossAssessmentResponse, string>({
+      query: (classroomId) => ({
+        url: `/${classroomId}/analytics/cross-assessment`,
+        method: 'GET',
+      })
+    }),
+    assessmentAnalyticsByTag: builder.query<CrossAssessmentResponse, {tags: string[], classroomId: string}>({
+      query: ({tags, classroomId}) => ({
+        url: `/${classroomId}/analytics/assessment`,
+        method: 'POST',
+        body: tags,
+      })
+    }),
+    assessmentAnalyticsById: builder.query<SingleAssessmentAnalyticsResponse, {assessmentId: string, classroomId: string}>({
+      query: ({assessmentId, classroomId}) => ({
+        url: `/${classroomId}/analytics/assessment/${assessmentId}`,
+        method: 'GET',
+      })
+    }),
+  })
 })
 
 
@@ -84,4 +105,9 @@ export const {
   useAddQuestionMutation,
   useDeleteQuestionMutation,
   useGetQuestionsQuery,
+  useSubmitAssessmentMutation,
+  useCheckAnswerQuery,
+  useCrossAssessmentAnalyticsQuery,
+  useAssessmentAnalyticsByTagQuery,
+  useAssessmentAnalyticsByIdQuery,
 } = assessmentApi;

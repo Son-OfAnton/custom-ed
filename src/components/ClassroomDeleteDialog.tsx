@@ -1,23 +1,27 @@
+import { useDeleteClassroomMutation } from '@/store/classroom/classroomApi'
+import {
+	closeDialog,
+	selectClassroomDialogType,
+	selectClassroomIdTobeDeleted,
+} from '@/store/features/classroomDialogSlice'
 import { selectCurrClassroomId } from '@/store/features/classroomSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'sonner'
-import { closeDialog } from '@/store/features/classroomDialogSlice'
 
 import { Button } from './ui/button'
 import {
 	Dialog,
+	DialogClose,
 	DialogContent,
 	DialogDescription,
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
 } from './ui/dialog'
-import { selectClassroomDialogType, selectClassroomIdTobeDeleted } from '@/store/features/classroomDialogSlice'
-import { useDeleteClassroomMutation } from '@/store/classroom/classroomApi'
 
 const ClassroomDeleteDialog = () => {
 	const dialogType = useSelector(selectClassroomDialogType)
-  const classroomIdTobeDeleted = useSelector(selectClassroomIdTobeDeleted)
+	const classroomIdTobeDeleted = useSelector(selectClassroomIdTobeDeleted)
 	console.log(`DIALOG_TYPE ${dialogType}`)
 	const dispatch = useDispatch()
 	const currClassroomId = useSelector(selectCurrClassroomId)
@@ -49,12 +53,11 @@ const ClassroomDeleteDialog = () => {
 					Are you sure you want to delete this classroom?
 				</DialogDescription>
 				<DialogFooter>
-					<Button
-						variant='destructive'
-						onClick={() => onClassroomDeletion()}
-					>
-						Delete
-					</Button>
+					<DialogClose asChild>
+						<Button variant='destructive' onClick={() => onClassroomDeletion()}>
+							Delete
+						</Button>
+					</DialogClose>
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>

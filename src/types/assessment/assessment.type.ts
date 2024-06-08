@@ -117,3 +117,52 @@ export interface CheckAnswerResponseData {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface CrossAssessmentResponse {
+  isSuccess: boolean;
+  message: string;
+  data: CrossAssessmentResponseData[];
+  errors: string[];
+}
+
+export interface CrossAssessmentResponseData {
+  [key: string]: any;
+  id: string
+  desription: string
+  assessment: CreateAssessementResponseData
+  totalScore?:              string;
+  totalQuestions?:          string;
+  totalSubmissions?:        string;
+  meanScore?:               string;
+  medianScore?:             string;
+  modeScore?:               string;
+  standardDeviation?:       string;
+  variance?:                string;
+  highestScore?:            string;
+  lowestScore?:             string;
+  range?:                   string;
+  interquartileRange?:      string;
+  skewness?:                string;
+  kurtosis?:                string;
+  coefficientOfVariation?:  string;
+  meanAbsoluteDeviation?:   string;
+  medianAbsoluteDeviation?: string;
+  modeAbsoluteDeviation?:   string;
+  topFiveScores?:           string[];
+  bottomFiveScores?:        string[];
+  meanScorePerTopic?:       MeanScorePerTopic;
+  createdAt?:               string;
+  updatedAt?:               string;
+}
+
+export interface MeanScorePerTopic {
+  tempor170?: string;
+  veniam_?: string;
+}
+
+export interface SingleAssessmentAnalyticsResponse {
+  isSuccess: boolean;
+  message: string;
+  data: CrossAssessmentResponseData;
+  errors: string[] | null;
+}

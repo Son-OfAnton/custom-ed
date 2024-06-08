@@ -2,8 +2,10 @@
 
 import * as React from 'react'
 
-import { TeacherRightSideBarItems } from '@/constants/TeacherSideBarItems'
+import { StudentRightSideBarItems } from '@/constants/StudentSideBarItems'
+import { setCurrClassroomId } from '@/store/features/classroomSlice'
 import { usePathname, useRouter } from 'next/navigation'
+import { useDispatch } from 'react-redux'
 
 import { cn } from '@/lib/utils'
 
@@ -14,16 +16,14 @@ import {
 	navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
 import { Separator } from '@/components/ui/separator'
-import { setCurrClassroomId } from '@/store/features/classroomSlice'
-import { useDispatch } from 'react-redux'
 
-const TeacherClassroomNavbar = () => {
+const StudentClassroomNavbar = () => {
 	const dispatch = useDispatch()
 	const currPath = usePathname()
 	const basePath = currPath.split('/')
-	console.log(basePath)
+	console.log(currPath)
 	dispatch(setCurrClassroomId(basePath[3]))
-	
+
 	// console.log(`currPath ${currPath}`)
 	// console.log(basePath)
 	const router = useRouter()
@@ -43,7 +43,7 @@ const TeacherClassroomNavbar = () => {
 		<div className='pl-96 pt-10'>
 			<NavigationMenu>
 				<NavigationMenuList>
-					{TeacherRightSideBarItems.map((item, i) => (
+					{StudentRightSideBarItems.map((item, i) => (
 						<div key={i}>
 							<NavigationMenuLink
 								className={cn(navigationMenuTriggerStyle(), 'cursor-pointer', {
@@ -53,7 +53,11 @@ const TeacherClassroomNavbar = () => {
 								})}
 								onClick={() => handleRouting(item.path)}
 							>
-								<div className='inline-flex justify-center items-center gap-x-2'>
+								<div
+									className={cn(
+										'inline-flex justify-center items-center gap-x-2',
+									)}
+								>
 									{item.icon}
 									<p>{item.text}</p>
 								</div>
@@ -67,4 +71,4 @@ const TeacherClassroomNavbar = () => {
 	)
 }
 
-export default TeacherClassroomNavbar
+export default StudentClassroomNavbar

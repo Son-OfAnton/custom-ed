@@ -50,6 +50,12 @@ export const TeacherRightSideBarItems: SideBarItem[] = [
 		path: '/assessment',
 	},
 	{
+		id: '4',
+		text: 'Analytics',
+		icon: <BarChart3 size={16} />,
+		path: '/analytics',
+	},
+	{
 		id: '5',
 		text: 'Students',
 		icon: <Users size={16} />,
