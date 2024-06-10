@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 
+import { useLocalStorage } from '@/hooks/useLocalStorage'
 import { useGetAttachmentQuery } from '@/store/announcement/announcementApi'
 import { openDialog } from '@/store/features/announcementDialogSlice'
 import {
@@ -51,6 +52,9 @@ const Announcement = ({ children, ...props }: AnnouncementProps) => {
 		{ skip: !attachmentId },
 	)
 
+	const { getItem: getCurrUser } = useLocalStorage('currUser')
+	const role = getCurrUser().role == 0 ? 'student' : 'teacher'
+
 	useEffect(() => {
 		const contentElement = contentRef.current
 		if (contentElement) {
@@ -85,26 +89,30 @@ const Announcement = ({ children, ...props }: AnnouncementProps) => {
 		<Card {...props}>
 			<CardHeader className='flex flex-row justify-between'>
 				<CardTitle className='text-xl'>{announcement.title}</CardTitle>
-				<DropdownMenu>
-					<DropdownMenuTrigger>
-						<EllipsisVertical className='h-4 w-4' />
-					</DropdownMenuTrigger>
-					<DropdownMenuContent>
-						<DropdownMenuItem className='cursor-pointer'>Edit</DropdownMenuItem>
-						<DropdownMenuItem
-							className='hover:bg-destructive hover:text-destructive-foreground cursor-pointer'
-							onClick={() => onDelete()}
-						>
-							Delete
-						</DropdownMenuItem>
-						<DropdownMenuItem
-							className='cursor-pointer'
-							onClick={() => onAttachFile()}
-						>
-							Attach file
-						</DropdownMenuItem>
-					</DropdownMenuContent>
-				</DropdownMenu>
+				{role === 'teacher' ? (
+					<DropdownMenu>
+						<DropdownMenuTrigger>
+							<EllipsisVertical className='h-4 w-4' />
+						</DropdownMenuTrigger>
+						<DropdownMenuContent>
+							<DropdownMenuItem className='focus:bg-gray-300 cursor-pointer'>
+								Edit
+							</DropdownMenuItem>
+							<DropdownMenuItem
+								className='focus:bg-gray-300 cursor-pointer'
+								onClick={() => onAttachFile()}
+							>
+								Attach file
+							</DropdownMenuItem>
+							<DropdownMenuItem
+								className='focus:bg-destructive focus:text-destructive-foreground cursor-pointer'
+								onClick={() => onDelete()}
+							>
+								Delete
+							</DropdownMenuItem>
+						</DropdownMenuContent>
+					</DropdownMenu>
+				) : null}
 			</CardHeader>
 			<CardContent
 				ref={contentRef}

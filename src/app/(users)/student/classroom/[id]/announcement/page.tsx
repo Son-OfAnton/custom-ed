@@ -23,7 +23,7 @@ const StudentAnnouncementPage = () => {
 	} = useGetAnnouncementsQuery(currClassroomId)
 
 	return (
-		<div className='ml-72 mr-24 mt-10 flex flex-col h-screen'>
+		<div className='ml-80 mr-24 mt-10 flex flex-col h-screen'>
 			<div className='flex-1 overflow-y-auto no-scrollbar'>
 				{announcements?.data
 					?.slice(0)

@@ -63,8 +63,13 @@ const AnnouncementCreatingDialog = () => {
 			classRoomId: currClassroomId,
 			timeStamp: new Date().toISOString(),
 		})
+			.unwrap()
 			.then((res) => {
-				toast.info('Announcement created successfully')
+				if (!res.isSuccess) {
+					toast.error('Failed to create announcement')
+				} else {
+					toast.info('Announcement created successfully')
+				}
 				dispatch(closeDialog())
 			})
 			.catch((err) => {
