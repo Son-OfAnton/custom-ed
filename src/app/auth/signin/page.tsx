@@ -4,19 +4,19 @@ import { useState } from 'react';
 
 
 
-import { useStudentSigninMutation, useStudentSendOtpForForgotPasswordMutation} from '@/store/student/studentApi';
-import { useTeacherSigninMutation, useTeacherSendOtpForForgotPasswordMutation} from '@/store/teacher/teacherApi';
+import { useStudentSendOtpForForgotPasswordMutation, useStudentSigninMutation } from '@/store/student/studentApi';
+import { useTeacherSendOtpForForgotPasswordMutation, useTeacherSigninMutation } from '@/store/teacher/teacherApi';
 import { StudentLoginResponse } from '@/types/auth/studentAuth.type';
 import { ExtendedError } from '@/types/Error.type';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {  ReloadIcon } from '@radix-ui/react-icons';
+import { ChevronDownIcon, ReloadIcon } from '@radix-ui/react-icons';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
-import {ChevronDownIcon} from '@radix-ui/react-icons';
+
 
 
 import { cn } from '@/lib/utils';
@@ -102,8 +102,9 @@ const SigninPage = () => {
 					console.log(`response ${JSON.stringify(res)}`)
 					toast.success('Signin successful')
 					localStorage.setItem('token', res.data.token)
-					localStorage.setItem('role', "student")
+					localStorage.setItem('role', 'student')
 					localStorage.setItem('id', JSON.stringify(res.data.id))
+					router.push('/students/classroom/classroom-list')
 				})
 				.catch((err: ExtendedError) => {
 					console.log(`error ${JSON.stringify(err)}`)
@@ -118,6 +119,7 @@ const SigninPage = () => {
 					localStorage.setItem('role', 'teacher')
 					localStorage.setItem('id', JSON.stringify(res.data.id))
 					toast.success('Signin successful')
+					router.push('/teacher/classroom/classroom-list')
 				})
 				.catch((err: ExtendedError) => {
 					console.log(`error ${JSON.stringify(err)}`)

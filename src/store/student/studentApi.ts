@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { StudentSignupRequest, StudentSignupResponse } from '@/types/auth/studentAuth.type'
 import {  VerifyOtpRequest, VerifyOtpResponse, SendOtpForForgotPasswordResponse, SendOtpForForgotPasswordRequest } from '@/types/auth/verifyOtp.type'
-import {getProfileByIdResponse, getProfileByIdRequest, updateProfileFieldResponse, updateProfileFieldRequest, getPictureResponse,changePasswordRequest, getPictureRequest, changePasswordResponse, uploadImageRequest,uploadImageResponse } from "@/types/auth/profile.type"
+import {getProfileByIdResponse, getProfileByNameRequest, getProfileByIdRequest, updateProfileFieldResponse, updateProfileFieldRequest, getPictureResponse,changePasswordRequest, getPictureRequest, changePasswordResponse, uploadImageRequest,uploadImageResponse } from "@/types/auth/profile.type"
 export const studentAuthApi = createApi({
   reducerPath: 'studentAuthApi',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://customed-user-service.onrender.com/api/user/student' }),
@@ -47,6 +47,12 @@ export const studentAuthApi = createApi({
         method: 'GET',
     }),
   }),
+   studentGetProfileByName: builder.query<getProfileByIdResponse, getProfileByNameRequest>({
+      query: (name: getProfileByNameRequest ) => ({
+        url: `/student-name`,
+        method: 'GET',
+    }),
+  }),
  studentGetPictureById: builder.query<getPictureResponse, getPictureRequest>({
   query: ({ id }: getPictureRequest) => ({
     url: `getPicture/${id}`,
@@ -78,4 +84,4 @@ export const studentAuthApi = createApi({
 }),
 })
 
-export const { useStudentSignupMutation, useStudentSigninMutation, useStudentVerifyOtpMutation, useStudentSendOtpForForgotPasswordMutation, useStudentVerifyOtpForForgotPasswordMutation, useStudentGetProfileByIdQuery, useStudentGetPictureByIdQuery, useStudentUpdatePhoneNumberMutation, useChangePasswordMutation, useUploadImageStudentMutation} = studentAuthApi
+export const { useStudentSignupMutation, useStudentSigninMutation, useStudentVerifyOtpMutation, useStudentSendOtpForForgotPasswordMutation, useStudentVerifyOtpForForgotPasswordMutation, useStudentGetProfileByIdQuery, useStudentGetPictureByIdQuery, useStudentUpdatePhoneNumberMutation, useChangePasswordMutation, useUploadImageStudentMutation, useStudentGetProfileByNameQuery} = studentAuthApi

@@ -10,10 +10,13 @@ export interface TeacherLoginResponseType {
 }
 
 export interface TeacherLogin  {
-    id:    string;
-    email: string;
-    role:  number;
-    token: string;
+   id: string
+  firstName: string
+  lastName: string
+  email: string
+  role: number
+  token: string
+  imageUrl: string
 }
 export interface TeacherSignupRequest {
     email: string;

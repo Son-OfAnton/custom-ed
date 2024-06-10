@@ -30,7 +30,7 @@ export default function Home() {
 								</p>
 								<div className='flex md:justify-start justify-center'>
 									<Button asChild>
-										<Link href='/'>Join us</Link>
+										<Link href='/auth/signup'>Join us</Link>
 									</Button>
 								</div>
 							</div>

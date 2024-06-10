@@ -44,12 +44,12 @@ const NavBar = () => {
 					<div className='flex items-center'>
 						<ul className='flex'>
 							<li className='mr-20'>
-								<Link href='/' className='bg-hover-blue hover:text-blue-500'>
+								<Link href='/auth/signin' className='bg-hover-blue hover:text-blue-500'>
 									Login
 								</Link>
 							</li>
 							<li className='mr-20'>
-								<Link href='/' className='bg-hover-blue hover:text-blue-500'>
+								<Link href='/auth/signup' className='bg-hover-blue hover:text-blue-500'>
 									Register
 								</Link>
 							</li>
@@ -72,12 +72,12 @@ const NavBar = () => {
 						<div className='flex flex-col items-end mr-7 py-8'>
 							<ul className='flex flex-col items-end'>
 								<li className='my-3 relative'>
-									<Link href='/' className='bg-hover-blue hover:text-blue-500'>
+									<Link href='/auth/signin' className='bg-hover-blue hover:text-blue-500'>
 										Login
 									</Link>
 								</li>
 								<li className='my-3 relative'>
-									<Link href='/' className='bg-hover-blue hover:text-blue-500'>
+									<Link href='/auth/signup' className='bg-hover-blue hover:text-blue-500'>
 										Register
 									</Link>
 								</li>

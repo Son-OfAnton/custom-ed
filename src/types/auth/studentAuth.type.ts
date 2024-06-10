@@ -10,10 +10,13 @@ export interface StudentLoginResponse {
 }
 
 export interface Student {
-    id:    string;
-    email: string;
-    role:  number;
-    token: string;
+    id: string
+    firstName: string
+    lastName: string
+    email: string
+    role: number
+    token: string
+    imageUrl: string
 }
 export interface StudentSignupRequest {
     email: string

@@ -17,7 +17,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
 	return (
 		<div className='flex'>
-			<RightSidebar role='teacher' classname={classroomName} />
+			<RightSidebar role='student' classname={classroomName} />
 			<div className='flex-1 relative'>{children}</div>
 		</div>
 	)

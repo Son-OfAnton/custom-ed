@@ -1,6 +1,9 @@
 export interface getProfileByIdRequest {
     id : string
 }
+export interface getProfileByNameRequest {
+    name : string
+}
 export interface getProfileByIdResponse {
   isSuccess: boolean
   message: string
