@@ -32,6 +32,13 @@ export const chatbotApi = createApi({
         body,
       }),
     }),
+    markAsCompleted: builder.mutation({
+      query: ({ studentId, learningPathId }) => ({
+        url: `/complete/${learningPathId}`,
+        method: "POST",
+        body: JSON.stringify({ "studentId": studentId }),
+      }),
+    }),
     getAllLearningPaths: builder.query({
       query: (body) => ({
         url: `/learning-paths`,

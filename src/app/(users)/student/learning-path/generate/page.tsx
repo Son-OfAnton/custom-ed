@@ -11,12 +11,17 @@ import {
 	useSaveMutation,
 } from '@/store/chatbot/chatbotApi'
 import { addMessage } from '@/store/features/chatbotSlice'
+import { CalendarIcon } from '@radix-ui/react-icons'
+import { format } from 'date-fns'
 import { useRouter } from 'next/navigation'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'sonner'
 
+import { cn } from '@/lib/utils'
+
 import Chat from '@/components/Chat'
 import { Button } from '@/components/ui/button'
+import { Calendar } from '@/components/ui/calendar'
 import {
 	Dialog,
 	DialogContent,
@@ -24,10 +29,14 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-	DialogTrigger,
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from '@/components/ui/popover'
 
 type currStateType = 'greet' | 'detail' | 'generate' | 'save' | null
 
@@ -40,6 +49,7 @@ const GenerateLearningPathPage = () => {
 	const [showGenerateButton, setShowGenerateButton] = useState(true)
 	const [showTitleDialog, setShowTitleDialog] = useState(false)
 	const [learningPathTitle, setLearningPathTitle] = useState('')
+	const [date, setDate] = useState<Date>()
 	const router = useRouter()
 
 	const currUserId = getCurrUser().id
@@ -145,6 +155,7 @@ const GenerateLearningPathPage = () => {
 			const saveResponse = await save({
 				studentId: currUserId,
 				learningPathTitle: learningPathTitle,
+				deadline: date,
 			}).unwrap()
 			console.log('Learning path saved successfully')
 			toast.success('Learning path saved successfully')
@@ -192,29 +203,45 @@ const GenerateLearningPathPage = () => {
 
 	return (
 		<div className='ml-72'>
-			<Dialog
-				open={showTitleDialog}
-				onOpenChange={() => setShowTitleDialog(false)}
-			>
+			<Dialog open={showTitleDialog} onOpenChange={() => setShowTitleDialog(false)}>
 				<DialogContent className='sm:max-w-[425px]'>
 					<DialogHeader>
 						<DialogTitle>Learning path title</DialogTitle>
 						<DialogDescription>
-							Please provide a name for this learning path
+							Please provide a name and deadline for this learning path
 						</DialogDescription>
 					</DialogHeader>
-					<div className='grid gap-4 py-4'>
-						<div className='grid grid-cols-4 items-center gap-4'>
-							<Label htmlFor='name' className='text-right'>
-								Title
-							</Label>
-							<Input
-								id='name'
-								value={learningPathTitle}
-								onChange={(e) => setLearningPathTitle(e.target.value)}
-								className='col-span-3'
-							/>
-						</div>
+					<div className='flex flex-col gap-y-2 my-2'>
+						<Label htmlFor='name'>Title</Label>
+						<Input
+							id='name'
+							value={learningPathTitle}
+							onChange={(e) => setLearningPathTitle(e.target.value)}
+							className='col-span-3'
+						/>
+						<Label htmlFor='date'>Deadline</Label>
+						<Popover>
+							<PopoverTrigger asChild>
+								<Button
+									variant={'outline'}
+									className={cn(
+										'w-full justify-start text-left font-normal',
+										!date && 'text-muted-foreground',
+									)}
+								>
+									<CalendarIcon className='mr-2 h-4 w-4' />
+									{date ? format(date, 'PPP') : <span>Pick a date</span>}
+								</Button>
+							</PopoverTrigger>
+							<PopoverContent className='w-auto p-0' align='start'>
+								<Calendar
+									mode='single'
+									selected={date}
+									onSelect={setDate}
+									initialFocus
+								/>
+							</PopoverContent>
+						</Popover>
 					</div>
 					<DialogFooter>
 						<Button onClick={() => onSave()}>Save changes</Button>

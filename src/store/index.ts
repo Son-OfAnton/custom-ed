@@ -14,6 +14,7 @@ import assessmentDialogSlice from './features/assessmentDialogSlice'
 import { assessmentApi } from './assessment/assessmentApi'
 import classroomDialogSlice from './features/classroomDialogSlice'
 import assessmentSlice from './features/assessmentSlice'
+import discussionSlice from './features/discussionSlice'
 
 export const store = configureStore({
   reducer: {
@@ -32,6 +33,7 @@ export const store = configureStore({
     assessment: assessmentSlice,
     assessmentDialog: assessmentDialogSlice,
     classroomDialog: classroomDialogSlice,
+    discussion: discussionSlice,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware()
     .concat(studentAuthApi.middleware, 
