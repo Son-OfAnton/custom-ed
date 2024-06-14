@@ -86,7 +86,7 @@ export default function TeacherOnboardingDialog() {
 			.then((res) => {
 				toast.success('Profile updated successfully')
 				setCurrUser(res.data)
-				router.push('/teacher')
+				router.push('/teacher/classroom/classroom-list')
 			})
 			.catch((err) => {
 				toast.error('Could not update profile')

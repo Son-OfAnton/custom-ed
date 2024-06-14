@@ -9,11 +9,7 @@ const Layout: React.FC<LayoutProps> = ({ role = 'teacher', children }) => {
 	return (
 		<div>
 			<TeacherClassroomNavbar />
-			<div>
-				{children}
-				{/* <RightSidebar role='teacher' classname='Data structures' />
-			<div>{children}</div> */}
-			</div>
+			<div>{children}</div>
 		</div>
 	)
 }

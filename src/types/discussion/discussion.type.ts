@@ -2,7 +2,7 @@ export interface CreateMessageRequest {
   content: string;
   senderId: string;
   senderRole: number;
-  threadParent: string;
+  threadParent?: string;
   classroomId: string;
 }
 
@@ -10,7 +10,7 @@ export interface CreateMessageResponse {
   isSuccess: boolean;
   message: string;
   data: CreateMessageResponseData;
-  errors: string[];
+  errors: string[] | null;
 }
 
 export interface CreateMessageResponseData {
@@ -62,5 +62,10 @@ export interface DeleteMessageResponse {
 export interface DeleteMessageData extends CreateMessageResponseData {}
 
 export interface GetAllMessagesResponse {
-  
+  total: number;
+  page: number;
+  pageSize: number;
+  data: GetAllMessagesResponseData[];
 }
+
+export interface GetAllMessagesResponseData extends CreateMessageResponseData {}

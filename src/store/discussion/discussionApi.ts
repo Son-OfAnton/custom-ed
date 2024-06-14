@@ -4,14 +4,23 @@ import {
   CreateMessageResponse, 
   EditMessageRequest, 
   EditMessageResponse,
-  DeleteMessageResponse
+  DeleteMessageResponse,
+  GetAllMessagesResponse
 } from "@/types/discussion/discussion.type";
 
-const discussionApi = createApi({
+export const discussionApi = createApi({
   reducerPath: "discussionApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5082/api"
+    baseUrl: "http://localhost:5082/api",
+    prepareHeaders: (headers) => {
+      const token = JSON.parse(localStorage.getItem('currUser')!).token as string;
+      if (token) {
+        headers.set('authorization', `Bearer ${token}`);
+      }
+      return headers;
+    }
   }),
+  tagTypes: ['Messages'],
   endpoints: (builder) => ({
     createMessage: builder.mutation<CreateMessageResponse, CreateMessageRequest>({
       query: (body) => ({
@@ -19,32 +28,36 @@ const discussionApi = createApi({
         method: 'POST',
         body,
       }),
+      invalidatesTags: (result, error, { classroomId }) => [{ type: 'Messages', id: classroomId }],
     }),
     editMessage: builder.mutation<EditMessageResponse, EditMessageRequest>({
       query: (body) => ({
         url: `/${body.classroomId}/forum/update-message`,
         method: 'PUT',
         body,
-      }) 
+      }),
+      invalidatesTags: (result, error, { classroomId }) => [{ type: 'Messages', id: classroomId }],
     }),
-    deleteMessage: builder.mutation<DeleteMessageResponse, {classroomId: string, messageId: string}>({
-      query: ({classroomId, messageId}) => ({
+    deleteMessage: builder.mutation<DeleteMessageResponse, { classroomId: string, messageId: string }>({
+      query: ({ classroomId, messageId }) => ({
         url: `/${classroomId}/forum/delete-message`,
         method: 'DELETE',
         params: {
-          messageId
+          messageId,
         },
       }),
+      invalidatesTags: (result, error, { classroomId }) => [{ type: 'Messages', id: classroomId }],
     }),
-    getAllMessages: builder.query<any, {classroomId: string, page: number, pageSize: number}>({
-      query: ({classroomId, page, pageSize}) => ({
+    getAllMessages: builder.query<GetAllMessagesResponse, { classroomId: string, page: number, pageSize: number }>({
+      query: ({ classroomId, page, pageSize }) => ({
         url: `/${classroomId}/forum/all-messages`,
         method: 'GET',
         params: {
           page,
-          pageSize
+          pageSize,
         },
-      })
+      }),
+      providesTags: (result, error, { classroomId }) => [{ type: 'Messages', id: classroomId }],
     }),
   })
 });

@@ -13,7 +13,7 @@ export const StudentSideBarItems: SideBarItem[] = [
 		id: '1',
 		text: 'Classroom',
 		icon: <School size={25} />,
-		path: '/teacher/classroom/classroom-list',
+		path: '/student/classroom/classroom-list',
 	},
 	{
 		id: '2',

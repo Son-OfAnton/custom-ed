@@ -15,6 +15,11 @@ import { assessmentApi } from './assessment/assessmentApi'
 import classroomDialogSlice from './features/classroomDialogSlice'
 import assessmentSlice from './features/assessmentSlice'
 import discussionSlice from './features/discussionSlice'
+import learningPathDialogSlice from './features/learningPathDialogSlice'
+import { discussionApi } from './discussion/discussionApi'
+import { notificationApi } from './notification/notificationApi'
+import notificationSlice from './features/notificationSlice'
+
 
 export const store = configureStore({
   reducer: {
@@ -25,6 +30,8 @@ export const store = configureStore({
     [classroomApi.reducerPath]: classroomApi.reducer,
     [announcementApi.reducerPath]: announcementApi.reducer,
     [assessmentApi.reducerPath]: assessmentApi.reducer,
+    [discussionApi.reducerPath]: discussionApi.reducer,
+    [notificationApi.reducerPath]: notificationApi.reducer,
     dialog: dialogSlice,
     chat: chatbotSlice,
     announcementDialog: announcementDialogSlice,
@@ -34,6 +41,8 @@ export const store = configureStore({
     assessmentDialog: assessmentDialogSlice,
     classroomDialog: classroomDialogSlice,
     discussion: discussionSlice,
+    learningPath: learningPathDialogSlice,
+    notification: notificationSlice,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware()
     .concat(studentAuthApi.middleware, 
@@ -43,6 +52,8 @@ export const store = configureStore({
       classroomApi.middleware,
       announcementApi.middleware,
       assessmentApi.middleware,
+      discussionApi.middleware,
+      notificationApi.middleware,
       ),
 })
 

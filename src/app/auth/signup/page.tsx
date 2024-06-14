@@ -110,7 +110,7 @@ const SignupPage = () => {
 				})
 				.catch((err: ExtendedError) => {
 					console.log(`signup error ${JSON.stringify(err)}`)
-					toast.error(err.data.errors![0])
+					toast.error('Signup failed')
 				})
 		} else if (credentials.role.toLowerCase() === 'teacher') {
 			teacherSignup(credentials)
@@ -130,7 +130,7 @@ const SignupPage = () => {
 				})
 				.catch((err: ExtendedError) => {
 					console.log(`signup error ${JSON.stringify(err)}`)
-					toast.error(err.data.errors![0])
+					toast.error('Signup failed')
 				})
 		}
 	}

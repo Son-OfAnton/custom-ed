@@ -2,13 +2,13 @@
 
 import { useState } from 'react'
 
-import Chat from '@/components/Chat'
+import DiscussionChat from '@/components/DiscussionChat'
 
 const Forum = () => {
 	const [typing, setTyping] = useState(false)
 	return (
-		<div className='pl-72'>
-			<Chat typing={typing} />
+		<div className='md:pl-72'>
+			<DiscussionChat typing={typing} />
 		</div>
 	)
 }

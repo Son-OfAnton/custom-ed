@@ -12,6 +12,7 @@ import { Annoucement } from '@/types/announcement/announcement.type'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { cn } from '@/lib/utils'
+import { Paperclip } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -134,6 +135,7 @@ const Announcement = ({ children, ...props }: AnnouncementProps) => {
 						key={i}
 						onClick={() => onAttachmentClick(attachment)}
 					>
+						<Paperclip className='h-4 w-4 mr-1' />
 						{`Attachment ${i + 1}`}
 					</Button>
 				))}

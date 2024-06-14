@@ -1,29 +1,39 @@
 import { useEffect, useRef, useState } from 'react'
 
 import { useLocalStorage } from '@/hooks/useLocalStorage'
-import { RootState } from '@/store'
 import {
 	useCreateMessageMutation,
+	useEditMessageMutation,
 	useGetAllMessagesQuery,
 } from '@/store/discussion/discussionApi'
 import { selectCurrClassroomId } from '@/store/features/classroomSlice'
-import { addMessage, setMessages } from '@/store/features/discussionSlice'
-import { MessageType } from '@/types/Message'
+import {
+	addMessage,
+	selectIsRightClicked,
+	selectMessages,
+	setMessages,
+	setRightClicked,
+} from '@/store/features/discussionSlice'
+import { CreateMessageResponseData } from '@/types/discussion/discussion.type'
 import { SendHorizonal } from 'lucide-react'
 import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'sonner'
+
+import { toMonthAndDay } from '@/lib/helpers'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
-import Message from './Message'
-import Typing from './Typing'
+import DiscussionMessage from './DiscussionMessage'
+import Spinner from './Spinner'
 
 interface ChatProps {
 	typing: boolean
 }
 
 const DiscussionChat = ({ typing }: ChatProps) => {
-	const messages = useSelector((state: RootState) => state.discussion.messages)
+	const messages = useSelector(selectMessages)
+	const isRightClicked = useSelector(selectIsRightClicked)
 	const dispatch = useDispatch()
 	const inputRef = useRef<HTMLInputElement>(null)
 	const endOfMessagesRef = useRef<HTMLDivElement>(null)
@@ -39,9 +49,11 @@ const DiscussionChat = ({ typing }: ChatProps) => {
 	} = useGetAllMessagesQuery({
 		classroomId: currClassroomId,
 		page: 1,
-		pageSize: 1,
+		pageSize: 1000,
 	})
 	const [createMessage, { isLoading: isSending }] = useCreateMessageMutation()
+	const [editMessage, { isLoading: isEditing }] = useEditMessageMutation()
+	const [inputValue, setInputValue] = useState('')
 
 	useEffect(() => {
 		if (allMessages?.data) {
@@ -49,24 +61,45 @@ const DiscussionChat = ({ typing }: ChatProps) => {
 		}
 	}, [allMessages, dispatch])
 
+	useEffect(() => {
+		if (isRightClicked.option === 'edit') {
+			setInputValue(isRightClicked.content)
+		}
+	}, [isRightClicked])
+
+	let lastDate = ''
+
 	const sendHandler = async () => {
-		const currMessage = inputRef.current?.value
-		if (currMessage === undefined || currMessage?.trim() === '') return
+		if (isRightClicked.option === null) {
+			try {
+				const newMessage = await createMessage({
+					classroomId: currClassroomId,
+					content: inputValue,
+					senderId: currUser.id,
+					senderRole: currUser.role,
+					// threadParent: '',
+				}).unwrap()
 
-		try {
-			const newMessage = await createMessage({
-				classroomId: currClassroomId,
-				content: currMessage!,
-				senderId: currUser.id,
-				senderRole: currUser.role,
-				threadParent: '',
-			}).unwrap()
-
-			dispatch(addMessage(newMessage.data))
-			inputRef.current!.value = ''
-			endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth' })
-		} catch (error) {
-			console.error('Failed to send message:', error)
+				dispatch(addMessage(newMessage.data))
+				setInputValue('')
+				endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth' })
+			} catch (error) {
+				console.error('Failed to send message:', error)
+			}
+		} else {
+			try {
+				await editMessage({
+					id: isRightClicked.id as string,
+					classroomId: currClassroomId,
+					content: inputValue,
+					senderId: currUser.id,
+					senderRole: currUser.role,
+				}).unwrap()
+				setInputValue('')
+				dispatch(setRightClicked({ id: null, content: '', option: null }))
+			} catch (error) {
+				toast.error('Failed to edit message')
+			}
 		}
 	}
 
@@ -79,11 +112,9 @@ const DiscussionChat = ({ typing }: ChatProps) => {
 	return (
 		<div className='flex h-screen flex-col'>
 			<main className='flex-1 overflow-y-auto p-4'>
-				{isLoadingAllMesages ? (
+				{isLoadingAllMesages || isFetchingAllMessages ? (
 					<div className='flex items-center justify-center h-full'>
-						<p className='font-semibold text-2xl text-gray-500'>
-							Loading messages...
-						</p>
+						<Spinner />
 					</div>
 				) : allMessagesError ? (
 					<div className='flex items-center justify-center h-full'>
@@ -93,14 +124,24 @@ const DiscussionChat = ({ typing }: ChatProps) => {
 					</div>
 				) : (
 					<div className='flex flex-col gap-4'>
-						{messages.map((message: MessageType, index: number) => (
-							<Message
-								key={index}
-								text={message.text}
-								sender={message.sender}
-							/>
-						))}
-						{typing && <Typing />}
+						{messages.map((message, index) => {
+							const messageDate = toMonthAndDay(message.updatedAt)
+							const showDate = messageDate !== lastDate
+							lastDate = messageDate
+
+							return (
+								<div key={index}>
+									{showDate && (
+										<div className='flex justify-center'>
+											<div className='px-4 py-1 bg-accent text-accent-foreground text-sm font-semibold rounded-full'>
+												{messageDate}
+											</div>
+										</div>
+									)}
+									<DiscussionMessage message={message} />
+								</div>
+							)
+						})}
 						<div ref={endOfMessagesRef} />
 					</div>
 				)}
@@ -112,6 +153,8 @@ const DiscussionChat = ({ typing }: ChatProps) => {
 					placeholder='Type your message...'
 					type='text'
 					disabled={isSending}
+					value={inputValue}
+					onChange={(e) => setInputValue(e.target.value)}
 					onKeyDown={(e) => handleKeyDown(e)}
 				/>
 				<Button
