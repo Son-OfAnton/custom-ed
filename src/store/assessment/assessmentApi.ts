@@ -23,6 +23,7 @@ export const assessmentApi = createApi({
     }
     return headers;
   }}),
+  tagTypes: ['Question', 'Assessment'],
   endpoints: (builder) => ({
     createAssessment: builder.mutation<CreateAssessementResponse, CreateAssessementRequest>({
       query: (body) => ({
@@ -35,32 +36,37 @@ export const assessmentApi = createApi({
       query: (classroomId) => ({
         url: `/${classroomId}/assessment`,
         method: 'GET'
-      })
+      }),
+      providesTags: ['Assessment'],
     }),
     publishAssessment: builder.mutation<PublishAssessmentResponse, any>({
       query: ({classroomId, assessmentId}) => ({
         url: `/${classroomId}/assessment/publish/${assessmentId}`,
         method: 'PUT'
       }),
+      invalidatesTags: ['Assessment'],
     }),
     addQuestion: builder.mutation<any, {classroomId: string, question: Question}>({
       query: ({classroomId, question}) => ({
         url: `/${classroomId}/assessment/add-question`,
         method: 'POST',
         body: question,
-      })
+      }),
+      invalidatesTags: ['Question'],
     }),
     deleteQuestion: builder.mutation<any, {classroomId: string, questionId: string}>({
       query: ({classroomId, questionId}) => ({
         url: `/${classroomId}/assessment/question/${questionId}`,
         method: 'DELETE',
-      })
+      }),
+      invalidatesTags: ['Question'],
     }),
     getQuestions: builder.query<GetQuestionsResponse, {classroomId: string, assessmentId: string}>({
       query: ({ classroomId, assessmentId }) => ({
         url: `/${classroomId}/assessment/${assessmentId}`,
         method: 'GET',
-      })
+      }),
+      providesTags: ['Question'],
     }),
     submitAssessment: builder.mutation<PostSubmitAnswerResponse, {body: PostSubmitAnswerRequest, classroomId: string}>({
       query: ({body, classroomId}) => ({
@@ -94,11 +100,25 @@ export const assessmentApi = createApi({
         method: 'GET',
       })
     }),
+    aggregateAssessmentAnalytics: builder.query<SingleAssessmentAnalyticsResponse[], {classroomId: string, assessmentIds: string[]}>({
+      async queryFn({classroomId, assessmentIds}, _queryApi, _extraOptions, fetchWithBQ) {
+        const results = await Promise.all(assessmentIds.map(async (assessmentId, _) => {
+          const response = await fetchWithBQ({
+            url: `/${classroomId}/analytics/assessment/${assessmentId}`,
+            method: 'GET',
+          });
+          if (response.error) throw response.error;
+          return response.data as SingleAssessmentAnalyticsResponse;
+        }));
+        return { data: results };
+      }
+    })
   })
 })
 
 
 export const { 
+  useAggregateAssessmentAnalyticsQuery,
   useCreateAssessmentMutation, 
   useGetAssessmentsQuery, 
   usePublishAssessmentMutation,

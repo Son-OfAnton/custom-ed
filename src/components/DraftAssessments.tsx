@@ -23,7 +23,8 @@ const DraftAssessments = ({ assessments }: Props) => {
 	const [publish, {}] = usePublishAssessmentMutation()
 	const currClassroomId = useSelector(selectCurrClassroomId)
 
-	const handlePublish = (assessmentId: string) => {
+	const handlePublish = (e: any, assessmentId: string) => {
+		e.stopPropagation()
 		publish({ classroomId: currClassroomId, assessmentId: assessmentId})
 			.then((res) => {
 				toast.success('Assessment published successfully')
@@ -88,7 +89,7 @@ const DraftAssessments = ({ assessments }: Props) => {
 								<Button
 									className='hover:cursor-pointer hover:underline z-10'
 									variant='link'
-									onClick={() => handlePublish(assessment.id)}
+									onClick={(e: any) => handlePublish(e, assessment.id)}
 								>
 									Publish
 								</Button>

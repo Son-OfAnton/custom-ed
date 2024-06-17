@@ -29,14 +29,14 @@ const EditQuestions = () => {
 	const [deleteQuestion, {}] = useDeleteQuestionMutation()
 
 	const [questions, setQuestions] = useState<Question[]>([
-		{
-			text: '',
-			weight: 1,
-			answers: [],
-			correctAnswerIndex: -1,
-			assessmentId: currAssessmentId as string,
-			tags: [],
-		},
+		// {
+		// 	text: '',
+		// 	weight: 1,
+		// 	answers: [],
+		// 	correctAnswerIndex: -1,
+		// 	assessmentId: currAssessmentId as string,
+		// 	tags: [],
+		// },
 	])
 
 	const addQuestion = () => {

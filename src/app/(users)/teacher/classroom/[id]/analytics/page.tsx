@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import {
+	useAggregateAssessmentAnalyticsQuery,
 	useAssessmentAnalyticsByIdQuery,
 	useCrossAssessmentAnalyticsQuery,
 	useGetAssessmentsQuery,
@@ -35,44 +36,6 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
-const data = [
-	{
-		name: 'Page A',
-		uv: 4000,
-		amt: 2400,
-	},
-	{
-		name: 'Page B',
-		uv: 3000,
-		amt: 2210,
-	},
-	{
-		name: 'Page C',
-		uv: 2000,
-		amt: 2290,
-	},
-	{
-		name: 'Page D',
-		uv: 2780,
-		amt: 2000,
-	},
-	{
-		name: 'Page E',
-		uv: 1890,
-		amt: 2181,
-	},
-	{
-		name: 'Page F',
-		uv: 2390,
-		amt: 2500,
-	},
-	{
-		name: 'Page G',
-		uv: 3490,
-		amt: 2100,
-	},
-]
-
 const metrics: string[] = [
 	'Mean Score',
 	'Median Score',
@@ -91,6 +54,27 @@ const metrics: string[] = [
 	'Mode Absolute Deviation',
 ]
 
+const getMetricKey = (metric: string) => {
+  const metricMap = {
+    'Mean Score': 'meanScore',
+    'Median Score': 'medianScore',
+    'Mode Score': 'modeScore',
+    'Standard Deviation': 'standardDeviation',
+    'Variance': 'variance',
+    'Highest Score': 'highestScore',
+    'Lowest Score': 'lowestScore',
+    'Range': 'range',
+    'Interquartile Range': 'interquartileRange',
+    'Skewness': 'skewness',
+    'Kurtosis': 'kurtosis',
+    'Coefficient Of Variation': 'coefficientOfVariation',
+    'Mean Absolute Deviation': 'meanAbsoluteDeviation',
+    'Median Absolute Deviation': 'medianAbsoluteDeviation',
+    'Mode Absolute Deviation': 'modeAbsoluteDeviation',
+  };
+return metricMap[metric as keyof typeof metricMap];
+};
+
 const chapters: string[] = Array.from(
 	{ length: 10 },
 	(_, i) => `Chapter ${i + 1}`,
@@ -106,19 +90,21 @@ const AnalyticsPage = () => {
 		isFetching: isFetchingFetchedAssesments,
 	} = useGetAssessmentsQuery(currClassroomId)
 
-	const {
-		data: crossAssessmentAnalytics,
-		isLoading: isLoadingCrossAssessmentAnaytics,
-		isFetching: isFetchingCrossAssessmentAnalytics,
-		isError: isErrorCrossAssessmentAnalytics,
-		error: errorCrossAssessmentAnalytics,
-	} = useCrossAssessmentAnalyticsQuery(currClassroomId!)
+	// const {
+	// 	data: crossAssessmentAnalytics,
+	// 	isLoading: isLoadingCrossAssessmentAnaytics,
+	// 	isFetching: isFetchingCrossAssessmentAnalytics,
+	// 	isError: isErrorCrossAssessmentAnalytics,
+	// 	error: errorCrossAssessmentAnalytics,
+	// } = useCrossAssessmentAnalyticsQuery(currClassroomId!)
 
 	const assessments =
-		fetchedAssessments?.data?.map((assessment) => ({
-			id: assessment.id,
-			name: assessment.name,
-		})) || []
+		fetchedAssessments?.data
+			?.filter((assessment) => assessment.isPublished)
+			.map((assessment) => ({
+				id: assessment.id,
+				name: assessment.name,
+			})) || []
 
 	const [selectedMetric, setSelectedMetric] = useState({
 		label: 'Mean Score',
@@ -129,14 +115,37 @@ const AnalyticsPage = () => {
 		isOpen: false,
 	})
 
-	// console.log(assessments)
+	const {
+		data: aggregateData,
+		isLoading: isLoadingAggregate,
+		isFetching: isFethingAggregate,
+		isError: isErrorAggregate,
+		isSuccess: isSuccessAggregate,
+		error: errorAggregate,
+	} = useAggregateAssessmentAnalyticsQuery({
+		classroomId: currClassroomId!,
+		assessmentIds: assessments.map((assessment) => assessment.id),
+	})
+
+	console.debug('ASSESSMENTS', JSON.stringify(assessments, null, 2))
+	console.debug('ANALYSIS', JSON.stringify(aggregateData, null, 2))
+
+	const graphData = assessments.map((assessment, i) => {
+		const metricKey = getMetricKey(selectedMetric.label);
+		return {
+			name: assessment.name,
+			value: aggregateData?.[i]?.data[metricKey] ?? 0,
+		};
+	});
+
+	// console.debug(assessments)
 	const [selectedAssessment, setSelectedAssessment] = useState({
 		label: assessments.length > 0 ? assessments[0].name : 'No assessments',
 		id: assessments.length > 0 ? assessments[0].id : '',
 		isOpen: false,
 	})
 
-	console.log(selectedAssessment.id)
+	console.debug(selectedAssessment.id)
 
 	const {
 		data: singleAssessmentAnalytics,
@@ -144,10 +153,15 @@ const AnalyticsPage = () => {
 		isFetching: isFetchingSinlgeAssessmentAnalytics,
 		isError: isErrorSingleAssessmentAnalytics,
 		error: errorSingleAssessmentAnalytics,
-	} = useAssessmentAnalyticsByIdQuery({
-		classroomId: currClassroomId!,
-		assessmentId: selectedAssessment.id,
-	}, {skip: selectedAssessment.id === ''})
+	} = useAssessmentAnalyticsByIdQuery(
+		{
+			classroomId: currClassroomId!,
+			assessmentId: selectedAssessment.id,
+		},
+		{ skip: selectedAssessment.id === '' },
+	)
+
+	console.debug(singleAssessmentAnalytics)
 
 	const handleMetricChange = (selectedLabel: string) => {
 		setSelectedMetric({ label: selectedLabel, isOpen: false })
@@ -244,7 +258,7 @@ const AnalyticsPage = () => {
 				<BarChart
 					width={400}
 					height={300}
-					data={data}
+					data={graphData}
 					margin={{
 						top: 5,
 						right: 30,
@@ -258,7 +272,7 @@ const AnalyticsPage = () => {
 					<Tooltip />
 					<Legend />
 					<Bar
-						dataKey='uv'
+						dataKey='value'
 						fill='#0F172A'
 						activeBar={<Rectangle fill='#0F172A' />}
 					/>
@@ -319,7 +333,7 @@ const AnalyticsPage = () => {
 					<CardContent className='flex flex-col items-center justify-center gap-2 mt-4'>
 						<div className='flex items-center justify-center w-20 h-20 rounded-full bg-accent'>
 							<span className='text-4xl text-accent-foreground font-bold'>
-							{singleAssessmentAnalytics?.data?.medianScore || 'N/A'}
+								{singleAssessmentAnalytics?.data?.medianScore || 'N/A'}
 							</span>
 						</div>
 						<div className='text-sm text-primary'>Median Grade</div>
@@ -329,7 +343,7 @@ const AnalyticsPage = () => {
 					<CardContent className='flex flex-col items-center justify-center gap-2 mt-4'>
 						<div className='flex items-center justify-center w-20 h-20 rounded-full bg-accent'>
 							<span className='text-4xl text-accent-foreground font-bold'>
-							{singleAssessmentAnalytics?.data?.totalSubmissions || 'N/A'}
+								{singleAssessmentAnalytics?.data?.totalSubmissions || 'N/A'}
 							</span>
 						</div>
 						<div className='text-sm text-primary'>Total Submissions</div>

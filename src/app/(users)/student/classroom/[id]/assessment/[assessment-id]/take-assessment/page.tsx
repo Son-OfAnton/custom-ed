@@ -10,8 +10,10 @@ import { Button } from '@/components/ui/button'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { useLocalStorage } from '@/hooks/useLocalStorage'
 import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
 const TakeAssessment = () => {
+	const router = useRouter()
 	const currPath = usePathname().split('/')
 	const currClassroomId = currPath[3]
 	const currAssessmentId = currPath[5]
@@ -56,6 +58,7 @@ const TakeAssessment = () => {
 		.then((res) => {
 			if (res.isSuccess) {
 				toast.success('Assessment submitted successfully')
+				router.back()
 			} else {
 				toast.error('Failed to submit assessment')
 			}
