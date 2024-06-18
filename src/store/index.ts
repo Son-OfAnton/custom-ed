@@ -19,12 +19,14 @@ import learningPathDialogSlice from './features/learningPathDialogSlice'
 import { discussionApi } from './discussion/discussionApi'
 import { notificationApi } from './notification/notificationApi'
 import notificationSlice from './features/notificationSlice'
+import { adminApi } from './admin/adminApi'
 
 
 export const store = configureStore({
   reducer: {
     [studentAuthApi.reducerPath]: studentAuthApi.reducer,
     [teacherAuthApi.reducerPath]: teacherAuthApi.reducer,
+    [adminApi.reducerPath]: adminApi.reducer, 
     [otpApi.reducerPath]: otpApi.reducer,
     [chatbotApi.reducerPath]: chatbotApi.reducer,
     [classroomApi.reducerPath]: classroomApi.reducer,
@@ -48,6 +50,7 @@ export const store = configureStore({
     .concat(studentAuthApi.middleware, 
       otpApi.middleware, 
       teacherAuthApi.middleware,
+      adminApi.middleware,
       chatbotApi.middleware,
       classroomApi.middleware,
       announcementApi.middleware,

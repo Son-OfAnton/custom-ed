@@ -23,12 +23,6 @@ export const TeacherSideBarItems: SideBarItem[] = [
 		icon: <User size={25} />,
 		path: '/teacher/profile',
 	},
-	{
-		id: '3',
-		text: 'Messages',
-		icon: <MessagesSquare size={25} />,
-		path: '/',
-	},
 ]
 export const TeacherRightSideBarItems: SideBarItem[] = [
 	{

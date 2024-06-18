@@ -12,19 +12,13 @@ export const AdminSideBarItems: SideBarItem[] = [
 		id: '1',
 		text: 'Classroom',
 		icon: <School size={25} />,
-		path: '/',
+		path: '/admin/classroom/classroom-list',
 	},
 	{
 		id: '2',
-		text: 'Profile',
-		icon: <User size={25} />,
-		path: '/',
-	},
-	{
-		id: '3',
-		text: 'Messages',
+		text: 'Message',
 		icon: <MessageSquare size={25} />,
-		path: '/',
+		path: '/message',
 	},
 ]
 export const AdminRightSideBarItems: SideBarItem[] = [

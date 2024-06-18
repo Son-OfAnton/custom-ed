@@ -99,11 +99,19 @@ export const classroomApi = createApi({
         params: { studentId, classroomId }
       }),
       invalidatesTags: (result, error, { classroomId }) => [{ type: 'Classroom', id: classroomId }],
-    })
+    }),
+    getAllClassrooms: builder.query({
+      query: () => ({
+        url: '/',
+        method: 'GET',
+      }),
+      providesTags: [{ type: 'Classroom', id: 'LIST' }],
+    }),
   })
 })
 
 export const { 
+  useGetAllClassroomsQuery,
   useCreateClassRoomMutation, 
   useEditClassroomMutation, 
   useAddBatchMutation, 
