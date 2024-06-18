@@ -41,7 +41,7 @@ export default function Home() {
 								</p>
 								<div className='flex md:justify-start justify-center'>
 									<Button asChild>
-										<Link href='/'>Join us</Link>
+										<Link href='/auth/signup'>Join us</Link>
 									</Button>
 								</div>
 							</div>
@@ -86,12 +86,12 @@ export default function Home() {
 					</div>
 
 					<div className='mt-12 text-center'>
-						<a
-							href='#'
-							className='inline-block rounded bg-blue-500 px-12 py-3 text-sm font-medium text-white transition hover:bg-blue-700 focus:outline-none focus:ring focus:ring-yellow-400'
+						<Link
+							href='/auth/signup'
+							className='inline-block rounded bg-blue-500 px-12 py-3 text-sm font-medium text-white transition hover:bg-blue-700 focus:outline-none focus:ring'
 						>
 							Get Started Today
-						</a>
+						</Link>
 					</div>
 				</div>
 			</section>

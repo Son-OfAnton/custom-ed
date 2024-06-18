@@ -21,7 +21,8 @@ const TeacherClassroomNavbar = () => {
 	const dispatch = useDispatch()
 	const currPath = usePathname()
 	const basePath = currPath.split('/')
-	dispatch(setCurrClassroomId(basePath[basePath.length - 2]))
+	console.log(basePath)
+	dispatch(setCurrClassroomId(basePath[3]))
 	
 	// console.log(`currPath ${currPath}`)
 	// console.log(basePath)
@@ -45,7 +46,11 @@ const TeacherClassroomNavbar = () => {
 					{TeacherRightSideBarItems.map((item, i) => (
 						<div key={i}>
 							<NavigationMenuLink
-								className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}
+								className={cn(navigationMenuTriggerStyle(), 'cursor-pointer', {
+									'bg-accent text-accent-foreground': currPath.includes(
+										item.text.toLowerCase(),
+									),
+								})}
 								onClick={() => handleRouting(item.path)}
 							>
 								<div className='inline-flex justify-center items-center gap-x-2'>

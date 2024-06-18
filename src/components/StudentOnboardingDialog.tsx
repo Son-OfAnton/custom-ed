@@ -91,7 +91,7 @@ export default function StudentOnboardingDialog() {
 				toast.success('Profile updated successfully')
 				setCurrUser(res.data)
 				dispatch(closeDialog())
-				router.push('/student')
+				router.push('/student/classroom/classroom-list')
 			})
 			.catch((err) => {
 				toast.error('Could not update profile')

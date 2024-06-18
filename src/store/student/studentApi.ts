@@ -26,6 +26,19 @@ export const studentAuthApi = createApi({
         method: 'GET'
       })
     }),
+    aggregateGetStudentById: builder.query<GetSingleStudentResponse[], {studentIds: any[]}>({
+      async queryFn({studentIds}, _queryApi, _extraOptions, fetchWithBQ) {
+        const results = await Promise.all(studentIds.map(async (id, _) => {
+          const response = await fetchWithBQ({
+            url: `/${id}`,
+            method: 'GET',
+          });
+          if (response.error) throw response.error;
+          return response.data as GetSingleStudentResponse;
+        }));
+        return { data: results };
+      }
+    }),
     editStudentProfile: builder.mutation<any, EditStudentProfileRequest>({
       query: (body) => {
         const token = localStorage.getItem('currUser') ? JSON.parse(localStorage.getItem('currUser') as string).token : null;
@@ -47,4 +60,6 @@ export const {
   useStudentSignupMutation, 
   useStudentSigninMutation, 
   useGetStudentByIdQuery, 
-  useEditStudentProfileMutation } = studentAuthApi
+  useEditStudentProfileMutation,
+  useAggregateGetStudentByIdQuery,
+} = studentAuthApi

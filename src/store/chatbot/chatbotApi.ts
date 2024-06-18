@@ -3,6 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const chatbotApi = createApi({
   reducerPath: "chatbotApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8000" }),
+  tagTypes: ["LearningPath"],
   endpoints: (builder) => ({
     greet: builder.mutation({
       query: (body) => ({
@@ -32,25 +33,41 @@ export const chatbotApi = createApi({
         body,
       }),
     }),
+    markAsCompleted: builder.mutation({
+      query: ({ studentId, learningPathId }) => ({
+        url: `/learning-paths/${learningPathId}`,
+        method: "PUT",
+        body: JSON.stringify({ "studentId": studentId }),
+      }),
+      invalidatesTags: ["LearningPath"],
+    }),
     getAllLearningPaths: builder.query({
-      query: (body) => ({
+      query: (studentId: string) => ({
         url: `/learning-paths`,
         method: "GET",
-        body,
+        params: { studentId },
       }),
+      providesTags: ["LearningPath"],
     }),
     getLearningPath: builder.query({
       query: ({ studentId, learningPathId }) => ({
         url: `/learning-paths/${learningPathId}`,
         method: "GET",
-        body: JSON.stringify({ "studentId": studentId }),
+        params: { studentId },
       }),
     }),
     deleteLearningPath: builder.mutation({
       query: ({ studentId, learningPathId }) => ({
         url: `/learning-paths/${learningPathId}`,
         method: "DELETE",
-        body: JSON.stringify({ "studentId": studentId})
+        body: JSON.stringify({ "studentId": studentId })
+      }),
+    }),
+    chatHistory: builder.query({
+      query: (studentId) => ({
+        url: `/chat-history`,
+        method: "GET",
+        params: { studentId },
       }),
     }),
   }),
@@ -64,5 +81,6 @@ export const {
   useGetAllLearningPathsQuery, 
   useGetLearningPathQuery,
   useDeleteLearningPathMutation, 
-} = chatbotApi
-
+  useMarkAsCompletedMutation,
+  useChatHistoryQuery,
+} = chatbotApi;

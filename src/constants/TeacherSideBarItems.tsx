@@ -39,15 +39,15 @@ export const TeacherRightSideBarItems: SideBarItem[] = [
 	},
 	{
 		id: '2',
-		text: 'Forum',
+		text: 'Discussion',
 		icon: <MessageSquare size={16} />,
-		path: '/forum',
+		path: '/discussion',
 	},
 	{
 		id: '3',
-		text: 'Test Center',
+		text: 'Assessment',
 		icon: <TabletSmartphone size={16} />,
-		path: '/test-center',
+		path: '/assessment',
 	},
 	{
 		id: '4',
