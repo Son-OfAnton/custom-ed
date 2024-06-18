@@ -7,7 +7,7 @@ import {
 import { Mail, PhoneIcon } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { toast } from 'sonner'
-
+import { useLocalStorage } from '@/hooks/useLocalStorage'
 import { makeDateReadable } from '@/lib/helpers'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -22,6 +22,8 @@ import {
 import { EllipsisVertical } from './Icons'
 
 const StudentPerClassroom = () => {
+	const {getItem: getCurrUser} = useLocalStorage('currUser')
+	const isCurrUserTeacher = getCurrUser().role === 1
 	const classroomId = usePathname().split('/').at(-2)
 	const {
 		data: classroomData,
@@ -59,7 +61,7 @@ const StudentPerClassroom = () => {
 			{classroomData?.data.members?.map((student, i) => (
 				<Card key={i} className='pb-6'>
 					<CardHeader>
-						<DropdownMenu>
+						{isCurrUserTeacher && <DropdownMenu>
 							<DropdownMenuTrigger className='place-self-end'>
 								<EllipsisVertical className='h-5 w-5 place-self-end cursor-pointer' />
 							</DropdownMenuTrigger>
@@ -71,10 +73,10 @@ const StudentPerClassroom = () => {
 										handleRemoveStudent(student.id!)
 									}}
 								>
-									Delete
+									Remove
 								</DropdownMenuItem>
 							</DropdownMenuContent>
-						</DropdownMenu>
+						</DropdownMenu>}
 						<div className='flex items-center justify-center mb-6'>
 							<Avatar className='w-24 h-24 border-4 border-gray-200 dark:border-gray-700'>
 								<AvatarImage src='https://avatar.iran.liara.run/public/boy' />

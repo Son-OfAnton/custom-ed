@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 
 import {
 	useAggregateAssessmentAnalyticsQuery,
+	useAggregateSingleAssessmentScoreQuery,
 	useAssessmentAnalyticsByIdQuery,
 	useCrossAssessmentAnalyticsQuery,
 	useGetAssessmentsQuery,
@@ -35,6 +36,57 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import {
+	Table,
+	TableBody,
+	TableCaption,
+	TableCell,
+	TableFooter,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from '@/components/ui/table'
+import { useGetClassroomByIdQuery } from '@/store/classroom/classroomApi'
+import { toMonthAndDay } from '@/lib/helpers'
+import { useAggregateGetStudentByIdQuery } from '@/store/student/studentApi'
+
+const roster = [
+	{
+		fullName: 'John Doe',
+		submissionDate: '2021-10-01',
+		score: 85,
+	},
+	{
+		fullName: 'Jane Smith',
+		submissionDate: '2021-10-02',
+		score: 92,
+	},
+	{
+		fullName: 'Mike Johnson',
+		submissionDate: '2021-10-03',
+		score: 78,
+	},
+	{
+		fullName: 'Sarah Williams',
+		submissionDate: '2021-10-04',
+		score: 90,
+	},
+	{
+		fullName: 'David Brown',
+		submissionDate: '2021-10-05',
+		score: 88,
+	},
+	{
+		fullName: 'Emily Davis',
+		submissionDate: '2021-10-06',
+		score: 95,
+	},
+	{
+		fullName: 'Michael Wilson',
+		submissionDate: '2021-10-07',
+		score: 82,
+	},
+];
 
 const metrics: string[] = [
 	'Mean Score',
@@ -55,25 +107,25 @@ const metrics: string[] = [
 ]
 
 const getMetricKey = (metric: string) => {
-  const metricMap = {
-    'Mean Score': 'meanScore',
-    'Median Score': 'medianScore',
-    'Mode Score': 'modeScore',
-    'Standard Deviation': 'standardDeviation',
-    'Variance': 'variance',
-    'Highest Score': 'highestScore',
-    'Lowest Score': 'lowestScore',
-    'Range': 'range',
-    'Interquartile Range': 'interquartileRange',
-    'Skewness': 'skewness',
-    'Kurtosis': 'kurtosis',
-    'Coefficient Of Variation': 'coefficientOfVariation',
-    'Mean Absolute Deviation': 'meanAbsoluteDeviation',
-    'Median Absolute Deviation': 'medianAbsoluteDeviation',
-    'Mode Absolute Deviation': 'modeAbsoluteDeviation',
-  };
-return metricMap[metric as keyof typeof metricMap];
-};
+	const metricMap = {
+		'Mean Score': 'meanScore',
+		'Median Score': 'medianScore',
+		'Mode Score': 'modeScore',
+		'Standard Deviation': 'standardDeviation',
+		Variance: 'variance',
+		'Highest Score': 'highestScore',
+		'Lowest Score': 'lowestScore',
+		Range: 'range',
+		'Interquartile Range': 'interquartileRange',
+		Skewness: 'skewness',
+		Kurtosis: 'kurtosis',
+		'Coefficient Of Variation': 'coefficientOfVariation',
+		'Mean Absolute Deviation': 'meanAbsoluteDeviation',
+		'Median Absolute Deviation': 'medianAbsoluteDeviation',
+		'Mode Absolute Deviation': 'modeAbsoluteDeviation',
+	}
+	return metricMap[metric as keyof typeof metricMap]
+}
 
 const chapters: string[] = Array.from(
 	{ length: 10 },
@@ -127,16 +179,16 @@ const AnalyticsPage = () => {
 		assessmentIds: assessments.map((assessment) => assessment.id),
 	})
 
-	console.debug('ASSESSMENTS', JSON.stringify(assessments, null, 2))
-	console.debug('ANALYSIS', JSON.stringify(aggregateData, null, 2))
+	// console.debug('ASSESSMENTS', JSON.stringify(assessments, null, 2))
+	// console.debug('ANALYSIS', JSON.stringify(aggregateData, null, 2))
 
 	const graphData = assessments.map((assessment, i) => {
-		const metricKey = getMetricKey(selectedMetric.label);
+		const metricKey = getMetricKey(selectedMetric.label)
 		return {
 			name: assessment.name,
 			value: aggregateData?.[i]?.data[metricKey] ?? 0,
-		};
-	});
+		}
+	})
 
 	// console.debug(assessments)
 	const [selectedAssessment, setSelectedAssessment] = useState({
@@ -145,7 +197,7 @@ const AnalyticsPage = () => {
 		isOpen: false,
 	})
 
-	console.debug(selectedAssessment.id)
+	// console.debug(selectedAssessment.id)
 
 	const {
 		data: singleAssessmentAnalytics,
@@ -161,7 +213,21 @@ const AnalyticsPage = () => {
 		{ skip: selectedAssessment.id === '' },
 	)
 
-	console.debug(singleAssessmentAnalytics)
+	// console.debug(singleAssessmentAnalytics)
+
+	const {data: classData} = useGetClassroomByIdQuery(currClassroomId)
+	const studentIds = classData?.data.members?.map((member) => member.id) || []
+
+	const { data: score } = useAggregateSingleAssessmentScoreQuery({
+		classroomId: currClassroomId!,
+		assessmentId: selectedAssessment.id,
+		studentIds,
+	})
+
+	console.debug('SCORE', score)
+
+	const {data: studentData} = useAggregateGetStudentByIdQuery({studentIds: studentIds})
+	const fullNames = studentData?.map((student) => `${student.data?.firstName} ${student.data?.lastName}` ) || []
 
 	const handleMetricChange = (selectedLabel: string) => {
 		setSelectedMetric({ label: selectedLabel, isOpen: false })
@@ -326,7 +392,7 @@ const AnalyticsPage = () => {
 								{singleAssessmentAnalytics?.data?.meanScore || 'N/A'}
 							</span>
 						</div>
-						<div className='text-sm text-primary'>Mean Grade</div>
+						<div className='text-primary'>Mean Grade</div>
 					</CardContent>
 				</Card>
 				<Card className='flex flex-col justify-center items-center'>
@@ -336,7 +402,7 @@ const AnalyticsPage = () => {
 								{singleAssessmentAnalytics?.data?.medianScore || 'N/A'}
 							</span>
 						</div>
-						<div className='text-sm text-primary'>Median Grade</div>
+						<div className='text-primary'>Median Grade</div>
 					</CardContent>
 				</Card>
 				<Card className='flex flex-col justify-center items-center'>
@@ -346,70 +412,31 @@ const AnalyticsPage = () => {
 								{singleAssessmentAnalytics?.data?.totalSubmissions || 'N/A'}
 							</span>
 						</div>
-						<div className='text-sm text-primary'>Total Submissions</div>
+						<div className='text-primary'>Total Submissions</div>
 					</CardContent>
 				</Card>
+			</div>
 
-				{/* High - low students */}
-			</div>
-			<div className='flex flex-row flex-wrap justify-between w-full mt-10'>
-				<Card>
-					<CardHeader>
-						<CardTitle>Top 5 Students</CardTitle>
-					</CardHeader>
-					<CardContent className='flex flex-col gap-y-4 w-96'>
-						{Array.from({ length: 5 }, (_, i) => (
-							<>
-								<div className='flex items-center gap-4'>
-									<Avatar>
-										<Image
-											width={100}
-											height={100}
-											src='/placeholder.svg'
-											alt='@jaredpalmer'
-										/>
-										<AvatarFallback>JP</AvatarFallback>
-									</Avatar>
-									<div className='flex-1'>
-										<div className='font-medium'>Jared Palmer</div>
-										<div className='text-sm text-gray-500 dark:text-gray-400'>
-											Grade: 92
-										</div>
-									</div>
-								</div>
-							</>
-						))}
-					</CardContent>
-				</Card>
-				<Card>
-					<CardHeader>
-						<CardTitle>Bottom 5 Students</CardTitle>
-					</CardHeader>
-					<CardContent className='flex flex-col gap-y-4 w-96'>
-						{Array.from({ length: 5 }, (_, i) => (
-							<>
-								<div className='flex items-center gap-4'>
-									<Avatar>
-										<Image
-											width={100}
-											height={100}
-											src='/placeholder.svg'
-											alt='@jaredpalmer'
-										/>
-										<AvatarFallback>JP</AvatarFallback>
-									</Avatar>
-									<div className='flex-1'>
-										<div className='font-medium'>Jared Palmer</div>
-										<div className='text-sm text-gray-500 dark:text-gray-400'>
-											Grade: 92
-										</div>
-									</div>
-								</div>
-							</>
-						))}
-					</CardContent>
-				</Card>
-			</div>
+			<Table className='my-4'>
+				<TableHeader>
+					<TableRow className='text-'>
+						<TableHead className='text-lg'>Name</TableHead>
+						<TableHead className='text-lg'>Submission Date</TableHead>
+						<TableHead className='text-right text-lg'>Score</TableHead>
+					</TableRow>
+				</TableHeader>
+				<TableBody>
+					{score?.map((record, i) => (
+						<TableRow key={record.data.id} className='text-lg'>
+							<TableCell>{fullNames[i]}</TableCell>
+							<TableCell>{toMonthAndDay(record.data.updatedAt)}</TableCell>
+							<TableCell className='text-right'>
+								{record.data.score}
+							</TableCell>
+						</TableRow>
+					))}
+				</TableBody>
+			</Table>
 		</div>
 	)
 }

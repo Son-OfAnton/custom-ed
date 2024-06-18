@@ -8,7 +8,8 @@ import {
   PostSubmitAnswerResponse,
   PostSubmitAnswerRequest,
   CrossAssessmentResponse,
-  SingleAssessmentAnalyticsResponse
+  SingleAssessmentAnalyticsResponse,
+  CheckAnswerResponse
 } from "@/types/assessment/assessment.type";
 import { createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 
@@ -112,12 +113,33 @@ export const assessmentApi = createApi({
         }));
         return { data: results };
       }
-    })
+    }),
+    singleAssessmentScore: builder.query<CheckAnswerResponse, {classroomId: string, studentId: string, assessmentId: string}>({
+      query: ({classroomId, studentId, assessmentId}) => ({
+        url: `/${classroomId}/assessment/submission/student/${studentId}/assessment/${assessmentId}`,
+        method: 'GET',
+      }),
+    }),
+    aggregateSingleAssessmentScore: builder.query<CheckAnswerResponse[], {classroomId: string, assessmentId: string, studentIds: any[]}>({
+      async queryFn({classroomId, assessmentId, studentIds}, _queryApi, _extraOptions, fetchWithBQ) {
+        const results = await Promise.all(studentIds.map(async (studentId, _) => {
+          const response = await fetchWithBQ({
+            url: `/${classroomId}/assessment/submission/student/${studentId}/assessment/${assessmentId}`,
+            method: 'GET',
+          });
+          if (response.error) throw response.error;
+          return response.data as CheckAnswerResponse;
+        }));
+        return { data: results };
+      }
+    }),
   })
 })
 
 
 export const { 
+  useSingleAssessmentScoreQuery,
+  useAggregateSingleAssessmentScoreQuery,
   useAggregateAssessmentAnalyticsQuery,
   useCreateAssessmentMutation, 
   useGetAssessmentsQuery, 
