@@ -55,10 +55,12 @@ const SigninPage = () => {
 					router.push('/admin/classroom/classroom-list')
 				} else {
 					toast.error('Signin failed')
+					console.debug('Req problem')
 				}
 			})
 			.catch((err) => {
 				toast.error('Signin failed')
+				console.debug('exception problem', err)
 			})
 	}
 

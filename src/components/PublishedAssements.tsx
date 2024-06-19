@@ -1,8 +1,17 @@
+import {
+	useCreateAssessmentMutation,
+	useGradeStudentsMutation,
+} from '@/store/assessment/assessmentApi'
+import { useGetClassroomByIdQuery } from '@/store/classroom/classroomApi'
+import { selectCurrClassroomId } from '@/store/features/classroomSlice'
 import { GetAssessmentResponseData } from '@/types/assessment/assessment.type'
 import { CalendarClock } from 'lucide-react'
+import { useSelector } from 'react-redux'
+import { toast } from 'sonner'
 
 import { makeDateReadable } from '@/lib/helpers'
 
+import { Button } from './ui/button'
 import {
 	Card,
 	CardContent,
@@ -17,6 +26,28 @@ interface Props {
 }
 
 const PublishedAssements = ({ assessments }: Props) => {
+	const currClassroomId = useSelector(selectCurrClassroomId)
+	const { data: classroomData } = useGetClassroomByIdQuery(currClassroomId)
+	const studentIds = classroomData?.data?.members?.map((member) => member.id)
+
+	const [grade, {}] = useGradeStudentsMutation()
+
+	const handleGrade = (assessmentId: string) => {
+		console.debug('Grading ...')
+		grade({
+			classRoomId: currClassroomId,
+			assessmentId,
+			studentIds,
+		})
+		.unwrap()
+		.then((res) => {
+			toast.success('Grading is successful')
+		})
+		.catch((err) => {
+			toast.error('Grading is failed')
+		})
+	}
+
 	return (
 		<>
 			{assessments?.length == 0 ? (
@@ -28,7 +59,7 @@ const PublishedAssements = ({ assessments }: Props) => {
 			) : (
 				<div className='grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
 					{assessments?.map((assessment, i) => (
-						<Card key={i} className='relative cursor-pointer'>
+						<Card key={i} className='relative'>
 							<div className='absolute inset-0 border rounded-xl border-transparent hover:border-primary transition duration-300'></div>
 							<CardHeader>
 								<CardTitle>{assessment.name}</CardTitle>
@@ -53,11 +84,20 @@ const PublishedAssements = ({ assessments }: Props) => {
 									))}
 								</div>
 							</CardContent>
-							<CardFooter className='flex flex-row'>
-								<CalendarClock className='w-4 h-4' />
-								<p className='ml-1 text-xs'>
-									{makeDateReadable(assessment.deadline)}
-								</p>
+							<CardFooter className='flex flex-row justify-between'>
+								<div className='flex'>
+									<CalendarClock className='w-4 h-4' />
+									<p className='ml-1 text-xs'>
+										{makeDateReadable(assessment.deadline)}
+									</p>
+								</div>
+								<Button
+									variant='link'
+									className='z-50'
+									onClick={() => handleGrade(assessment.id)}
+								>
+									Grade
+								</Button>
 							</CardFooter>
 						</Card>
 					))}

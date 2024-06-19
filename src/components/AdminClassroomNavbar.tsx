@@ -18,7 +18,7 @@ import { setCurrClassroomId } from '@/store/features/classroomSlice'
 import { useDispatch } from 'react-redux'
 import { AdminRightSideBarItems } from '@/constants/AdminSideBarItems'
 
-const TeacherClassroomNavbar = () => {
+const AdminClassroomNavbar = () => {
 	const dispatch = useDispatch()
 	const currPath = usePathname()
 	const basePath = currPath.split('/')
@@ -68,4 +68,4 @@ const TeacherClassroomNavbar = () => {
 	)
 }
 
-export default TeacherClassroomNavbar
+export default AdminClassroomNavbar

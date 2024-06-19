@@ -6,7 +6,7 @@ import { useLocalStorage } from '@/hooks/useLocalStorage'
 import { useStudentClassroomQuery } from '@/store/classroom/classroomApi'
 import { useGetStudentByIdQuery } from '@/store/student/studentApi'
 
-import { Users } from 'lucide-react'
+import {GraduationCap, Users } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 import SearchAndBell from '@/components/SearchAndBell'
@@ -67,6 +67,12 @@ const ListOfClassroomPage = () => {
 											<p>{classroom.courseNo}</p>
 										</div>
 									</CardFooter>
+									<div className='ml-6 mb-4 flex items-center'>
+										<GraduationCap size={22} className='mr-2' />
+										<p>
+											{`${classroom.creator.firstName} ${classroom.creator.lastName}`}
+										</p>
+									</div>
 								</Card>
 							</div>
 						))

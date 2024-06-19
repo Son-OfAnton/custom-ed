@@ -1,5 +1,6 @@
 import { SideBarItem } from '@/types/SideNavItems'
 import {
+	BarChart3,
 	Megaphone,
 	MessageSquare,
 	School,
@@ -14,30 +15,30 @@ export const AdminSideBarItems: SideBarItem[] = [
 		icon: <School size={25} />,
 		path: '/admin/classroom/classroom-list',
 	},
-	{
-		id: '2',
-		text: 'Message',
-		icon: <MessageSquare size={25} />,
-		path: '/message',
-	},
 ]
 export const AdminRightSideBarItems: SideBarItem[] = [
 	{
 		id: '1',
 		text: 'Announcement',
 		icon: <Megaphone size={25} />,
-		path: '/',
+		path: '/announcement',
 	},
 	{
 		id: '2',
-		text: 'Forum',
+		text: 'Discussion',
 		icon: <MessageSquare size={25} />,
-		path: '/',
+		path: '/discussion',
 	},
 	{
-		id: '2',
+		id: '3',
+		text: 'Analytics',
+		icon: <BarChart3 size={25} />,
+		path: '/analytics',
+	},
+	{
+		id: '4',
 		text: 'Student',
 		icon: <UsersRound size={25} />,
-		path: '/',
+		path: '/students',
 	},
 ]

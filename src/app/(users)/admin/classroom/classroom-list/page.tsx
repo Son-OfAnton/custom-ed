@@ -3,18 +3,14 @@
 import React, { useEffect, useState } from 'react'
 
 import { useLocalStorage } from '@/hooks/useLocalStorage'
-import {
-	useGetAllClassroomsQuery,
-	useTeacherClassroomQuery,
-} from '@/store/classroom/classroomApi'
-import { openDialog } from '@/store/features/classroomDialogSlice'
-import { useGetTeacherByIdQuery } from '@/store/teacher/teacherApi'
-import { Users } from 'lucide-react'
-import Link from 'next/link'
+import { useGetAllClassroomsQuery } from '@/store/classroom/classroomApi'
+import { openDialog, setTeacherId } from '@/store/features/adminDialogSlice'
+import { GraduationCap, Users } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useDispatch } from 'react-redux'
 
 import ClassroomDeleteDialog from '@/components/ClassroomDeleteDialog'
+import EmailDialog from '@/components/EmailDialog'
 import { EllipsisVertical } from '@/components/Icons'
 import SearchAndBell from '@/components/SearchAndBell'
 import Spinner from '@/components/Spinner'
@@ -31,6 +27,15 @@ const ListOfClassroomPage = () => {
 	const router = useRouter()
 	const { getItem: getCurrUser } = useLocalStorage('currUser')
 	const currUser = getCurrUser()
+	const currUserType =
+		currUser?.role === 0
+			? 'student'
+			: currUser?.role === 1
+				? 'teacher'
+				: 'admin'
+	console.debug('currUserType', currUserType)
+	const dispatch = useDispatch()
+
 	const {
 		data: classrooms,
 		isSuccess: isSuccessClassrooms,
@@ -43,7 +48,7 @@ const ListOfClassroomPage = () => {
 
 	return (
 		<div className='md:flex overflow-x-hidden md:w-11/12 md:ml-auto h-screen'>
-			<ClassroomDeleteDialog />
+			<EmailDialog />
 			<div className='flex-1 mt-20 md:pl-40'>
 				<div>
 					<SearchAndBell />
@@ -72,6 +77,23 @@ const ListOfClassroomPage = () => {
 								<Card>
 									<CardHeader className='flex flex-row justify-between'>
 										<CardTitle>{classroom.name}</CardTitle>
+										<DropdownMenu>
+											<DropdownMenuTrigger>
+												<EllipsisVertical className='h-4 w-4' />
+											</DropdownMenuTrigger>
+											<DropdownMenuContent>
+												<DropdownMenuItem
+													className='focus:bg-blue-500 focus:text-white cursor-pointer'
+													onClick={(e) => {
+														e.stopPropagation()
+														dispatch(openDialog())
+														dispatch(setTeacherId(classroom.creator.id))
+													}}
+												>
+													Email teacher
+												</DropdownMenuItem>
+											</DropdownMenuContent>
+										</DropdownMenu>
 									</CardHeader>
 
 									<CardFooter>
@@ -83,18 +105,17 @@ const ListOfClassroomPage = () => {
 											<p>{classroom.courseNo}</p>
 										</div>
 									</CardFooter>
+									<div className='ml-6 mb-4 flex items-center'>
+										<GraduationCap size={22} className='mr-2' />
+										<p>
+											{`${classroom.creator.firstName} ${classroom.creator.lastName}`}
+										</p>
+									</div>
 								</Card>
 							</div>
 						))}
 					</div>
 				)}
-				<div className='ml-8 mt-10 block'>
-					<Button>
-						<Link href='/teacher/classroom/create-classroom'>
-							Create Classroom
-						</Link>
-					</Button>
-				</div>
 			</div>
 		</div>
 	)

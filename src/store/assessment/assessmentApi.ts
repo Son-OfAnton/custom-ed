@@ -133,11 +133,20 @@ export const assessmentApi = createApi({
         return { data: results };
       }
     }),
+    gradeStudents: builder.mutation<any, {classRoomId: string, assessmentId: string, studentIds: any[] | undefined}>({
+      query: ({classRoomId, assessmentId, studentIds}) => ({
+        url: `/${classRoomId}/analytics/grade`,
+        method: 'POST',
+        body: studentIds,
+        params: {classRoomId, assessmentId},
+      }),
+    }),
   })
 })
 
 
 export const { 
+  useGradeStudentsMutation,
   useSingleAssessmentScoreQuery,
   useAggregateSingleAssessmentScoreQuery,
   useAggregateAssessmentAnalyticsQuery,

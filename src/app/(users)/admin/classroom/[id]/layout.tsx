@@ -1,14 +1,14 @@
-import TeacherClassroomNavbar from '@/components/layout/TeacherClassroomNavbar'
+import AdminClassroomNavbar from '@/components/AdminClassroomNavbar'
 
 interface LayoutProps {
 	role: string
 	children: React.ReactNode
 }
 
-const Layout: React.FC<LayoutProps> = ({ role = 'teacher', children }) => {
+const Layout: React.FC<LayoutProps> = ({ role = 'admin', children }) => {
 	return (
 		<div>
-			<TeacherClassroomNavbar />
+			<AdminClassroomNavbar />
 			<div>{children}</div>
 		</div>
 	)

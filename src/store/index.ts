@@ -20,6 +20,7 @@ import { discussionApi } from './discussion/discussionApi'
 import { notificationApi } from './notification/notificationApi'
 import notificationSlice from './features/notificationSlice'
 import { adminApi } from './admin/adminApi'
+import adminDialogSlice from './features/adminDialogSlice'
 
 
 export const store = configureStore({
@@ -45,6 +46,7 @@ export const store = configureStore({
     discussion: discussionSlice,
     learningPath: learningPathDialogSlice,
     notification: notificationSlice,
+    adminDialog: adminDialogSlice,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware()
     .concat(studentAuthApi.middleware, 

@@ -12,7 +12,8 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
 	const { getItem: getCurrUser } = useLocalStorage('currUser')
-	const role = getCurrUser()?.role === 0 ? 'student' : getCurrUser()?.role === 1 ? 'teacher' : 'admin';
+	const currUser = getCurrUser()
+	const role = currUser?.role === 0 ? 'student' : currUser?.role === 1 ? 'teacher' : 'admin';
 
 	return (
 		<div>
