@@ -22,3 +22,8 @@ export const extractTime = (dateStr: string) => {
 export const toMonthAndDay = (dateString: string) => {
   return format(new Date(dateString), 'MMMM dd')
 }
+
+const getKeyByValue = (obj: Record<string, number>, value: number): string | undefined => {
+  const entry = Object.entries(obj).find(([key, val]) => val === value)
+  return entry ? entry[0] : undefined
+}

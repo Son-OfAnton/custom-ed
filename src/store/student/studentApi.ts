@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { StudentSignupResponse, StudentSignupRequest, StudentSigninResponse, StudentSigninRequest } from '@/types/auth/studentAuth.type'
 import { EditStudentProfileRequest, GetSingleStudentResponse } from '@/types/student/student.type'
+import { url } from 'inspector';
 
 export const studentAuthApi = createApi({
   reducerPath: 'studentAuthApi',
@@ -53,10 +54,17 @@ export const studentAuthApi = createApi({
         };
       },
     }),
+    getProfilePic: builder.query({
+      query: (studentId) => ({
+        url: `/picture/${studentId}`,
+        method: 'GET',
+      })
+    })
 }),
 })
 
 export const { 
+  useGetProfilePicQuery,
   useStudentSignupMutation, 
   useStudentSigninMutation, 
   useGetStudentByIdQuery, 
